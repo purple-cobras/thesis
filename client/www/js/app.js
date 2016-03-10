@@ -17,7 +17,7 @@ angular.module('app',
   ]
 )
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $location) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -27,6 +27,37 @@ angular.module('app',
     if(window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+    }
+  });
+
+  auth.hookEvents();
+
+  var refreshingToken = null;
+  $rootScope.$on('$locationChangeStart', function () {
+    var token = store.get('token');
+    var refreshToken = store.get('refreshToken');
+    if (token) {
+      if (!jwtHelper.isTokenExpired(token)) {
+        if (!auth.isAuthenticated) {
+          auth.authenticate(store.get('profile'), token);
+        }
+      } else {
+        if (refreshToken) {
+          if (refreshingToken === null) {
+            refreshingToken = auth.refreshIdToken(refreshToken)
+            .then(function (idToken) {
+              store.set('token', idToken);
+              auth.authenticate(store.get('profile', idToken));
+            })
+            .finally(function () {
+              refreshingToken = null;
+            });
+          }
+          return refreshingToken;
+        } else {
+          $location.path('/login');
+        }
+      }
     }
   });
 })
