@@ -10,7 +10,10 @@ angular.module('app',
     'app.controllers', 
     'app.routes', 
     'app.services', 
-    'app.directives'
+    'app.directives',
+    'auth0',
+    'angular-storage',
+    'angular-jwt'
   ]
 )
 
@@ -26,4 +29,27 @@ angular.module('app',
       StatusBar.styleDefault();
     }
   });
+})
+
+
+.config(function (authProvider, $httpProvider, jwtInterceptorProvider) {
+  jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
+    var idToken = store.get('token');
+    var refreshToken = store.get('refreshToken');
+    // If no token return null
+    if (!idToken || !refreshToken) {
+      return null;
+    }
+    // If token is expired, get a new one
+    if (jwtHelper.isTokenExpired(idToken)) {
+      return auth.refreshIdToken(refreshToken).then(function(idToken) {
+        store.set('token', idToken);
+        return idToken;
+      });
+    } else {
+      return idToken;
+    }
+  }
+
+  $httpProvider.interceptors.push('jwtInterceptor');
 })
