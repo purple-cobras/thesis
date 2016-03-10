@@ -1,6 +1,12 @@
-angular.module('app.routes', [])
+angular.module('app.routes', 
+  [
+    'auth0',
+    'angular-storage',
+    'angular-jwt'
+  ]
+)
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, authProvider, $httpProvider, jwtInterceptorProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -9,8 +15,7 @@ angular.module('app.routes', [])
   $stateProvider
     
   
-
-      .state('login', {
+  .state('login', {
     url: '/page2',
     templateUrl: 'templates/login.html',
     controller: 'loginCtrl'
@@ -34,8 +39,12 @@ angular.module('app.routes', [])
     controller: 'gameCtrl'
   })
 
-$urlRouterProvider.otherwise('/page2')
+$urlRouterProvider.otherwise('/page2');
 
-  
+authProvider.init({
+  domain: 'purplecobras.auth0.com',
+  clientID:'UUf4W3Rz7wReJq03Pg6eta3vGOFfwg11',
+  loginState: 'login'
+});
 
 });

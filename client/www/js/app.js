@@ -10,10 +10,7 @@ angular.module('app',
     'app.controllers', 
     'app.routes', 
     'app.services', 
-    'app.directives',
-    'auth0',
-    'angular-storage',
-    'angular-jwt'
+    'app.directives'
   ]
 )
 
