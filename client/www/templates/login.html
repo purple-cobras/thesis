@@ -1,0 +1,23 @@
+<ion-view title="Login">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <form class="list">
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input type="text" placeholder="">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" placeholder="">
+                </label>
+            </ion-list>
+            <div>
+                <p>Error message</p>
+            </div>
+            <div class="spacer" style="height: 40px;"></div>
+            <a ui-sref="main" class="button button-stable button-block ">Log in</a>
+            <button class="button button-stable button-block ">Log in with Facebook</button>
+            <a href="#" onclick="window.open('/signup', '_system', 'location=yes'); return false;" class="button button-positive button-clear button-block ">Signup</a>
+        </form>
+    </ion-content>
+</ion-view>
