@@ -1,0 +1,28 @@
+{
+  "name": "thesis",
+  "version": "1.0.0",
+  "description": "Game of Things mobile port",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo install testing framework",
+    "start": "nodemon server/server.js",
+    "postinstall": "bower install; cd client; npm install; bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/purple-cobras/thesis.git"
+  },
+  "author": "Purple Cobras",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/purple-cobras/thesis/issues"
+  },
+  "homepage": "https://github.com/purple-cobras/thesis#readme",
+  "dependencies": {
+    "bower": "^1.7.7",
+    "express": "^4.13.4"
+  }
+}
