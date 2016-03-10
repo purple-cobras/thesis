@@ -12,8 +12,9 @@ angular.module('app.controllers', [])
       store.set('token', token);
       store.set('refreshToken', refreshToken);
       $location.path('/main');
-    }, function () {
+    }, function (error) {
       //error handling
+      console.log(error);
     });
 
     $scope.logout = function () {
