@@ -5,9 +5,19 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services', 'app.directives'])
+angular.module('app', 
+  [ 'ionic', 
+    'app.controllers', 
+    'app.routes', 
+    'app.services', 
+    'app.directives',
+    'auth0',
+    'angular-storage',
+    'angular-jwt'
+  ]
+)
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $location) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,4 +29,58 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
       StatusBar.styleDefault();
     }
   });
+
+  auth.hookEvents();
+
+  var refreshingToken = null;
+  $rootScope.$on('$locationChangeStart', function () {
+    var token = store.get('token');
+    var refreshToken = store.get('refreshToken');
+    if (token) {
+      if (!jwtHelper.isTokenExpired(token)) {
+        if (!auth.isAuthenticated) {
+          auth.authenticate(store.get('profile'), token);
+        }
+      } else {
+        if (refreshToken) {
+          if (refreshingToken === null) {
+            refreshingToken = auth.refreshIdToken(refreshToken)
+            .then(function (idToken) {
+              store.set('token', idToken);
+              auth.authenticate(store.get('profile', idToken));
+            })
+            .finally(function () {
+              refreshingToken = null;
+            });
+          }
+          return refreshingToken;
+        } else {
+          $location.path('/login');
+        }
+      }
+    }
+  });
+})
+
+
+.config(function (authProvider, $httpProvider, jwtInterceptorProvider) {
+  jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
+    var idToken = store.get('token');
+    var refreshToken = store.get('refreshToken');
+    // If no token return null
+    if (!idToken || !refreshToken) {
+      return null;
+    }
+    // If token is expired, get a new one
+    if (jwtHelper.isTokenExpired(idToken)) {
+      return auth.refreshIdToken(refreshToken).then(function(idToken) {
+        store.set('token', idToken);
+        return idToken;
+      });
+    } else {
+      return idToken;
+    }
+  }
+
+  $httpProvider.interceptors.push('jwtInterceptor');
 })
