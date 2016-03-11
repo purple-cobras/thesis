@@ -1,4 +1,6 @@
 var express = require('express');
+var path = require('path');
+var db = require(path.resolve('db/db'));
 var app = express();
 var server= require('http').Server(app);
 
@@ -20,3 +22,4 @@ server.listen(port, function () {
 routes(app, express);
 
 io(server);
+
