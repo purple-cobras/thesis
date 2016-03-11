@@ -21,7 +21,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
-//Color palette 
+//Color palette
 $lighter-color: rgb(133, 125, 177);
 $light-color: rgb(92, 83, 147);
 $primary-color: rgb(59, 49, 116);
@@ -46,5 +46,9 @@ ion-header-bar.bar.bar-stable {
 }
 
 .pane, .view {
+  background-color: $dark-color;
+}
+
+.inviting {
   background-color: $dark-color;
 }

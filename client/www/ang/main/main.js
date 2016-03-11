@@ -1,8 +1,6 @@
 angular.module('app.main', [])
 
-.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store) {
-  
-  $scope.friends = [];
+.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope) {
 
   $scope.account = function () {
     $ionicHistory.goBack();
@@ -15,7 +13,7 @@ angular.module('app.main', [])
 
       } else {
         console.log(response);
-        $scope.friends = response;
+        $rootScope.friends = response.data;
       }
     });
   };

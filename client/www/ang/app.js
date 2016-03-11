@@ -5,10 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', 
-  [ 'ionic', 
-    'app.routes', 
-    'app.services', 
+angular.module('app',
+  [ 'ionic',
+    'app.routes',
+    'app.services',
     'app.directives',
     'app.main',
     'app.game',
@@ -24,7 +24,9 @@ angular.module('app',
 .run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
+    // for form inputs
+    $rootScope.friends = [];
+
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
