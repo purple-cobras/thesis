@@ -10,6 +10,7 @@ angular.module('app.login', [])
       },
     }, function (profile, token, accessToken, state, refreshToken) {
       store.set('profile', profile);
+      store.set('fb_access_token', profile.identities[0].access_token);
       store.set('token', token);
       store.set('refreshToken', refreshToken);
       $state.go('main');
@@ -22,6 +23,7 @@ angular.module('app.login', [])
     auth.signout();
     store.remove('profile');
     store.remove('token');
+    store.remove('fb_access_token');
     $state.go('login');
   };
 

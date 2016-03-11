@@ -53,7 +53,6 @@ authProvider.init({
 
 .run(function ($rootScope, $location, auth, $state) {
   $rootScope.$on('$stateChangeStart', function (evt, next, current) {
-    console.log(next);
     if (next && next.block && !auth.isAuthenticated) {
       $state.go('login');
     }

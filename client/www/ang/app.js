@@ -16,6 +16,7 @@ angular.module('app',
     'app.newGame',
     'auth0',
     'angular-storage',
+    'facebook',
     'angular-jwt'
   ]
 )
@@ -93,3 +94,7 @@ angular.module('app',
 
   $httpProvider.interceptors.push('jwtInterceptor');
 })
+
+.config(function (FacebookProvider) {
+  FacebookProvider.init('1118852854832411');
+});
