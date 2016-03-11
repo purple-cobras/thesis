@@ -2,15 +2,14 @@
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <h1>Invite friends</h1>
         <ion-list>
-            <ion-item>Item 1</ion-item>
-            <ion-item>Item 2</ion-item>
-            <ion-item>Item 3</ion-item>
-            <ion-toggle toggle-class="toggle-positive">Skip if guessed</ion-toggle>
-            <label class="item item-input">
-                <span class="input-label">Play up to</span>
-                <input type="number" placeholder="">
-            </label>
+            <ion-item ng-repeat="friend in friends" ng-click="toggleInvite(friend)" ng-class="{inviting: inviting[friend.id]}">{{friend.name}}</ion-item>
         </ion-list>
+        <ion-toggle toggle-class="toggle-positive" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
+        <label class="item item-input">
+            <span class="input-label">Play up to</span>
+            <input type="tel" ng-model="rules.maxScore" ng-change="restrictScore()" min="10" max="50">
+        </label>
+        <div ng-bind="error"></div>
         <button class="button button-stable button-block ">Create!</button>
     </ion-content>
 </ion-view>

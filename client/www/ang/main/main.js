@@ -1,12 +1,10 @@
 angular.module('app.main', [])
 
-.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store) {
-  
-  $scope.friends = [];
+.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope) {
 
   $scope.account = function () {
     $ionicHistory.goBack();
-  }
+  };
 
   $scope.getFriends = function () {
     Facebook.api('/me/friends?access_token=' + store.get('fb_access_token'), function (response) {
@@ -15,11 +13,11 @@ angular.module('app.main', [])
 
       } else {
         console.log(response);
-        $scope.friends = response;
+        $rootScope.friends = response.data;
       }
     });
   };
 
-  $scope.getFriends()
+  $scope.getFriends();
 
 });
