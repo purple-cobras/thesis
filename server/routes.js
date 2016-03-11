@@ -25,24 +25,9 @@ var routes = [
     }
   },
   {
-    path: '/games',
+    path: '*',
     get: function (req, res) {
-      //RETURN ALL (CURRENT) GAMES?
-    },
-    post: function (req, res) {
-      //STORE GAME
-    }
-  },
-  {
-    path: '/games/:game_id',
-    get: function (req, res) {
-      //RETURN GAME req.params.game_id
-    },
-    put: function (req, res) {
-      //UPDATE GAME req.params.game_id
-    },
-    delete: function (req, res) {
-      //DELETE GAME req.params.game_id
+      res.redirect('/');
     }
   }
 ];
