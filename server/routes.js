@@ -15,7 +15,7 @@ var jwtCheck = expressjwt({
   audience: process.env.AUTH_ID
 });
 
-var authRoutes = ['/users', '/users/friends', '/games', 'games/invites', '/score/total'];
+var authRoutes = ['/users', '/profile', '/invites'];
 
 var routes = [
   {
@@ -31,32 +31,20 @@ var routes = [
     }
   },
   {
-    path: '/users/friends',
+    path: '/profile',
     get: function (req, res) {
-      // Query db for all of user's friends and their game stats
-      // to display rankings, etc
+      // Query db for data we'd display on a profile
+        // user's total score from all games, total number of games played
+        // list of friends, friend stats
+
     }
   },
   {
-    path: '/games',
-    get: function (req, res) {
-      // Query db for all user's games.
-      // Can be used for displaying total number of games played on profile, etc.
-    }
-  },
-  {
-    path: 'games/invites',
+    path: '/invites',
     get: function (req, res) {
       // Query db for pending game invitations
       // (Possible) Add invite_status column to users_games table to indicate if 
       // its a game for which the invitation is pending, accepted or declined.
-    }
-  },
-  {
-    path: '/score/total', 
-    get: function (req, res) {
-      // Query db for all user_game scores in order
-      // to return a total score to display on a profile, etc.
     }
   },
   {
