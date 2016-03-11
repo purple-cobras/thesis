@@ -1,5 +1,5 @@
-angular.module('app.controllers', [])
-  
+angular.module('app.login', [])
+
 .controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory) {
   $scope.auth = auth;
   $scope.login = function () {
@@ -31,19 +31,4 @@ angular.module('app.controllers', [])
     })
     $state.go('main');
   }
-})
-   
-.controller('mainCtrl', function($scope, $state, $ionicHistory) {
-  $scope.account = function () {
-    $ionicHistory.goBack();
-  }
-})
-   
-.controller('newGameCtrl', function($scope) {
-
-})
-   
-.controller('gameCtrl', function($scope) {
-
-})
- 
+});

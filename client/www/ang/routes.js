@@ -17,27 +17,27 @@ angular.module('app.routes',
   
   .state('login', {
     url: '/login',
-    templateUrl: 'templates/login.html',
+    templateUrl: 'ang/login/login.html',
     controller: 'loginCtrl'
   })
 
   .state('main', {
     url: '/main',
-    templateUrl: 'templates/main.html',
+    templateUrl: 'ang/main/main.html',
     controller: 'mainCtrl',
     block: true
   })
 
   .state('newGame', {
     url: '/newgame',
-    templateUrl: 'templates/newGame.html',
+    templateUrl: 'ang/newGame/newGame.html',
     controller: 'newGameCtrl',
     block: true
   })
 
   .state('game', {
     url: '/play',
-    templateUrl: 'templates/game.html',
+    templateUrl: 'ang/game/game.html',
     controller: 'gameCtrl',
     block: true
   })
