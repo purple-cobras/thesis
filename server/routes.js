@@ -3,6 +3,12 @@ var public = path.resolve('client/www');
 var url = require('url');
 var expressjwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
+var env = require('node-env-file');
+
+// Reads in .env variables if available
+if (process.env.NODE_ENV !== 'production') {
+  env(path.resolve('./.env'));
+}
 
 var jwtCheck = expressjwt({
   secret: new Buffer(process.env.AUTH_SECRET, 'base64'),
@@ -34,6 +40,9 @@ var routes = [
     },
     put: function (req, res) {
       //UPDATE GAME req.params.game_id
+    },
+    delete: function (req, res) {
+      //DELETE GAME req.params.game_id
     }
   }
 ];
