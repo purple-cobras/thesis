@@ -21,3 +21,30 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+//Color palette 
+$lighter-color: rgb(133, 125, 177);
+$light-color: rgb(92, 83, 147);
+$primary-color: rgb(59, 49, 116);
+$dark-color: rgb(33, 25, 88);
+$darker-color: rgb(15, 8, 59);
+
+$lighter-accent: rgb(102, 153, 153);
+$light-accent: rgb(64, 127, 127);
+$primary-accent: rgb(34, 102, 102);
+$dark-accent: rgb(13, 77, 77);
+$darker-accent: rgb(0, 51, 51);
+
+
+
+*, *:after, *:before {
+  color: $lighter-accent !important;
+}
+
+ion-header-bar.bar.bar-stable {
+  background-color: $dark-color;
+  border-color: $lighter-accent;
+}
+
+.pane, .view {
+  background-color: $dark-color;
+}

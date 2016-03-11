@@ -9088,3 +9088,13 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+*, *:after, *:before {
+  color: #669999 !important; }
+
+ion-header-bar.bar.bar-stable {
+  background-color: #211958;
+  border-color: #669999; }
+
+.pane, .view {
+  background-color: #211958; }
