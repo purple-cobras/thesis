@@ -16,7 +16,7 @@ angular.module('app.routes',
     
   
   .state('login', {
-    url: '/page2',
+    url: '/login',
     templateUrl: 'templates/login.html',
     controller: 'loginCtrl'
   })
@@ -24,27 +24,39 @@ angular.module('app.routes',
   .state('main', {
     url: '/main',
     templateUrl: 'templates/main.html',
-    controller: 'mainCtrl'
+    controller: 'mainCtrl',
+    block: true
   })
 
   .state('newGame', {
     url: '/newgame',
     templateUrl: 'templates/newGame.html',
-    controller: 'newGameCtrl'
+    controller: 'newGameCtrl',
+    block: true
   })
 
   .state('game', {
     url: '/play',
     templateUrl: 'templates/game.html',
-    controller: 'gameCtrl'
+    controller: 'gameCtrl',
+    block: true
   })
 
-$urlRouterProvider.otherwise('/page2');
+$urlRouterProvider.otherwise('/login');
 
 authProvider.init({
   domain: 'purplecobras.auth0.com',
   clientID:'UUf4W3Rz7wReJq03Pg6eta3vGOFfwg11',
   loginState: 'login'
 });
+})
+
+.run(function ($rootScope, $location, auth, $state) {
+  $rootScope.$on('$stateChangeStart', function (evt, next, current) {
+    console.log(next);
+    if (next && next.block && !auth.isAuthenticated) {
+      $state.go('login');
+    }
+  });
 
 });

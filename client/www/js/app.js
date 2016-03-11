@@ -17,7 +17,7 @@ angular.module('app',
   ]
 )
 
-.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $location) {
+.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)

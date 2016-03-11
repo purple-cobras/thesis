@@ -1,23 +1,16 @@
-<ion-view title="Login">
+<ion-view title="{{appName}}" hide-back-button="true">
+    <ion-nav-buttons side="right">
+        <a ng-if="auth.isAuthenticated" ui-sref="main" class="button">Main</a>
+    </ion-nav-buttons>
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <form class="list">
-            <ion-list>
-                <label class="item item-input">
-                    <span class="input-label">Username</span>
-                    <input type="text" placeholder="">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">Password</span>
-                    <input type="password" placeholder="">
-                </label>
             </ion-list>
             <div>
-                <p>Error message</p>
+                <p class="auth-error"></p>
             </div>
             <div class="spacer" style="height: 40px;"></div>
-            <a ng-click="login()" class="button button-stable button-block ">Log in</a>
-            <button class="button button-stable button-block ">Log in with Facebook</button>
-            <a href="#" onclick="window.open('/signup', '_system', 'location=yes'); return false;" class="button button-positive button-clear button-block ">Signup</a>
+            <a ng-if="!auth.isAuthenticated" ng-click="login()" class="button button-stable button-block button-large">Log in</a>
+            <a ng-if="auth.isAuthenticated" ng-click="logout()" class="button button-stable button-block button-large">Log out</a>
         </form>
     </ion-content>
 </ion-view>
