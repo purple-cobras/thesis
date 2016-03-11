@@ -1,4 +1,4 @@
-var db = require('./db.js');
+var db = require('./testdb.js');
 
 var User = db.Model.extend({
   tableName: 'users',
