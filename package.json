@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo install testing framework",
     "start": "nodemon server/server.js",
-    "postinstall": "cd client; npm install; bower install; ionic state reset"
+    "postinstall": "cd client; npm install; bower install"
   },
   "repository": {
     "type": "git",
