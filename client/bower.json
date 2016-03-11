@@ -10,6 +10,7 @@
     "jquery": "^2.2.1"
   },
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.2.4"
+    "ionic": "driftyco/ionic-bower#1.2.4",
+    "angular-mocks": "1.4.3"
   }
 }
