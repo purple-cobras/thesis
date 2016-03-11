@@ -14,6 +14,7 @@ angular.module('app.main', [])
       if (response.error) {
 
       } else {
+        console.log(response);
         $scope.friends = response;
       }
     });
