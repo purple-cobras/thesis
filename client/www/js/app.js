@@ -5,11 +5,14 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', 
-  [ 'ionic', 
-    'app.controllers', 
+angular.module('app',
+  [ 'ionic',
+    'app.game',
+    'app.newGame',
+    'app.main',
+    'app.login',
     'app.routes', 
-    'app.services', 
+    'app.services',
     'app.directives',
     'auth0',
     'angular-storage',
@@ -86,7 +89,7 @@ angular.module('app',
     } else {
       return idToken;
     }
-  }
+  };
 
   $httpProvider.interceptors.push('jwtInterceptor');
-})
+});
