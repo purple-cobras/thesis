@@ -62,6 +62,12 @@ angular.module('app',
   });
 })
 
+// Basic config
+.run(function ($rootScope, auth, $location) {
+  $rootScope.appName = 'Game of Things';
+
+})
+
 
 .config(function (authProvider, $httpProvider, jwtInterceptorProvider) {
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
