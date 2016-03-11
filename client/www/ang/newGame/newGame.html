@@ -4,7 +4,7 @@
         <ion-list>
             <ion-item ng-repeat="friend in friends" ng-click="toggleInvite(friend)" ng-class="{inviting: inviting[friend.id]}">{{friend.name}}</ion-item>
         </ion-list>
-        <ion-toggle toggle-class="toggle-positive">Skip if guessed</ion-toggle>
+        <ion-toggle toggle-class="toggle-positive" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
         <label class="item item-input">
             <span class="input-label">Play up to</span>
             <input type="number" placeholder="">

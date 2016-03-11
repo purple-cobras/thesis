@@ -4,7 +4,7 @@ angular.module('app.main', [])
 
   $scope.account = function () {
     $ionicHistory.goBack();
-  }
+  };
 
   $scope.getFriends = function () {
     Facebook.api('/me/friends?access_token=' + store.get('fb_access_token'), function (response) {
@@ -18,6 +18,6 @@ angular.module('app.main', [])
     });
   };
 
-  $scope.getFriends()
+  $scope.getFriends();
 
 });
