@@ -1,6 +1,7 @@
 angular.module('app.controllers', [])
   
-.controller('loginCtrl', function($scope, store, $location, auth) {
+.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory) {
+  $scope.auth = auth;
   $scope.login = function () {
     auth.signin({
       authParams: {
@@ -11,22 +12,31 @@ angular.module('app.controllers', [])
       store.set('profile', profile);
       store.set('token', token);
       store.set('refreshToken', refreshToken);
-      $location.path('/main');
+      $state.go('main');
     }, function (error) {
-      //error handling
       console.log(error);
     });
+  };
 
-    $scope.logout = function () {
-      auth.signout();
-      store.remove('profile');
-      store.remove('token');
-    };
+  $scope.logout = function () {
+    auth.signout();
+    store.remove('profile');
+    store.remove('token');
+    $state.go('login');
+  };
+
+  if (auth.isAuthenticated) {
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true
+    })
+    $state.go('main');
   }
 })
    
-.controller('mainCtrl', function($scope) {
-
+.controller('mainCtrl', function($scope, $state, $ionicHistory) {
+  $scope.account = function () {
+    $ionicHistory.goBack();
+  }
 })
    
 .controller('newGameCtrl', function($scope) {

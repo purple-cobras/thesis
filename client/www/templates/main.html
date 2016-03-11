@@ -1,4 +1,4 @@
-<ion-view title="Main">
+<ion-view title="Main" hide-back-button="true">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <a ui-sref="newGame" class="button button-stable button-block ">Create Game!</a>
         <div class="list card">
@@ -11,6 +11,6 @@
                 </ion-list>
             </div>
         </div>
-        <button class="button button-dark button-clear button-block ">Account Settings</button>
+        <button ng-click="account()" class="button button-dark button-clear button-block ">Account</button>
     </ion-content>
 </ion-view>
