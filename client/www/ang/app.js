@@ -7,10 +7,13 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('app', 
   [ 'ionic', 
-    'app.controllers', 
     'app.routes', 
     'app.services', 
     'app.directives',
+    'app.main',
+    'app.game',
+    'app.login',
+    'app.newGame',
     'auth0',
     'angular-storage',
     'angular-jwt'
