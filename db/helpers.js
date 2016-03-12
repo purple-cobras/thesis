@@ -77,3 +77,32 @@ module.exports.inviteFriends = function (game, friends) {
     });
   });
 };
+
+module.exports.getInvites = function (user_fb) {
+  return new Promise(function (res, rej) {
+    module.exports.findOrCreate(models.User, {facebook_id: user_fb})
+    .then( function (user) {
+      db.knex('users_games').where({
+        user_id: user.attributes.id,
+        invite: null
+      }).select('game_id')
+      .then(function (userGames) {
+        var invitedGames = [];
+        userGames.forEach(function (userGame) {
+          invitedGames.push(module.exports.findOrCreate(models.Game, {id: userGame.game_id}));
+        });
+        Promise.all(invitedGames)
+        .then(function (games) {
+          var results = [];
+          games.forEach(function (game) {
+            results.push(game.attributes);
+          });
+          res(results);
+        })
+        .catch(function (error) {
+          rej(error);
+        });
+      });
+    });
+  });
+};
