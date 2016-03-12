@@ -16,7 +16,7 @@ angular.module('app.login', [])
       $http({
         method: 'post',
         url: Config.api + '/signin',
-        data: {name: profile.name}
+        data: {name: profile.name, pic_url: profile.picture}
       })
       .then(function (response) {
         if (response.data.user) {
