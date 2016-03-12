@@ -1,15 +1,21 @@
 <ion-view title="New Game">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <h1>Invite friends</h1>
-        <ion-list>
-            <ion-item ng-repeat="friend in friends" ng-click="toggleInvite(friend)" ng-class="{inviting: inviting[friend.id]}">{{friend.name}}</ion-item>
-        </ion-list>
-        <ion-toggle toggle-class="toggle-positive" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
+        <div class="list-card">
+            <div class="item item-divider">Friends</div>
+            <div class="friends-list item item-body">
+            <ion-scroll direction="y">
+                <ion-list>
+                    <ion-item ng-repeat="friend in friends" ng-click="toggleInvite(friend)" ng-class="{inviting: inviting[friend.id]}">{{friend.name}}</ion-item>
+                </ion-list>
+            </ion-scroll>
+            </div>
+        </div>
+        <ion-toggle toggle-class="toggle-dark" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
         <label class="item item-input">
             <span class="input-label">Play up to</span>
             <input type="tel" ng-model="rules.maxScore" ng-change="restrictScore()" min="10" max="50">
         </label>
         <div ng-bind="error"></div>
-        <button ng-disabled="error || isDisabled" ng-click="createGame()" class="button button-stable button-block ">Create!</button>
+        <button ng-disabled="error || isDisabled || !Utils.keys(inviting).length" ng-click="createGame()" class="button button-stable button-block ">Create!</button>
     </ion-content>
 </ion-view>
