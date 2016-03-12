@@ -36,7 +36,13 @@ var runInput = function (inputs) {
       runInput(inputs);
     }
   } else {
-    knex.migrate.latest({directory: path.resolve('db/migrations')});
+    knex.migrate.latest({directory: path.resolve('db/migrations')})
+    .then(function () {
+      console.log('any/all pending migrations complete');
+    })
+    .catch(function (error) {
+      console.log('migration error');
+    });
   }
 };
 
