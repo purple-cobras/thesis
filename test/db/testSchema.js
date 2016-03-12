@@ -5,8 +5,15 @@ var path = require('path');
 var Promise = require('bluebird');
 
 // Reads in .env variables if available
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && !process.env.CIRCLECI) {
   env(path.resolve('.env'));
+}
+
+var db;
+if (process.env.CIRCLECI) {
+  db = 'cricle_test';
+} else {
+  db = 'thesistest';
 }
 
 var knex = Knex({
@@ -15,7 +22,7 @@ var knex = Knex({
     host: 'localhost',
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: 'thesistest',
+    database: db,
     charset: 'utf8'
   }
 });

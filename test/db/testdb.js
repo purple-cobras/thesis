@@ -4,7 +4,7 @@ var env = require('node-env-file');
 var path = require('path');
 var inputs = require('./testSchema').reverse();
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && !process.env.CIRCLECI) {
   env(path.resolve('.env'));
 }
 
