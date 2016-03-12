@@ -4,7 +4,7 @@ Config = {
   debug: true
   // @endif
   // @if NODE_ENV == 'TEST'
-  api: '',
+  api: 'http://black-mamba.herokuapp.com',
   // @endif
   // @if NODE_ENV == 'PRODUCTION'
   api: ''
