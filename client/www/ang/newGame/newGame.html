@@ -10,6 +10,6 @@
             <input type="tel" ng-model="rules.maxScore" ng-change="restrictScore()" min="10" max="50">
         </label>
         <div ng-bind="error"></div>
-        <button ng-disabled="error" ng-click="createGame()" class="button button-stable button-block ">Create!</button>
+        <button ng-disabled="error || isDisabled" ng-disabled="isDisabled"ng-click="createGame()" class="button button-stable button-block ">Create!</button>
     </ion-content>
 </ion-view>
