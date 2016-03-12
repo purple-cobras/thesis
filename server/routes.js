@@ -47,8 +47,11 @@ var routes = [
     post: function (req, res) {
       helpers.findOrCreate(models.User, {'facebook_id': req.user.sub.split('|')[1]})
       .then( function (user) {
-        console.log('sending');
-        res.json({user: user});
+        user.set('full_name', req.body.name)
+        .set('pic_url', req.body.pic_url).save()
+        .then(function (user) {
+          res.json({user: user});
+        })
       })
       .catch(function (error) {
         console.log('errored');
