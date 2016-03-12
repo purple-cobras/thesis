@@ -93,14 +93,27 @@ module.exports.getInvites = function (user_fb) {
         });
         Promise.all(invitedGames)
         .then(function (games) {
-          var results = [];
+          var creators = [];
+          var gameResults = [];
           games.forEach(function (game) {
-            results.push(game.attributes);
+            gameResults.push(game.attributes);
+            creators.push(module.exports.findOrCreate(models.User, {id: game.attributes.creator_id}));
           });
-          res(results);
-        })
-        .catch(function (error) {
-          rej(error);
+          Promise.all(creators)
+          .then(function (creators) {
+            var results = [];
+            for (var i = 0; i < gameResults.length; i++) {
+              var temp = {};
+              temp.id = gameResults[i].id;
+              temp.name = gameResults[i].name;
+              temp.creator = creators[i].attributes;
+              results.push(temp);
+            }
+            res(results);
+          })
+          .catch(function (error) {
+            rej(error);
+          });
         });
       });
     });
