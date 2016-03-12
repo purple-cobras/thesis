@@ -15,7 +15,8 @@ angular.module('app.login', [])
       store.set('refreshToken', refreshToken);
       $http({
         method: 'post',
-        url: Config.api + '/signin'
+        url: Config.api + '/signin',
+        data: {name: profile.name}
       })
       .then(function (response) {
         if (response.data.user) {
@@ -28,6 +29,7 @@ angular.module('app.login', [])
         $scope.logout();
       }); 
     }, function (error) {
+      $scope.logout();
     });
   };
 
