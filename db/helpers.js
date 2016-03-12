@@ -23,3 +23,16 @@ module.exports.findOrCreate = function (Model, attributes) {
     });
   });
 };
+
+module.exports.getFriends = function (ids_array) {
+  return db.knex
+  .select()
+  .from('users')
+  .whereIn('facebook_id', ids_array)
+  .then(function (friends) {
+    return friends;
+  })
+  .catch(function (error) {
+    return error;
+  })
+};
