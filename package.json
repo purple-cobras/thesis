@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha --reporter spec 'test/**/*.js'",
-    "start": "nodemon server/server.js",
+    "start": "gulp dev; nodemon server/server.js",
     "postinstall": "cd client; npm install; bower install"
   },
   "repository": {
@@ -25,6 +25,7 @@
     "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
     "bookshelf": "^0.9.2",
+    "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-jwt": "^3.3.0",
     "jsonwebtoken": "^5.7.0",
@@ -36,6 +37,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-preprocess": "^2.0.0",
     "mocha": "^2.4.5"
   }
 }

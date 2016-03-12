@@ -1,6 +1,6 @@
 angular.module('app.login', [])
 
-.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory) {
+.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http) {
   $scope.auth = auth;
   $scope.login = function () {
     auth.signin({
@@ -13,9 +13,21 @@ angular.module('app.login', [])
       store.set('fb_access_token', profile.identities[0].access_token);
       store.set('token', token);
       store.set('refreshToken', refreshToken);
-      $state.go('main');
+      $http({
+        method: 'post',
+        url: Config.api + '/signin'
+      })
+      .then(function (response) {
+        if (response.data.user) {
+          $state.go('main');
+        } else {
+          $scope.logout();
+        }
+      })
+      .catch(function (error) {
+        $scope.logout();
+      }); 
     }, function (error) {
-      console.log(error);
     });
   };
 
