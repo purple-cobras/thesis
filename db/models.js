@@ -62,7 +62,6 @@ var UserGame = db.Model.extend({
   }
 });
 
-
 module.exports = {
   User: User,
   Game: Game,
