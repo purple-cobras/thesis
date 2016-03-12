@@ -18,7 +18,7 @@ var jwtCheck = expressjwt({
   audience: process.env.AUTH_ID
 });
 
-var authRoutes = ['/users', '/profile', '/invites'];
+var authRoutes = ['/users', '/profile', '/invites', '/signin'];
 
 var routes = [
   {
@@ -45,7 +45,7 @@ var routes = [
   {
     path: '/signin',
     post: function (req, res) {
-      helpers.findOrCreate(models.User, {'facebook_id': req.body.identities[0].user_id})
+      helpers.findOrCreate(models.User, {'facebook_id': req.user.sub.split('|')[1]})
       .then( function (user) {
         console.log('sending');
         res.json({user: user});

@@ -15,8 +15,7 @@ angular.module('app.login', [])
       store.set('refreshToken', refreshToken);
       $http({
         method: 'post',
-        url: Config.api + '/signin',
-        data: profile
+        url: Config.api + '/signin'
       })
       .then(function (response) {
         if (response.data.user) {
