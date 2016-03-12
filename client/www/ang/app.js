@@ -61,7 +61,7 @@ angular.module('app',
           }
           return refreshingToken;
         } else {
-          $location.path('/login');
+          $state.go('login');
         }
       }
     }
