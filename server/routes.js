@@ -18,7 +18,7 @@ var jwtCheck = expressjwt({
   audience: process.env.AUTH_ID
 });
 
-var authRoutes = ['/users', '/profile', '/invites', '/signin', '/games'];
+var authRoutes = ['/users', '/profile', '/invitations', '/signin', '/games'];
 
 var routes = [
   {
@@ -87,11 +87,16 @@ var routes = [
     }
   },
   {
-    path: '/invites',
+    path: '/invitations',
     get: function (req, res) {
-      // Query db for pending game invitations
-      // (Possible) Add invite_status column to users_games table to indicate if 
-      // its a game for which the invitation is pending, accepted or declined.
+      helpers.getInvites(req.user.sub.split('|')[1])
+      .then(function (games) {
+        res.json({invitations: games});
+      })
+      .catch(function (error) {
+        res.status(500);
+        res.json({error: error});
+      })
     }
   },
   {
