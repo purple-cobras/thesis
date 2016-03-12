@@ -1,16 +1,25 @@
 <ion-view title="Main" hide-back-button="true">
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <a ui-sref="newGame" class="button button-stable button-block ">Create Game!</a>
-        <div class="list card">
-            <div class="item item-divider">Invitations</div>
-            <div class="item item-body">
-                <ion-list>
-                    <ion-item>Item 1</ion-item>
-                    <ion-item>Item 2</ion-item>
-                    <ion-item>Item 3</ion-item>
-                </ion-list>
-            </div>
-        </div>
-        <button ng-click="account()" class="button button-dark button-clear button-block ">Account</button>
-    </ion-content>
+  <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <a ui-sref="newGame" class="button button-stable button-block ">Create Game!</a>
+    <div class="list card">
+      <div class="item item-divider">Invitations</div>
+      <div class="item item-body">
+        <ion-list>
+          <ion-item class="item-button-right" ng-repeat="invitation in invitations">
+            Invitation {{$index}}
+            <div class="buttons">
+              <button ng-click="accept(invitation)" class="button">
+                <i class="icon ion-checkmark-circled"></i>
+              </button>
+              <button ng-click="decline(invitation)" class="button">
+                <i class="icon ion-close-circled"></i>
+              </button>    
+            </div>  
+          </ion-item>
+          <ion-item ng-if="!invitations.length">None :(</ion-item>
+        </ion-list>
+      </div>
+    </div>
+    <button ng-click="account()" class="button button-dark button-clear button-block ">Account</button>
+  </ion-content>
 </ion-view>
