@@ -91,7 +91,7 @@ var routes = [
     get: function (req, res) {
       helpers.getInvites(req.user.sub.split('|')[1])
       .then(function (games) {
-        res.json(games);
+        res.json({invitations: games});
       })
       .catch(function (error) {
         res.status(500);
