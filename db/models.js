@@ -63,9 +63,6 @@ var UserGame = db.Model.extend({
   }
 });
 
-
-=======
->>>>>>> 13970c8... (incomplete) Implement db Model testing
 module.exports = {
   User: User,
   Game: Game,
