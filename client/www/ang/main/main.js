@@ -2,9 +2,16 @@ angular.module('app.main', [])
 
 .controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http) {
 
-
+  $scope.isDisabled = false;
   $scope.invitations = [];
 
+
+  $scope.newGame = function () {
+    $scope.isDisabled = true;
+    $state.go('newGame');
+    $scope.isDisabled = false;
+  };
+  
   $scope.account = function () {
     $ionicHistory.goBack();
   };

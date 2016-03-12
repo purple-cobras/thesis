@@ -2,6 +2,7 @@ angular.module('app.newGame', [])
 
 .controller('newGameCtrl', function ($scope, $http, $state) {
 
+  $scope.isDisabled = false;
   $scope.inviting = {};
   $scope.rules = {
     maxScore: 15,
@@ -31,6 +32,7 @@ angular.module('app.newGame', [])
   };
 
   $scope.createGame = function () {
+    $scope.isDisabled = true;
     $http({
       url: Config.api + '/games',
       method: 'post',
@@ -45,6 +47,7 @@ angular.module('app.newGame', [])
       } else {
         console.log('something went wrong');
       }
+      $scope.isDisabled = false;
     })
     .catch(function (error) {
         console.log('error', error);
