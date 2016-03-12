@@ -18,7 +18,7 @@ var jwtCheck = expressjwt({
   audience: process.env.AUTH_ID
 });
 
-var authRoutes = ['/users', '/profile', '/invites', '/signin'];
+var authRoutes = ['/users', '/profile', '/invites', '/signin', '/games'];
 
 var routes = [
   {
@@ -53,6 +53,33 @@ var routes = [
       .catch(function (error) {
         console.log('errored');
         res.sendStatus(500);
+      });
+    }
+  },
+  {
+    path: '/games',
+    post: function (req, res) {
+      var data = req.body;
+      data.friends[req.user.sub.split('|')[1]] = true;
+      helpers.getFriends(data.friends)
+      .then(function (friends) {
+        new models.Game().save()
+        .then(function (game) {
+          helpers.inviteFriends(game, friends)
+          .then(function (game) {
+            res.json({game: game});
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+          res.status(500);
+          res.json({error: error});
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(500);
+        res.json({error: error});
       });
     }
   },

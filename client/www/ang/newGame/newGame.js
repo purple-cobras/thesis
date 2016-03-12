@@ -1,6 +1,6 @@
 angular.module('app.newGame', [])
 
-.controller('newGameCtrl', function ($scope) {
+.controller('newGameCtrl', function ($scope, $http, $state) {
 
   $scope.inviting = {};
   $scope.rules = {
@@ -28,6 +28,27 @@ angular.module('app.newGame', [])
       }
     }
     $scope.error = '';
+  };
+
+  $scope.createGame = function () {
+    $http({
+      url: Config.api + '/games',
+      method: 'post',
+      data: {
+        friends: $scope.inviting,
+        rules: $scope.rules
+      }
+    })
+    .then(function (response){
+      if (response.data.game) {
+        $state.go('game');
+      } else {
+        console.log('something went wrong');
+      }
+    })
+    .catch(function (error) {
+        console.log('error', error);
+    });
   };
 
 });

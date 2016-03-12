@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
   env('../.env');
 }
 
-var knex = Knex({
+module.exports = {
   client: 'postgres',
   connection: {
     host: 'localhost',
@@ -16,6 +16,6 @@ var knex = Knex({
     charset: 'utf8'
   },
   migrations: {
-    directory: path.resolve('db/migrations')
+    directory: path.resolve('migrations')
   }
-});
+};
