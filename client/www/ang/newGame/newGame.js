@@ -47,11 +47,13 @@ angular.module('app.newGame', [])
       } else {
         console.log('something went wrong');
       }
-      $scope.isDisabled = false;
     })
     .catch(function (error) {
         console.log('error', error);
-    });
+    })
+    .finally(function () {
+      $scope.isDisabled = false;
+    })
   };
 
 });
