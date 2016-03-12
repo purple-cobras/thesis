@@ -26,6 +26,9 @@ var Game = db.Model.extend({
   },
   responses: function () {
     return this.hasMany(User, 'current_game_id');
+  },
+  creator: function () {
+    return this.belongsTo(User, 'creator_id');
   }
 });
 
