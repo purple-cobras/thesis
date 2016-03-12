@@ -1,3 +1,4 @@
 Config = {
-  api: 'http://black-mamba.herokuapp.com',
+  api: 'http://localhost:8080',
+  debug: true
 }
