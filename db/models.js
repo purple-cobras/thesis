@@ -52,7 +52,6 @@ var Response = db.Model.extend({
   }
 });
 
-<<<<<<< HEAD
 var UserGame = db.Model.extend({
   tableName: 'users_games',
   user: function () {
