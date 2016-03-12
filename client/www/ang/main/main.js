@@ -3,7 +3,7 @@ angular.module('app.main', [])
 .controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http) {
 
 
-  $scope.invitations = [{chicken: true}];
+  $scope.invitations = [];
 
   $scope.account = function () {
     $ionicHistory.goBack();
