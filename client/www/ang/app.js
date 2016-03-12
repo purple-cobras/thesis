@@ -71,6 +71,10 @@ angular.module('app',
 // Basic config
 .run(function ($rootScope, auth, $location) {
   $rootScope.appName = 'Game of Things';
+  $rootScope.Utils = {
+     keys : Object.keys
+  }
+
 
 })
 
