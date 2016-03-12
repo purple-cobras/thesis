@@ -3,31 +3,7 @@ var Bookshelf = require('bookshelf');
 var env = require('node-env-file');
 var path = require('path');
 var Promise = require('bluebird');
-
-// Reads in .env variables if available
-if (process.env.NODE_ENV !== 'production' && !process.env.CIRCLECI) {
-  env(path.resolve('.env'));
-}
-
-var db;
-if (process.env.CIRCLECI) {
-  db = 'cricle_test';
-} else {
-  db = 'thesistest';
-}
-
-var knex = Knex({
-  client: 'postgres',
-  connection: {
-    host: 'localhost',
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: db,
-    charset: 'utf8'
-  }
-});
-
-var db = Bookshelf(knex);
+var db = require('./testdb.js');
 
 // Table creation functions: 
 

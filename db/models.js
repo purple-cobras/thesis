@@ -52,6 +52,7 @@ var Response = db.Model.extend({
   }
 });
 
+<<<<<<< HEAD
 var UserGame = db.Model.extend({
   tableName: 'users_games',
   user: function () {
@@ -63,6 +64,8 @@ var UserGame = db.Model.extend({
 });
 
 
+=======
+>>>>>>> 13970c8... (incomplete) Implement db Model testing
 module.exports = {
   User: User,
   Game: Game,
