@@ -1,6 +1,6 @@
 angular.module('app.newGame', [])
 
-.controller('newGameCtrl', function ($scope, $http) {
+.controller('newGameCtrl', function ($scope, $http, $state) {
 
   $scope.inviting = {};
   $scope.rules = {
@@ -41,7 +41,7 @@ angular.module('app.newGame', [])
     })
     .then(function (response){
       if (response.data.game) {
-        console.log('game: ',response.data.game);
+        $state.go('game');
       } else {
         console.log('something went wrong');
       }
