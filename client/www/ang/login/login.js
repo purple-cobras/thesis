@@ -20,10 +20,7 @@ angular.module('app.login', [])
       })
       .then(function (response) {
         if (response.data.user) {
-          socket.emit('login', {
-            user_fb: store.get('profile').user_id.split('|')[1],
-            name: store.get('profile').name
-          });
+          store.set('remote_id', response.data.user.id);
           $state.go('main');
         } else {
           $scope.logout();
@@ -39,10 +36,10 @@ angular.module('app.login', [])
 
   $scope.logout = function () {
     auth.signout();
-    socket.emit('logout', store.get('profile').user_id.split('|')[1]);
     store.remove('profile');
     store.remove('token');
     store.remove('fb_access_token');
+    store.remove('remote_id');
     $state.go('login');
   };
 
