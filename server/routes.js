@@ -66,7 +66,7 @@ var routes = [
       data.friends[req.user.sub.split('|')[1]] = true;
       helpers.getFriends(data.friends)
       .then(function (friends) {
-        new models.Game().save()
+        new models.Game({creator_id: data.creator_id}).save()
         .then(function (game) {
           helpers.inviteFriends(game, friends)
           .then(function (game) {
