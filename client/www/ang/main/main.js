@@ -77,5 +77,6 @@ angular.module('app.main', [])
   };
 
   $scope.getFriends();
+  $scope.getInvitations();
 
 });
