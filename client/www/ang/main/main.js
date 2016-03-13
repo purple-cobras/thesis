@@ -36,6 +36,10 @@ angular.module('app.main', [])
       data: {invitation: invitation}
     })
     .then(function (response) {
+      socket.emit(acceptInvite, {
+        invitation: invitation,
+        name: store.get('profile').name
+      });
       console.log(response);
     })
     .catch(function (error) {
@@ -50,6 +54,10 @@ angular.module('app.main', [])
       data: {invitation: invitation}
     })
     .then(function (response) {
+      socket.emit(declineInvite, {
+        invitation: invitation,
+        name: store.get('profile').name
+      });
       console.log(response);
     })
     .catch(function (error) {

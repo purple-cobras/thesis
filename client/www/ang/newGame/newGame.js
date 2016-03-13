@@ -51,6 +51,10 @@ angular.module('app.newGame', [])
     })
     .then(function (response){
       if (response.data.game) {
+        socket.emit('gameCreated', {
+          friends: $scope.inviting,
+          invitedBy: store.get('profile').name
+        });
         $state.go('game');
       } else {
         console.log('something went wrong');
