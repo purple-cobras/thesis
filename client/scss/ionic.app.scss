@@ -22,27 +22,41 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "www/lib/ionic/scss/ionic";
 
 //Color palette
-$lighter-color: rgb(133, 125, 177);
-$light-color: rgb(92, 83, 147);
-$primary-color: rgb(59, 49, 116);
-$dark-color: rgb(33, 25, 88);
-$darker-color: rgb(15, 8, 59);
+$lighter-color: #718A8E;
+$light-color: #4F6F75;
+$primary-color: #385A60;
+$dark-color: #234349;
+$darker-color: #13373D;
 
-$lighter-accent: rgb(102, 153, 153);
-$light-accent: rgb(64, 127, 127);
-$primary-accent: rgb(34, 102, 102);
-$dark-accent: rgb(13, 77, 77);
-$darker-accent: rgb(0, 51, 51);
+$lighter-accent: #8AAF92;
+$light-accent: #608F6A;
+$primary-accent: #43764E;
+$dark-accent: #295A34;
+$darker-accent: #164B22;
 
-
+$gray: #DDDDDD;
 
 *, *:after, *:before {
-  color: $lighter-accent !important;
 }
 
 ion-header-bar.bar.bar-stable {
-  background-color: $dark-color;
+  background-color: $light-color;
+  border-color: $lighter-color;
+  .title {
+    color: black;
+  }
+}
+
+.bar-header .button.header-item {
+  color: black;
+}
+
+button.button.button-stable.button-block {
   border-color: $lighter-accent;
+}
+
+button.button-clear.button-block {
+  color: white;
 }
 
 .pane, .view {
@@ -50,5 +64,18 @@ ion-header-bar.bar.bar-stable {
 }
 
 .inviting {
-  background-color: $dark-color;
+  @extend .active;
+}
+
+.friends-list {
+  min-height: 30vh;
+  max-height: 50vh;
+}
+
+.invitations-list {
+  max-height: 50vh;
+}
+
+img.empty {
+  display: none;
 }

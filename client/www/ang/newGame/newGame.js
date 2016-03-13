@@ -2,6 +2,7 @@ angular.module('app.newGame', [])
 
 .controller('newGameCtrl', function ($scope, $http, $state) {
 
+  $scope.search = '';
   $scope.isDisabled = false;
   $scope.inviting = {};
   $scope.rules = {
@@ -10,11 +11,18 @@ angular.module('app.newGame', [])
   };
   $scope.error = '';
 
-  $scope.toggleInvite = function (friend) {
+  $scope.toggleInvite = function (friend, $event) {
     if($scope.inviting[friend.id]){
       delete $scope.inviting[friend.id];
     } else {
       $scope.inviting[friend.id] = true;
+    }
+    $event.target.focus();
+    var count = Object.keys($scope.inviting).length;
+    if (!count) {
+      $('.friends-count').text('');
+    } else {
+      $('.friends-count').text('(' + count + ' invited)');
     }
   };
   $scope.restrictScore = function () {
