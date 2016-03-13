@@ -18,7 +18,7 @@ var jwtCheck = expressjwt({
   audience: process.env.AUTH_ID
 });
 
-var authRoutes = ['/users', '/profile', '/invitations', '/signin', '/games'];
+var authRoutes = ['/users', '/profile', '/invitations', '/signin'];
 
 var routes = [
   {
@@ -63,26 +63,30 @@ var routes = [
     path: '/games',
     post: function (req, res) {
       var data = req.body;
-      data.friends[req.user.sub.split('|')[1]] = true;
-      helpers.getFriends(data.friends)
-      .then(function (friends) {
-        new models.Game().save()
-        .then(function (game) {
-          helpers.inviteFriends(game, friends)
+      helpers.findOrCreate(models.User, {facebook_id: 'fb2'})
+      .then(function (creator){
+        data.friends[req.user.sub.split('|')[1]] = true;
+        helpers.getFriends(data.friends)
+        .then(function (friends) {
+          new models.Game({creator_id: creator.id}).save()
           .then(function (game) {
-            res.json({game: game});
-          });
+            helpers.inviteFriends(game, friends)
+            .then(function (game) {
+              console.log(game);
+              res.json({game: game});
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+            res.status(500);
+            res.json({error: error});
+          })
         })
         .catch(function (error) {
           console.log(error);
           res.status(500);
           res.json({error: error});
-        })
-      })
-      .catch(function (error) {
-        console.log(error);
-        res.status(500);
-        res.json({error: error});
+        });
       });
     }
   },
