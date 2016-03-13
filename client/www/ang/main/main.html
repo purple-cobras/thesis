@@ -7,7 +7,7 @@
         <ion-scroll class="invitations-list">
         <ion-list>
           <ion-item class="item-button-right" ng-repeat="invitation in invitations">
-            Invitation {{$index}}
+            From {{invitation.creator.full_name}}
             <div class="buttons">
               <button ng-click="accept(invitation)" class="button">
                 <i class="icon ion-checkmark-circled"></i>

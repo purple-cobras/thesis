@@ -22,7 +22,14 @@ angular.module('app.main', [])
       method: 'get'
     })
     .then(function (response) {
-      $scope.invitations = response.data.invitations;
+      if (response.data.invitations) {
+        $scope.invitations = [];
+        response.data.invitations.forEach(function(invitation) {
+          if (invitation.creator.id !== store.get('remote_id')) {
+            $scope.invitations.push(invitation);
+          }
+        });
+      } 
     })
     .catch(function (error) {
       console.error(error);
