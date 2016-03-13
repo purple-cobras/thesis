@@ -67,7 +67,11 @@ module.exports.inviteFriends = function (game, friends) {
   return new Promise(function (res, rej) {
     var inviteCount = 0;
     friends.forEach(function (friend) {
-      module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: friend.id})
+      var invite = null;
+      if (friend.id === game.creator_id) {
+        invite = 1;
+      }
+      module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: friend.id, invite: invite})
       .then(function (userGame) {
         if (++inviteCount === friends.length) {
           res(game);
