@@ -114,7 +114,6 @@ module.exports.getInvites = function (user_fb) {
             res(results);
           })
           .catch(function (error) {
-            console.log(error);
             rej(error);
           });
         });
