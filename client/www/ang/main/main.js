@@ -1,6 +1,6 @@
 angular.module('app.main', [])
 
-.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http, Sockets) {
+.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http) {
 
   $scope.isDisabled = false;
   $scope.invitations = [];
