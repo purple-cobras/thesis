@@ -1,6 +1,6 @@
 angular.module('app.newGame', [])
 
-.controller('newGameCtrl', function ($scope, $http, $state) {
+.controller('newGameCtrl', function ($scope, $http, $state, store) {
 
   $scope.search = '';
   $scope.isDisabled = false;
@@ -46,15 +46,12 @@ angular.module('app.newGame', [])
       method: 'post',
       data: {
         friends: $scope.inviting,
-        rules: $scope.rules
+        rules: $scope.rules,
+        creator_id: store.get('remote_id')
       }
     })
     .then(function (response){
       if (response.data.game) {
-        socket.emit('gameCreated', {
-          friends: $scope.inviting,
-          invitedBy: store.get('profile').name
-        });
         $state.go('game');
       } else {
         console.log('something went wrong');
