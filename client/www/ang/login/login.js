@@ -20,10 +20,6 @@ angular.module('app.login', [])
       })
       .then(function (response) {
         if (response.data.user) {
-          socket.emit('login', {
-            user_fb: store.get('profile').user_id.split('|')[1],
-            name: store.get('profile').name
-          });
           $state.go('main');
         } else {
           $scope.logout();
