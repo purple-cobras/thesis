@@ -67,7 +67,11 @@ module.exports.inviteFriends = function (game, friends) {
   return new Promise(function (res, rej) {
     var inviteCount = 0;
     friends.forEach(function (friend) {
-      module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: friend.id})
+      var invite = null;
+      if (friend.id === game.creator_id) {
+        invite = 1;
+      }
+      module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: friend.id, invite: invite})
       .then(function (userGame) {
         if (++inviteCount === friends.length) {
           res(game);
@@ -118,6 +122,34 @@ module.exports.getInvites = function (user_fb) {
           });
         });
       });
+    });
+  });
+}
+
+module.exports.resolveInvite = function (user_fb, invitation, accepted) {
+  return new Promise(function (res, rej) {
+    module.exports.findOrCreate(models.User, {facebook_id: user_fb})
+    .then( function (user) {
+      var invite;
+      if (accepted === true) {
+        invite = 1;
+      } else {
+        invite = 2;
+      }
+      db.knex('users_games')
+      .where({
+        user_id: user.id,
+        game_id: invitation.id
+      })
+      .update({
+        invite: invite
+      })
+      .then( function (result) {
+        res(result);
+      });
+    })
+    .catch( function (error) {
+      rej(error);
     });
   });
 };

@@ -1,6 +1,6 @@
 angular.module('app.main', [])
 
-.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http) {
+.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http, Sockets) {
 
   $scope.isDisabled = false;
   $scope.invitations = [];
@@ -31,9 +31,12 @@ angular.module('app.main', [])
 
   $scope.accept = function (invitation) {
     $http({
-      url: Config.api + '/invitations/accept',
+      url: Config.api + '/invitations',
       method: 'post',
-      data: {invitation: invitation}
+      data: {
+        invitation: invitation,
+        accept: true
+      }
     })
     .then(function (response) {
       socket.emit(acceptInvite, {
@@ -49,9 +52,12 @@ angular.module('app.main', [])
 
   $scope.decline = function (invitation) {
     $http({
-      url: Config.api + '/invitations/decline',
+      url: Config.api + '/invitations',
       method: 'post',
-      data: {invitation: invitation}
+      data: {
+        invitation: invitation,
+        accept: false
+      }
     })
     .then(function (response) {
       socket.emit(declineInvite, {
@@ -78,4 +84,9 @@ angular.module('app.main', [])
 
   $scope.getFriends();
 
+  //Would be better along is authenticated redirect around/from login
+  socket.emit('onlineCheck', {
+    user_fb: store.get('profile').user_id.split('|')[1],
+    name: store.get('profile').name
+  });
 });
