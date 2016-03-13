@@ -101,6 +101,16 @@ var routes = [
         res.status(500);
         res.json({error: error});
       })
+    },
+    post: function (req, res) {
+      helpers.resolveInvite(req.user.sub.split('|')[1], req.body.invitation, req.body.accept)
+      .then(function () {
+        res.status(200);
+      })
+      .catch(function (error) {
+        res.status(500);
+        res.json({error: error});
+      })
     }
   },
   {
