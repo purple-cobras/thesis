@@ -105,11 +105,11 @@ module.exports.getInvites = function (user_fb) {
           .then(function (creators) {
             var results = [];
             for (var i = 0; i < gameResults.length; i++) {
-              var temp = {};
-              temp.id = gameResults[i].id;
-              temp.name = gameResults[i].name;
-              temp.creator = creators[i].attributes;
-              results.push(temp);
+              var result = {};
+              result.id = gameResults[i].id;
+              result.name = gameResults[i].name;
+              result.creator = creators[i].attributes;
+              results.push(result);
             }
             res(results);
           })
