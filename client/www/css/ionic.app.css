@@ -9127,10 +9127,14 @@ button.button-clear.button-block {
   color: white; }
 
 .pane, .view {
-  background-color: #385A60; }
+  background-color: #234349; }
 
 .friends-list {
+  min-height: 30vh;
   max-height: 50vh; }
 
 .invitations-list {
   max-height: 50vh; }
+
+img.empty {
+  display: none; }

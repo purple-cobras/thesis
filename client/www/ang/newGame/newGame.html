@@ -1,13 +1,16 @@
 <ion-view title="New Game">
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <ion-content hide-on-keyboard-open overflow-scroll="true" padding="true" class="has-header">
         <div class="list-card">
-            <div class="item item-divider">Friends</div>
+            <div class="item item-divider">
+                Friends <span class="friends-count"></span>
+            </div>
             <div class="friends-list item item-body">
-            <ion-scroll direction="y">
-                <ion-list>
-                    <ion-item ng-repeat="friend in friends" ng-click="toggleInvite(friend)" ng-class="{inviting: inviting[friend.id]}">{{friend.name}}</ion-item>
-                </ion-list>
-            </ion-scroll>
+                <ion-content overflow-scroll="true">
+                    <ion-list>
+                        <ion-item fb-thumbnail ng-repeat="friend in friends | filter:search | orderBy:'name'" ng-click="toggleInvite(friend, $event)" ng-class="{inviting: inviting[friend.id]}" class="item-thumbnail-right">{{friend.name}}
+                        </ion-item>
+                    </ion-list>
+                </ion-content>
             </div>
         </div>
         <ion-toggle toggle-class="toggle-dark" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>

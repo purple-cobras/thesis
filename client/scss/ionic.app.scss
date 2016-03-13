@@ -60,7 +60,7 @@ button.button-clear.button-block {
 }
 
 .pane, .view {
-  background-color: $primary-color;
+  background-color: $dark-color;
 }
 
 .inviting {
@@ -68,9 +68,14 @@ button.button-clear.button-block {
 }
 
 .friends-list {
+  min-height: 30vh;
   max-height: 50vh;
 }
 
 .invitations-list {
   max-height: 50vh;
+}
+
+img.empty {
+  display: none;
 }
