@@ -1,10 +1,6 @@
 angular.module('app.newGame', [])
 
-<<<<<<< HEAD
 .controller('newGameCtrl', function ($scope, $http, $state, store) {
-=======
-.controller('newGameCtrl', function ($scope, $http, $state, Sockets) {
->>>>>>> f5be59d... (feat) client side event listeners added in Sockets Factory
 
   $scope.search = '';
   $scope.isDisabled = false;

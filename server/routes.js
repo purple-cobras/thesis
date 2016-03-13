@@ -18,7 +18,7 @@ var jwtCheck = expressjwt({
   audience: process.env.AUTH_ID
 });
 
-var authRoutes = ['/users', '/profile', '/invitations', '/signin', '/games'];
+var authRoutes = ['/users', '/profile', '/invitations', '/signin'];
 
 var routes = [
   {
@@ -70,19 +70,23 @@ var routes = [
         .then(function (game) {
           helpers.inviteFriends(game, friends)
           .then(function (game) {
-            res.json({game: game});
-          });
+            helpers.inviteFriends(game, friends)
+            .then(function (game) {
+              console.log(game);
+              res.json({game: game});
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+            res.status(500);
+            res.json({error: error});
+          })
         })
         .catch(function (error) {
           console.log(error);
           res.status(500);
           res.json({error: error});
-        })
-      })
-      .catch(function (error) {
-        console.log(error);
-        res.status(500);
-        res.json({error: error});
+        });
       });
     }
   },
