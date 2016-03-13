@@ -1,6 +1,8 @@
 var db = require('./db.js');
 var models = require('./models.js');
 var Promise = require('bluebird');
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
 
 module.exports.findOrCreate = function (Model, attributes) {
 
@@ -119,3 +121,5 @@ module.exports.getInvites = function (user_fb) {
     });
   });
 };
+
+module.exports.eventEmitter = eventEmitter;
