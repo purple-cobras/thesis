@@ -1,6 +1,6 @@
 angular.module('app.newGame', [])
 
-.controller('newGameCtrl', function ($scope, $http, $state) {
+.controller('newGameCtrl', function ($scope, $http, $state, Sockets) {
 
   $scope.search = '';
   $scope.isDisabled = false;
