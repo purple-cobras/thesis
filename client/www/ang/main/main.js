@@ -38,9 +38,12 @@ angular.module('app.main', [])
 
   $scope.accept = function (invitation) {
     $http({
-      url: Config.api + '/invitations/accept',
+      url: Config.api + '/invitations',
       method: 'post',
-      data: {invitation: invitation}
+      data: {
+        invitation: invitation,
+        accept: true
+      }
     })
     .then(function (response) {
       // socket.emit(acceptInvite, {
@@ -50,14 +53,18 @@ angular.module('app.main', [])
       console.log(response);
     })
     .catch(function (error) {
+      console.error(error);
     });
   };
 
   $scope.decline = function (invitation) {
     $http({
-      url: Config.api + '/invitations/decline',
+      url: Config.api + '/invitations',
       method: 'post',
-      data: {invitation: invitation}
+      data: {
+        invitation: invitation,
+        accept: false
+      }
     })
     .then(function (response) {
       // socket.emit(declineInvite, {
