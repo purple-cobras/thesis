@@ -46,10 +46,10 @@ angular.module('app.main', [])
       }
     })
     .then(function (response) {
-      socket.emit(acceptInvite, {
-        invitation: invitation,
-        name: store.get('profile').name
-      });
+      // socket.emit(acceptInvite, {
+      //   invitation: invitation,
+      //   name: store.get('profile').name
+      // });
       console.log(response);
     })
     .catch(function (error) {
@@ -67,10 +67,10 @@ angular.module('app.main', [])
       }
     })
     .then(function (response) {
-      socket.emit(declineInvite, {
-        invitation: invitation,
-        name: store.get('profile').name
-      });
+      // socket.emit(declineInvite, {
+      //   invitation: invitation,
+      //   name: store.get('profile').name
+      // });
       console.log(response);
     })
     .catch(function (error) {
