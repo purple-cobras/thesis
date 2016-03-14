@@ -91,7 +91,17 @@ angular.module('app.main', [])
 
   $scope.getFriends();
   $scope.getInvitations();
-  Game.getGame();
+  Game.checkGame()
+  .then(function (newGame) {
+    if (newGame) {
+      Game.getGame()
+      .then(function () {
+      });
+    }
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 
   //Would be better along is authenticated redirect around/from login
   // socket.emit('onlineCheck', {

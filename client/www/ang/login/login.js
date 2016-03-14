@@ -20,7 +20,6 @@ angular.module('app.login', [])
       })
       .then(function (response) {
         if (response.data.user) {
-          console.log('user',response.data.user);
           store.set('remote_id', response.data.user.id);
           store.set('current_game_id', response.data.user.current_game_id);
           Game.game.id = response.data.user.current_game_id;

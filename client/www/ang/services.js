@@ -42,6 +42,29 @@ angular.module('app.services', [])
       response: undefined
     },
 
+    checkGame: function () {
+      var remote_id = store.get('remote_id');
+      if (!remote_id) {
+        return $q.resolve();
+      }
+      return $http({
+        url: Config.api + '/users/' + remote_id,
+        method: 'get'
+      })
+      .then(function (response) {
+        var newGame = false;
+        var current_game_id = response.data.user.current_game_id;
+        if (current_game_id !== store.get('current_game_id')) {
+          newGame = true;
+        }
+        store.set('current_game_id', current_game_id);
+        return newGame;
+      })
+      .catch(function (error) {
+        console.log('check game error', error);
+      })
+    },
+
     getGame: function () {
       obj.game.id = store.get('current_game_id');
       if (!obj.game.id) {
@@ -59,6 +82,7 @@ angular.module('app.services', [])
       })
       .catch(function (error) {
         console.log(error);
+        return error;
       })
     },
 
