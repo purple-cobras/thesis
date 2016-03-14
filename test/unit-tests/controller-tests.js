@@ -29,10 +29,10 @@ describe('loginCtrl', function () {
 
     it('should have a login method on the $scope', function () {
         createController();
-        expect($scope.login).toBeDefined();
+        expect(typeof $scope.login).toEqual('function');
     });
     it('should have a logout method on the $scope', function () {
         createController();
-        expect($scope.logout).toBeDefined();
+        expect(typeof $scope.logout).toEqual('function');
     });
 });
