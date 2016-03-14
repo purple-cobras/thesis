@@ -2,6 +2,8 @@ angular.module('app.main', [])
 
 .controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http, Game) {
 
+  angular.extend($scope, Game);
+
   $scope.isDisabled = false;
   $scope.invitations = [];
 
