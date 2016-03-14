@@ -28,7 +28,7 @@ angular.module('app.login', [])
       })
       .catch(function (error) {
         $scope.logout();
-      }); 
+      });
     }, function (error) {
       $scope.logout();
     });

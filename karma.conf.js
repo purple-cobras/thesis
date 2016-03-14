@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: './',
+    basePath: '',
 
 
     // frameworks to use
@@ -15,22 +15,23 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-
-
       'client/www/lib/ionic/js/ionic.bundle.js',
-      'client/www/js/appsettings.js',
+      'client/www/lib/angular-mocks/angular-mocks.js',
+      'client/www/lib/a0-angular-storage/dist/angular-storage.js',
+
+      'client/www/lib/ionic/js/angular-ui/angular-ui-router.js',
+      'client/www/lib/angular-animate/angular-animate.js',
+      'client/www/lib/angular-sanitize/angular-sanitize.js',
       'client/www/lib/auth0-lock/build/auth0-lock.js',
       'client/www/lib/auth0-angular/build/auth0-angular.js',
-      'client/www/lib/a0-angular-storage/dist/angular-storage.js',
       'client/www/lib/angular-jwt/dist/angular-jwt.js',
       'client/www/lib/angular-socket-io/socket.js',
       'client/www/lib/angular-facebook/lib/angular-facebook.js',
       'client/www/lib/jquery/dist/jquery.min.js',
-      'client/www/lib/angular-ui-router/**/*.js',
 
       'client/www/ang/**/*.js',
+      'client/www/ang/login/login.js',
 
-      'client/www/lib/angular-mocks/angular-mocks.js',
       'test/unit-tests/controller-tests.js'
     ],
 

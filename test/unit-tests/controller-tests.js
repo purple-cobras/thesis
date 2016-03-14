@@ -1,8 +1,8 @@
 
 describe('loginCtrl', function () {
-    var $rootScope, $scope, store, createController, auth, $ionicHistory, $http, $httpBackend;
+    var $rootScope, $scope, store, createController, auth, $ionicHistory, $http, $httpBackend, $controller;
 
-    beforeEach(module('ui.router'));
+
     beforeEach(module('app'));
     beforeEach(inject(function ($injector) {
 
@@ -13,8 +13,7 @@ describe('loginCtrl', function () {
         $ionicHistory = $injector.get('$ionicHistory');
         $http = $injector.get('$http');
         $httpBackend = $injector.get('$httpBackend');
-
-        var $controller = $injector.get('$controller');
+        $controller = $injector.get('$controller');
 
         createController = function () {
           return $controller('loginCtrl', {
@@ -28,8 +27,12 @@ describe('loginCtrl', function () {
         };
     }));
 
-    it('should have a login method', function () {
+    it('should have a login method on the $scope', function () {
         createController();
-        expect($scope.login).to.be.a('function');
+        expect($scope.login).toBeDefined();
+    });
+    it('should have a logout method on the $scope', function () {
+        createController();
+        expect($scope.logout).toBeDefined();
     });
 });
