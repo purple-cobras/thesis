@@ -36,31 +36,10 @@ $darker-accent: #164B22;
 
 $gray: #DDDDDD;
 
+$font: "HelveticaNeue-Light";
+
 *, *:after, *:before {
-}
-
-ion-header-bar.bar.bar-stable {
-  background-color: $light-color;
-  border-color: $lighter-color;
-  .title {
-    color: black;
-  }
-}
-
-.bar-header .button.header-item {
-  color: black;
-}
-
-button.button.button-stable.button-block {
-  border-color: $lighter-accent;
-}
-
-button.button-clear.button-block {
-  color: white;
-}
-
-.pane, .view {
-  background-color: $dark-color;
+  font-family: $font;
 }
 
 .inviting {
@@ -78,4 +57,21 @@ button.button-clear.button-block {
 
 img.empty {
   display: none;
+}
+
+/** MAIN **/
+
+.invitations-list {
+  max-height: 40vh;
+}
+
+.account {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+/** NEW GAME **/
+.friends-list {
+  max-height: 40vh;
 }
