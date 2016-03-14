@@ -52,8 +52,13 @@ angular.module('app.services', [])
         method: 'get'
       })
       .then(function (response) {
-        var current_game_id = response.data.current_game_id;
+        var newGame = false;
+        var current_game_id = response.data.user.current_game_id;
+        if (current_game_id !== store.get('current_game_id')) {
+          newGame = true;
+        }
         store.set('current_game_id', current_game_id);
+        return newGame;
       })
       .catch(function (error) {
         console.log('check game error', error);

@@ -36,7 +36,7 @@ var routes = [
   {
     path: '/users/:id',
     get: function (req, res) {
-      helpers.findOrCreate(models.User, {'user_id': req.params.id})
+      helpers.findOrCreate(models.User, {'id': req.params.id})
       .then(function (user) {
         res.json({user: user});
       })
