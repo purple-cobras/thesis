@@ -21,6 +21,7 @@ module.exports = function(config) {
       'client/www/ang/main/*.js',
       'client/www/ang/newGame/*.js',
       'client/www/ang/*.js',
+      'client/www/ang/app.js',
       'client/www/lib/angular-mocks/angular-mocks.js',
       'test/unit-tests/controller-tests.js'
     ],

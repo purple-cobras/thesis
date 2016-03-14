@@ -1,19 +1,32 @@
-describe('A suite', function () {
-    it('contains spec with an expectation', function () {
-        expect(true).toBe(true);
-    });
-});
 
 describe('loginCtrl', function () {
-    var scope, loginCtrl;
+    var $rootScope, $scope, store, createController, $state, auth, $ionicHistory, $http, $httpBackend;
 
-    beforeEach(module('ui.router'))
     beforeEach(module('app'));
-    beforeEach(module('app.login'));
+    beforeEach(inject(function ($injector) {
 
-    beforeEach(inject(function ($rootScope, $controller) {
-        scope = $rootScope.$new();
-        loginCtrl = $controller('loginCtrl', {$scope:scope});
+        $rootScope = $injector.get('$rootScope');
+        $scope = $rootScope.$new();
+        store = $injector.get('store');
+        $state = $injector.get('state');
+        auth  = $injector.get('auth');
+        $ionicHistory = $injector.get('$ionicHistory');
+        $http = $injector.get('$http');
+        $httpBackend = $injector.get('$httpBackend');
+
+        var $controller = $inject.get('$controller');
+
+        createController = function () {
+          return $controller('loginCtrl', {
+            $rootScope: $rootScope,
+            $scope: $scope,
+            store: store,
+            $state: $state,
+            auth: auth,
+            $ionicHistory: $ionicHistory,
+            $http: $http,
+          });
+        };
     }));
 
     it('should have a login method', function () {
