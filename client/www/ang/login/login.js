@@ -21,6 +21,7 @@ angular.module('app.login', [])
       .then(function (response) {
         if (response.data.user) {
           store.set('remote_id', response.data.user.id);
+          //SOCKET EMIT login userInfo.fb ,.name
           $state.go('main');
         } else {
           $scope.logout();
@@ -36,6 +37,7 @@ angular.module('app.login', [])
 
   $scope.logout = function () {
     auth.signout();
+    //SOCKET EMIT logout userInfo.fb ,.name
     store.remove('profile');
     store.remove('token');
     store.remove('fb_access_token');
