@@ -23,7 +23,7 @@ angular.module('app.login', [])
           store.set('remote_id', response.data.user.id);
           store.set('current_game_id', response.data.user.current_game_id);
           Game.game.id = response.data.user.current_game_id;
-
+          Game.getGame();
           //SOCKET EMIT login userInfo.fb ,.name
 
           $state.go('main');
