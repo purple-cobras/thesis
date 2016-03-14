@@ -18,3 +18,8 @@ gulp.task('prod', function() {
     .pipe(preprocess({context: { NODE_ENV: 'PRODUCTION'}}))
     .pipe(gulp.dest(path.resolve('client/www/js/')));
 });
+gulp.task('android', function() {
+  gulp.src(path.resolve('appsettings.js'))
+    .pipe(preprocess({context: { NODE_ENV: 'ANDROID'}}))
+    .pipe(gulp.dest(path.resolve('client/www/js/')));
+});
