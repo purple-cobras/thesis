@@ -16,20 +16,31 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'client/www/lib/angular/angular.js',
-      'client/www/ang/game/*.js',
-      'client/www/ang/login/*.js',
-      'client/www/ang/main/*.js',
-      'client/www/ang/newGame/*.js',
-      'client/www/ang/*.js',
-      'client/www/ang/app.js',
       'client/www/lib/angular-mocks/angular-mocks.js',
+
+      'client/www/lib/ionic/js/ionic.bundle.js',
+      'client/www/js/appsettings.js',
+      'client/www/lib/auth0-lock/build/auth0-lock.js',
+      'client/www/lib/auth0-angular/build/auth0-angular.js',
+      'client/www/lib/a0-angular-storage/dist/angular-storage.js',
+      'client/www/lib/angular-jwt/dist/angular-jwt.js',
+      'client/www/lib/angular-socket-io/socket.js',
+      'client/www/lib/angular-facebook/lib/angular-facebook.js',
+      'client/www/lib/jquery/dist/jquery.min.js',
+
+      'client/www/ang/*.js',
+      'client/www/ang/main/*.js',
+      'client/www/ang/login/*.js',
+      'client/www/ang/game/*.js',
+      'client/www/ang/newGame/*.js',
+
       'test/unit-tests/controller-tests.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-      'karma.conf.js'
+
     ],
 
 
@@ -64,7 +75,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome','PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode
