@@ -114,10 +114,39 @@ module.exports.getInvites = function (user_fb) {
             res(results);
           })
           .catch(function (error) {
+            console.log(error)
             rej(error);
           });
         });
       });
+    });
+  });
+};
+
+module.exports.resolveInvite = function (user_fb, invitation, accepted) {
+  return new Promise(function (res, rej) {
+    module.exports.findOrCreate(models.User, {facebook_id: user_fb})
+    .then( function (user) {
+      var invite;
+      if (accepted === true) {
+        invite = 1;
+      } else {
+        invite = 2;
+      }
+      db.knex('users_games')
+      .where({
+        user_id: user.id,
+        game_id: invitation.id
+      })
+      .update({
+        invite: invite
+      })
+      .then( function (result) {
+        res(result);
+      });
+    })
+    .catch( function (error) {
+      rej(error);
     });
   });
 };
