@@ -74,6 +74,19 @@ var routes = [
     }
   },
   {
+    path: '/games/:id',
+    get: function (req, res) {
+      helpers.getGame(req.params.id)
+      .then(function (result) {
+        res.json({results: result});
+      })
+      .catch(function (error) {
+        res.status(500)
+        res.send({error: error});
+      })
+    }
+  },
+  {
     path: '/invitations',
     get: function (req, res) {
       helpers.getInvites(req.user.sub.split('|')[1])

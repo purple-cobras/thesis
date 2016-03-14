@@ -1,6 +1,6 @@
 angular.module('app.login', [])
 
-.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http) {
+.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game) {
   $scope.auth = auth;
   $scope.login = function () {
     auth.signin({
@@ -23,7 +23,10 @@ angular.module('app.login', [])
           console.log('user',response.data.user);
           store.set('remote_id', response.data.user.id);
           store.set('current_game_id', response.data.user.current_game_id);
+          Game.game.id = response.data.user.current_game_id;
+
           //SOCKET EMIT login userInfo.fb ,.name
+
           $state.go('main');
         } else {
           $scope.logout();
