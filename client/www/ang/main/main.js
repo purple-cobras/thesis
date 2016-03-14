@@ -95,14 +95,16 @@ angular.module('app.main', [])
     });
   };
 
+  $scope.goToGame = function () {
+    $state.go('game');
+  };
+
   $scope.getFriends();
   $scope.getInvitations();
   Game.checkGame()
-  .then(function (newGame) {
-    if (newGame) {
+  .then(function (hasGame) {
+    if (hasGame) {
       Game.getGame()
-      .then(function () {
-      });
     }
   })
   .catch(function (error) {
