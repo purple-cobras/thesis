@@ -5,7 +5,6 @@ angular.module('app.main', [])
   $scope.isDisabled = false;
   $scope.invitations = [];
 
-
   $scope.newGame = function () {
     $scope.isDisabled = true;
     $state.go('newGame');
@@ -80,9 +79,14 @@ angular.module('app.main', [])
 
   $scope.getFriends = function () {
     Facebook.api('/me/friends?access_token=' + store.get('fb_access_token'), function (response) {
-      //TODO: FB authentication expired, handle this error
       if (response.error) {
-
+        console.error('FB authentication error: ', error);
+          auth.signout();
+          store.remove('profile');
+          store.remove('token');
+          store.remove('fb_access_token');
+          store.remove('remote_id');
+          $state.go('login');
       } else {
         $rootScope.friends = response.data;
       }
