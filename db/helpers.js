@@ -178,4 +178,32 @@ module.exports.resolveInvite = function (user_fb, invitation, accepted) {
   });
 };
 
+module.exports.getGame = function (game_id) {
+  return new Promise(function (res, rej) {
+    db.knex.select('users.id', 'users.pic_url', 'users.full_name', 'users_games.score')
+    .from('users_games')
+    .where('users_games.game_id', game_id)
+    .innerJoin('games', 'users_games.game_id', 'games.id')
+    .innerJoin('users', 'users_games.user_id', 'users.id')
+    .groupBy('users.full_name')
+    .groupBy('users.id')
+    .groupBy('users.pic_url')
+    .groupBy('users_games.score')
+    //.whereNot('users_games.invite', 2)
+    //.innerJoin('users', 'users_games.user_id', 'users.id')
+    .then(function (players) {
+      db.knex.select('rounds.*')
+      .from('rounds')
+      .where('rounds.game_id', game_id)
+      .then(function (rounds) {
+        res({players: players, rounds: rounds});
+      })
+    })
+    .catch(function (error) {
+      console.log(error);
+      rej(error);
+    })
+  });
+};
+
 module.exports.eventEmitter = eventEmitter;
