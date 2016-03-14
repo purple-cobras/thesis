@@ -63,6 +63,33 @@ module.exports.getFriends = function (ids_obj) {
   });
 };
 
+module.exports.createGame = function (data) {
+  return new Promise(function (res, rej) {
+    module.exports.getFriends(data.friends)
+    .then(function (friends) {
+      new models.Game({creator_id: data.creator_id}).save()
+      .then(function (game) {
+        module.exports.inviteFriends(game, friends)
+        .then(function (game) {
+          console.log(game);
+          models.User.forge({id: game.attributes.creator_id}).fetch()
+          .then(function (user) {
+            user.set('current_game_id', game.attributes.id)
+            .save()
+            .then(function (game) {
+              res(game);
+            })
+          })
+        });
+      })
+      .catch(function (error) {
+        rej(error);
+      })
+    });
+  });
+  
+}
+
 module.exports.inviteFriends = function (game, friends) {
   return new Promise(function (res, rej) {
     var inviteCount = 0;
