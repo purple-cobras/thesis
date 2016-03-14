@@ -38,32 +38,39 @@ angular.module('app.main', [])
 
   $scope.accept = function (invitation) {
     $http({
-      url: Config.api + '/invitations/accept',
+      url: Config.api + '/invitations',
       method: 'post',
-      data: {invitation: invitation}
+      data: {
+        invitation: invitation,
+        accept: true
+      }
     })
     .then(function (response) {
-      // socket.emit(acceptInvite, {
-      //   invitation: invitation,
-      //   name: store.get('profile').name
-      // });
+      socket.emit(acceptInvite, {
+        invitation: invitation,
+        name: store.get('profile').name
+      });
       console.log(response);
     })
     .catch(function (error) {
+      console.error(error);
     });
   };
 
   $scope.decline = function (invitation) {
     $http({
-      url: Config.api + '/invitations/decline',
+      url: Config.api + '/invitations',
       method: 'post',
-      data: {invitation: invitation}
+      data: {
+        invitation: invitation,
+        accept: false
+      }
     })
     .then(function (response) {
-      // socket.emit(declineInvite, {
-      //   invitation: invitation,
-      //   name: store.get('profile').name
-      // });
+      socket.emit(declineInvite, {
+        invitation: invitation,
+        name: store.get('profile').name
+      });
       console.log(response);
     })
     .catch(function (error) {
