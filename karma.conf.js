@@ -15,19 +15,30 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '../www/lib/angular/angular.js',
-      '../www/ang/game/*.js',
-      '../www/ang/login/*.js',
-      '../www/ang/main/*.js',
-      '../www/ang/newGame/*.js',
-      '../www/ang/*.js',
-      '../www/lib/angular-mocks/angular-mocks.js',
-      'unit-tests/controller-tests.js'
+      'client/www/lib/ionic/js/ionic.bundle.js',
+      'client/www/lib/angular-mocks/angular-mocks.js',
+      'client/www/lib/a0-angular-storage/dist/angular-storage.js',
+
+      'client/www/lib/ionic/js/angular-ui/angular-ui-router.js',
+      'client/www/lib/angular-animate/angular-animate.js',
+      'client/www/lib/angular-sanitize/angular-sanitize.js',
+      'client/www/lib/auth0-lock/build/auth0-lock.js',
+      'client/www/lib/auth0-angular/build/auth0-angular.js',
+      'client/www/lib/angular-jwt/dist/angular-jwt.js',
+      'client/www/lib/angular-socket-io/socket.js',
+      'client/www/lib/angular-facebook/lib/angular-facebook.js',
+      'client/www/lib/jquery/dist/jquery.min.js',
+
+      'client/www/ang/**/*.js',
+      'client/www/ang/login/login.js',
+
+      'test/unit-tests/controller-tests.js'
     ],
 
 
     // list of files to exclude
     exclude: [
+      'karma.conf.js'
     ],
 
 
@@ -62,7 +73,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode
@@ -72,5 +83,5 @@ module.exports = function(config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  })
-}
+  });
+};
