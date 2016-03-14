@@ -96,7 +96,6 @@ angular.module('app.main', [])
     if (newGame) {
       Game.getGame()
       .then(function () {
-        console.log(Game.game);
       });
     }
   })
