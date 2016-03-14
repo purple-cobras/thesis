@@ -1,6 +1,6 @@
 angular.module('app.main', [])
 
-.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http) {
+.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http, Game) {
 
   $scope.isDisabled = false;
   $scope.invitations = [];
@@ -91,6 +91,7 @@ angular.module('app.main', [])
 
   $scope.getFriends();
   $scope.getInvitations();
+  Game.getGame();
 
   //Would be better along is authenticated redirect around/from login
   // socket.emit('onlineCheck', {
