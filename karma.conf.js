@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: './',
 
 
     // frameworks to use
@@ -15,19 +15,20 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '../www/lib/angular/angular.js',
-      '../www/ang/game/*.js',
-      '../www/ang/login/*.js',
-      '../www/ang/main/*.js',
-      '../www/ang/newGame/*.js',
-      '../www/ang/*.js',
-      '../www/lib/angular-mocks/angular-mocks.js',
-      'unit-tests/controller-tests.js'
+      'client/www/lib/angular/angular.js',
+      'client/www/ang/game/*.js',
+      'client/www/ang/login/*.js',
+      'client/www/ang/main/*.js',
+      'client/www/ang/newGame/*.js',
+      'client/www/ang/*.js',
+      'client/www/lib/angular-mocks/angular-mocks.js',
+      'test/unit-tests/controller-tests.js'
     ],
 
 
     // list of files to exclude
     exclude: [
+      'karma.conf.js'
     ],
 
 
@@ -62,7 +63,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome','PhantomJS'],
 
 
     // Continuous Integration mode
@@ -72,5 +73,5 @@ module.exports = function(config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  })
-}
+  });
+};
