@@ -1,6 +1,6 @@
 angular.module('app.game', [])
 
-.controller('gameCtrl', function($scope, $ionicHistory) {
+.controller('gameCtrl', function($scope, $ionicHistory, $http) {
 
   $scope.submitting = false;
 
@@ -12,13 +12,15 @@ angular.module('app.game', [])
 
   $scope.game = {
 
+    id: undefined,
+
     //Array of objects, with id, name, guessed, and score
     players: [],
 
     //Object containing all pertinent info for the round
-    round: {
+    current_round: {
 
-      reader_id: undefined
+      reader_id: undefined,
 
       //All answers in, ready to start guessing
       ready: false,
@@ -27,7 +29,10 @@ angular.module('app.game', [])
       responses: [
 
       ]
-    }
+    },
+
+    //Array of rounds from the server
+    rounds: []
   };
 
   // The guess a user is going to make
@@ -39,5 +44,25 @@ angular.module('app.game', [])
   $scope.back = function () {
     $ionicHistory.goBack(-2);
   };
+
+  $scope.getGame = function () {
+    if (!$scope.game.id) {
+      return;
+    }
+    $http({
+      url: Config.api + '/games/' + $scope.game.id,
+      method: 'get'
+    })
+    .then(function (response) {
+      var results = response.data.results;
+      $scope.game.players = results.players;
+      $scope.rounds = results.rounds;
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  };
+
+  $scope.getGame();
 
 });
