@@ -15,8 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'client/www/lib/angular/angular.js',
-      'client/www/lib/angular-mocks/angular-mocks.js',
+
 
       'client/www/lib/ionic/js/ionic.bundle.js',
       'client/www/js/appsettings.js',
@@ -27,20 +26,18 @@ module.exports = function(config) {
       'client/www/lib/angular-socket-io/socket.js',
       'client/www/lib/angular-facebook/lib/angular-facebook.js',
       'client/www/lib/jquery/dist/jquery.min.js',
+      'client/www/lib/angular-ui-router/**/*.js',
 
-      'client/www/ang/*.js',
-      'client/www/ang/main/*.js',
-      'client/www/ang/login/*.js',
-      'client/www/ang/game/*.js',
-      'client/www/ang/newGame/*.js',
+      'client/www/ang/**/*.js',
 
+      'client/www/lib/angular-mocks/angular-mocks.js',
       'test/unit-tests/controller-tests.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-
+      'karma.conf.js'
     ],
 
 
