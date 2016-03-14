@@ -1,33 +1,42 @@
 <ion-view title="Game" hide-back-button="true">
+  <ion-content overflow-scroll="true" padding="true" class="has-header">
     <ion-nav-buttons side="left">
-        <button ng-click="back()" class="button buttons button-clear header-item">
+        <button ng-click="back()" class="button buttons header-item">
             <i class="icon ion-ios-arrow-back"></i>
         </button>
     </ion-nav-buttons>
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <h4>Topic:</h4>
-        <h4>Round:</h4>
-        <h4>Reader:</h4>
-        <h4>Leader:</h4>
-        <form class="list">
-            <label class="item item-input">
-                <span class="input-label">Topic/response</span>
-                <input type="text" placeholder="">
-            </label>
-        </form>
-        <h4>Players:</h4>
+    <h4 class="topic">What would Donald Trump do on his first day in office?</h4>
+    <h4>Reader: Noel F</h4>  
+    <hr />
+    <div class="list">
+    <label class="item item-input">
+        <span class="input-label">Response</span>
+        <input type="text" placeholder="">
+    </label>
+    </div>
+
+    <ul class="list players">
+      <ion-content overflow-scroll="true">
         <ion-list>
-            <ion-list>
-                <ion-item>Item 1</ion-item>
-                <ion-item>Item 2</ion-item>
-                <ion-item>Item 3</ion-item>
-            </ion-list>
+          <li class="item">Ben B</li>
+          <li class="item">Tom C</li>
+          <li class="item">Daniel R</li>
+          <li class="item">Noel F</li>
         </ion-list>
-        <h4>Responses:</h4>
+      </ion-content>
+    </ul> 
+
+    <ul class="list responses">
+      <ion-content overflow-scroll="true">
         <ion-list>
-            <ion-item>Item 1</ion-item>
-            <ion-item>Item 2</ion-item>
-            <ion-item>Item 3</ion-item>
+          <li class="item">Gold plate the whitehouse</li>
+          <li class="item">Nothing</li>
+          <li class="item">Move me to Canada, effectively</li>
+          <li class="item">Build a wall with his name on it</li>
         </ion-list>
-    </ion-content>
+      </ion-content>
+
+    </ul> 
+
+  </ion-content>
 </ion-view>

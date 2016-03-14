@@ -9763,23 +9763,8 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-ion-header-bar.bar.bar-stable {
-  background-color: #4F6F75;
-  border-color: #718A8E; }
-  ion-header-bar.bar.bar-stable .title {
-    color: black; }
-
-.bar-header .button.header-item {
-  color: black; }
-
-button.button.button-stable.button-block {
-  border-color: #8AAF92; }
-
-button.button-clear.button-block {
-  color: white; }
-
-.pane, .view {
-  background-color: #234349; }
+*, *:after, *:before {
+  font-family: "HelveticaNeue-Light"; }
 
 .friends-list {
   min-height: 30vh;
@@ -9790,3 +9775,27 @@ button.button-clear.button-block {
 
 img.empty {
   display: none; }
+
+/** MAIN **/
+.invitations-list {
+  max-height: 40vh; }
+
+.account {
+  position: absolute;
+  bottom: 0;
+  left: 0; }
+
+/** NEW GAME **/
+.friends-list {
+  max-height: 40vh; }
+
+/** GAME **/
+.topic {
+  text-align: center;
+  font-size: 1.2em; }
+
+.players {
+  height: 25vh; }
+
+.responses {
+  height: 25vh; }
