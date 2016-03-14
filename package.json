@@ -28,12 +28,15 @@
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-jwt": "^3.3.0",
+    "jasmine": "^2.4.1",
+    "jasmine-core": "^2.4.1",
     "jsonwebtoken": "^5.7.0",
     "karma": "^0.13.22",
     "knex": "^0.10.0",
     "morgan": "^1.7.0",
     "node-env-file": "^0.1.8",
     "pg": "^4.5.1",
+    "phantomjs-prebuilt": "^2.1.5",
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
