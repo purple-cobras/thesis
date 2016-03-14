@@ -31,6 +31,19 @@ var routes = [
     path: '/users',
     post: function (req, res) {
       // Store new user data in db.
+    },
+  },
+  {
+    path: '/users/:id',
+    get: function (req, res) {
+      helpers.findOrCreate(models.User, {'user_id': req.params.id})
+      .then(function (user) {
+        res.json({user: user});
+      })
+      .catch(function (error) {
+        console.log('get users error:', error);
+        res.sendStatus(500);
+      })
     }
   },
   {
