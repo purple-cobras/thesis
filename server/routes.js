@@ -63,26 +63,14 @@ var routes = [
     path: '/games',
     post: function (req, res) {
       var data = req.body;
-      data.friends[req.user.sub.split('|')[1]] = true;
-      helpers.getFriends(data.friends)
-      .then(function (friends) {
-        new models.Game({creator_id: data.creator_id}).save()
-        .then(function (game) {
-          helpers.inviteFriends(game, friends)
-          .then(function (game) {
-            res.json({game: game});
-          });
-        })
-        .catch(function (error) {
-          console.log(error);
-          res.status(500);
-          res.json({error: error});
-        })
-      })
-      .catch(function (error) {
+      helpers.createGame(data)
+      .then(function (game) {
+        res.json({game: game})
+      })      
+      .catch(function(error) {
         res.status(500);
         res.json({error: error});
-      });
+      })
     }
   },
   {
