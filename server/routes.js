@@ -80,7 +80,6 @@ var routes = [
         })
       })
       .catch(function (error) {
-        console.log(error);
         res.status(500);
         res.json({error: error});
       });
@@ -92,6 +91,16 @@ var routes = [
       helpers.getInvites(req.user.sub.split('|')[1])
       .then(function (games) {
         res.json({invitations: games});
+      })
+      .catch(function (error) {
+        res.status(500);
+        res.json({error: error});
+      })
+    },
+    post: function (req, res) {
+      helpers.resolveInvite(req.user.sub.split('|')[1], req.body.invitation, req.body.accept)
+      .then(function () {
+        res.status(200);
       })
       .catch(function (error) {
         res.status(500);
