@@ -19,6 +19,11 @@ module.exports = function(config) {
       'client/www/lib/angular-mocks/angular-mocks.js',
       'client/www/lib/a0-angular-storage/dist/angular-storage.js',
 
+      'client/www/js/appsettings.js',
+      'client/www/js/socket.io.js',
+
+      'client/www/lib/angular-socket-io/socket.js',
+
       'client/www/lib/ionic/js/angular-ui/angular-ui-router.js',
       'client/www/lib/angular-animate/angular-animate.js',
       'client/www/lib/angular-sanitize/angular-sanitize.js',
@@ -29,8 +34,9 @@ module.exports = function(config) {
       'client/www/lib/angular-facebook/lib/angular-facebook.js',
       'client/www/lib/jquery/dist/jquery.min.js',
 
+      'client/www/ang/*.js',
       'client/www/ang/**/*.js',
-      'client/www/ang/login/login.js',
+
 
       'test/unit-tests/controller-tests.js'
     ],
