@@ -54,7 +54,6 @@ angular.module('app.login', [])
   if (auth.isAuthenticated) {
     establish();
     socket.on('connect', function () {
-      alert('connected');
       establish();
     });
     $ionicHistory.nextViewOptions({
