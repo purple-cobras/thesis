@@ -267,6 +267,7 @@ module.exports.startGame = function (game_id) {
       game.set('started', true)
       .save()
       .then(function (game) {
+        socket.gameStarted(game_id);
         res();
       });
     })

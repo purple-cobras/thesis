@@ -12,7 +12,6 @@ angular.module('app.directives', [])
           store.get('fb_access_token') +
           '&type=normal',
         function (response) {
-          console.log(response);
           if (!response.error) {
             element.append('<img src="' + response.data.url + '"></img>');
           }

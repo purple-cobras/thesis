@@ -1,6 +1,12 @@
 angular.module('app.game', [])
 
-.controller('gameCtrl', function($scope, $ionicHistory, $http, Game, store) {
+.controller('gameCtrl', function(
+  $scope, 
+  $ionicHistory, 
+  $http, 
+  Game, 
+  store
+) {
 
   angular.extend($scope, Game);
 

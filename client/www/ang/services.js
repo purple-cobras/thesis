@@ -94,6 +94,7 @@ angular.module('app.services', [])
         obj.rounds = results.rounds;
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
+        socket.emit('room', obj.game.id);
       })
       .catch(function (error) {
         console.log(error);
@@ -171,6 +172,10 @@ angular.module('app.services', [])
 
   socket.on('invite response', function () {
     obj.getGame();
+  });
+
+  socket.on('start', function () {
+    obj.started = true;
   });
 
   return obj;
