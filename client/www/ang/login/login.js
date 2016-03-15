@@ -1,6 +1,6 @@
 angular.module('app.login', [])
 
-.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game, Auth) {
+.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game, Auth, socket) {
   $scope.auth = auth;
   $scope.login = function () {
     auth.signin({
@@ -25,7 +25,9 @@ angular.module('app.login', [])
           Game.game.id = response.data.user.current_game_id;
           Game.getGame();
           //SOCKET EMIT login userInfo.fb ,.name
-
+          socket.emit('login', {
+            id: response.data.user.id
+          });
           $state.go('main');
         } else {
           $scope.logout();
@@ -44,9 +46,13 @@ angular.module('app.login', [])
   };
 
   if (auth.isAuthenticated) {
+    socket.emit('establish', {
+      id: store.get('remote_id')
+    });
     $ionicHistory.nextViewOptions({
       disableAnimate: true
     })
     $state.go('main');
   }
+
 });

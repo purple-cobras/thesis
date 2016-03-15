@@ -105,11 +105,19 @@ angular.module('app.services', [])
   
 }])
 
-.factory('Auth', ['auth', 'store', '$state', function(auth, store, $state){
+.factory('socket', function (socketFactory) {
+  var io_socket = io(Config.api);
+  var socket = socketFactory({
+    ioSocket: io_socket
+  });
+  return socket;
+})
+
+.factory('Auth', ['auth', 'store', '$state', 'socket', function(auth, store, $state, socket){
   
   var logout = function () {
     auth.signout();
-    //SOCKET EMIT logout userInfo.fb ,.name
+    socket.emit('logout', store.get('remote_id'));
     store.remove('profile');
     store.remove('token');
     store.remove('fb_access_token');
