@@ -105,7 +105,24 @@ angular.module('app.services', [])
   
 }])
 
+.factory('Auth', ['auth', 'store', '$state', function(auth, store, $state){
+  
+  var logout = function () {
+    auth.signout();
+    //SOCKET EMIT logout userInfo.fb ,.name
+    store.remove('profile');
+    store.remove('token');
+    store.remove('fb_access_token');
+    store.remove('remote_id');
+    $state.go('login');
+  };
+
+  return {
+    logout: logout
+  };
+
+}])
+
 .service('BlankService', [function(){
 
 }]);
-

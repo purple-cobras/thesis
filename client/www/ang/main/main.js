@@ -1,6 +1,6 @@
 angular.module('app.main', [])
 
-.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http, Game) {
+.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http, Game, Auth) {
 
   angular.extend($scope, Game);
 
@@ -83,12 +83,7 @@ angular.module('app.main', [])
     Facebook.api('/me/friends?access_token=' + store.get('fb_access_token'), function (response) {
       if (response.error) {
         console.error('FB authentication error: ', error);
-          auth.signout();
-          store.remove('profile');
-          store.remove('token');
-          store.remove('fb_access_token');
-          store.remove('remote_id');
-          $state.go('login');
+        Auth.logout();
       } else {
         $rootScope.friends = response.data;
       }
