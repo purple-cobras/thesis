@@ -114,7 +114,7 @@ var routes = [
     post: function (req, res) {
       helpers.resolveInvite(req.user.sub.split('|')[1], req.body.invitation, req.body.accept)
       .then(function () {
-        res.status(200);
+        res.sendStatus(200);
       })
       .catch(function (error) {
         res.status(500);

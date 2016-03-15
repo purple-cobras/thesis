@@ -47,11 +47,13 @@ angular.module('app.main', [])
       }
     })
     .then(function (response) {
+      if (response.status === 200) {  
+        $scope.removeInvitation(invitation);
+      }
       // socket.emit(acceptInvite, {
       //   invitation: invitation,
       //   name: store.get('profile').name
       // });
-      console.log(response);
     })
     .catch(function (error) {
       console.error(error);
@@ -68,6 +70,9 @@ angular.module('app.main', [])
       }
     })
     .then(function (response) {
+      if (response.status === 200) {
+        $scope.removeInvitation(invitation);
+      }
       // socket.emit(declineInvite, {
       //   invitation: invitation,
       //   name: store.get('profile').name
@@ -88,6 +93,15 @@ angular.module('app.main', [])
         $rootScope.friends = response.data;
       }
     });
+  };
+
+  $scope.removeInvitation = function (invitation) {
+    for (var i = 0; i < $scope.invitations.length; i++) {
+      if ($scope.invitations[i] === invitation) {
+        $scope.invitations.splice(i, 1);
+        return;
+      }
+    }
   };
 
   $scope.goToGame = function () {
