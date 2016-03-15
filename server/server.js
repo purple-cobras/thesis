@@ -17,11 +17,12 @@ app.use(morgan('dev'));
 
 var port = process.env.PORT || 8080;
 
+io(server);
+
 server.listen(port, function () {
   console.log('Listening on port ' + port);
 });
 
 routes(app, express);
 
-io(server);
 

@@ -105,6 +105,14 @@ angular.module('app.services', [])
   
 }])
 
+.factory('socket', function (socketFactory) {
+  var io_socket = io(Config.api);
+  var socket = socketFactory({
+    ioSocket: io_socket
+  });
+  return socket;
+})
+
 .factory('Auth', ['auth', 'store', '$state', function(auth, store, $state){
   
   var logout = function () {
