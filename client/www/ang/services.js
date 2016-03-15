@@ -98,6 +98,18 @@ angular.module('app.services', [])
         user: undefined,
         response: undefined
       }
+    },
+
+    updateGame: function  () {
+      return obj.checkGame()
+      .then(function (hasGame) {
+        if (hasGame) {
+          obj.getGame();
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
   }
 

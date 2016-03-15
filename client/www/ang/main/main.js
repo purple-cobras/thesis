@@ -122,21 +122,10 @@ angular.module('app.main', [])
     $state.go('game');
   };
 
-  $scope.updateGame = function  () {
-    return Game.checkGame()
-    .then(function (hasGame) {
-      if (hasGame) {
-        Game.getGame()
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  };
 
   $scope.getFriends();
   $scope.getInvitations();
-  $scope.updateGame();
+  Game.updateGame();
 
   socket.on('invited', function () {
     $scope.getInvitations();

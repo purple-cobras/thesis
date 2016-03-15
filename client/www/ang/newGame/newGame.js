@@ -1,6 +1,6 @@
 angular.module('app.newGame', [])
 
-.controller('newGameCtrl', function ($scope, $http, $state, store) {
+.controller('newGameCtrl', function ($scope, $http, $state, store, Game) {
 
   $scope.search = '';
   $scope.isDisabled = false;
@@ -53,7 +53,10 @@ angular.module('app.newGame', [])
     .then(function (response){
       if (response.data.game) {
         //SOCKET EMIT gameCreated gameInfo.friend, .invitedBy
-        $state.go('game');
+        Game.updateGame()
+        .then(function () {
+          $state.go('game');
+        });
       } else {
         console.log('something went wrong');
       }

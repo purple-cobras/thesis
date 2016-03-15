@@ -1,6 +1,8 @@
 angular.module('app.game', [])
 
-.controller('gameCtrl', function($scope, $ionicHistory, $http) {
+.controller('gameCtrl', function($scope, $ionicHistory, $http, Game) {
+
+  angular.extend($scope, Game);
 
   $scope.back = function () {
     var history = $ionicHistory.viewHistory();
@@ -10,5 +12,7 @@ angular.module('app.game', [])
       $ionicHistory.goBack();
     }
   };
+
+  Game.getGame();
 
 });
