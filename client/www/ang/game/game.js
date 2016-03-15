@@ -4,6 +4,8 @@ angular.module('app.game', [])
 
   angular.extend($scope, Game);
 
+  $scope.Game = Game;
+
   $scope.typingResponse = false;
 
   $scope.typingTopic = false;
@@ -16,6 +18,10 @@ angular.module('app.game', [])
       $ionicHistory.goBack();
     }
   };
+
+  $scope.kickoff = function () {
+    Game.startGame();
+  }
 
   Game.getGame();
 

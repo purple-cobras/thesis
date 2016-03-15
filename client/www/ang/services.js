@@ -93,6 +93,7 @@ angular.module('app.services', [])
         }
         obj.rounds = results.rounds;
         obj.started = response.data.results.game.started;
+        obj.game.id = response.data.results.game.id;
       })
       .catch(function (error) {
         console.log(error);
@@ -107,6 +108,7 @@ angular.module('app.services', [])
       obj.game.players = [];
       obj.rounds = [];
       obj.game.topic = '';
+      obj.game.id = undefined;
       obj.game.response = '';
       obj.submitting = false;
       obj.game.currentRound  = {
@@ -148,6 +150,21 @@ angular.module('app.services', [])
       })
       .catch(function (error) {
         console.log(error);
+      });
+    },
+
+    startGame: function () {
+      return $http({
+        url: Config.api + '/games/' + obj.game.id + '/start',
+        method: 'post'
+      })
+      .then(function (response) {
+        if (response.data.started) {
+          obj.started = true;
+        }
+      })
+      .catch(function (error) {
+        console.log('starting game error:', error);
       });
     }
   }

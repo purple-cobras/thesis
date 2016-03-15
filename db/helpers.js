@@ -260,4 +260,21 @@ module.exports.getPlayers = function (game_id) {
   });
 }
 
+module.exports.startGame = function (game_id) {
+  return new Promise(function (res, rej) {
+    models.Game.forge({id: game_id}).fetch()
+    .then(function (game) {
+      game.set('started', true)
+      .save()
+      .then(function (game) {
+        res();
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+      rej(error);
+    })
+  });
+};
+
 module.exports.eventEmitter = eventEmitter;
