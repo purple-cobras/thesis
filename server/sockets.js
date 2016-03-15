@@ -7,16 +7,10 @@ module.exports = function(server){
   var io = require('socket.io')(server);
 
   io.on('connection', function (socket) {
-    console.log('Socket to me');
-
     //TODO:1 - socket emit checkAuth to add a user that goes straight to main page
 
     socket.on('login', function (userInfo) {
-      online[userInfo.id] = {
-        socket_id: socket.id,
-        user_id: userInfo.id,
-        loginTime: new Date()
-      }
+      markConnected(userInfo);
     });
 
     socket.on('gameCreated', function (gameInfo) {
@@ -43,6 +37,10 @@ module.exports = function(server){
       delete online[user_id];
     });
 
+    socket.on('establish', function (userInfo) {
+      markConnected(userInfo);
+    });
+
     socket.on('disconnect', function () {
       //TODO: make this less performance intensive
       for (var connection in online) {
@@ -51,5 +49,16 @@ module.exports = function(server){
         }
       }
     });
+
+    var markConnected = function (userInfo) {
+      online[userInfo.id] = {
+        socket_id: socket.id,
+        user_id: userInfo.id,
+        loginTime: new Date()
+      }
+    };
   });
+
+
 }
+
