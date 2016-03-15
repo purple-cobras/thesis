@@ -11,6 +11,10 @@ Config = {
   // @endif
   // @if NODE_ENV == 'ANDROID'
   api: 'http://192.168.56.1:8080',
-  debug: true
+  debug: true,
+  // @endif
+
+  // @if NODE_ENV == 'BEN'
+  api: 'http://192.168.1.140:8080'
   // @endif
 }

@@ -23,3 +23,8 @@ gulp.task('android', function() {
     .pipe(preprocess({context: { NODE_ENV: 'ANDROID'}}))
     .pipe(gulp.dest(path.resolve('client/www/js/')));
 });
+gulp.task('ben', function() {
+  gulp.src(path.resolve('appsettings.js'))
+    .pipe(preprocess({context: { NODE_ENV: 'BEN'}}))
+    .pipe(gulp.dest(path.resolve('client/www/js/')));
+});
