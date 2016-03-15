@@ -84,6 +84,20 @@ img.empty {
   }
 }
 
+.game-inputs {
+  input[type="text"] {
+    width: 95%;
+    padding-left: 5px;
+    border-radius: 5px;
+    font-size: 1.3em;
+    height: 2em;
+    line-height: 2em;
+
+    &[disabled="disabled"] {
+      background-color: white;
+    }
+  }
+}
 
 .topic {
   text-align: center;

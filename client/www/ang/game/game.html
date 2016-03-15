@@ -5,34 +5,69 @@
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="true" class="has-header">
-    <h4 class="topic">What would Donald Trump do on his first day in office?</h4>
-    <h4>Reader: Noel F</h4>  
+    <h4 class="topic" ng-bind="game.current_round.topic"></h4>
+    <h4>Reader: <span ng-bind="game.current_round.reader"></h4>  
     <hr />
-    <div class="list">
-    <label class="item item-input">
-        <span class="input-label">Response</span>
-        <input type="text" placeholder="">
-    </label>
+    <div class="list game-inputs">
+      <div ng-if="!isReader" class="response-field">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Response</span>
+          <input ng-model="response" ng-disabled="!game.current_round.topic.length" ng-focus="typingResponse = true" ng-blur="typingResponse = false" type="text" placeholder="{{game.current_round.topic.length ? 'Be creative' : 'No topic yet'}}">
+        </label>
+        <button ng-disabled="!response.trim().length" ng-if="typingResponse || response.trim().length" class="button button-block button-balanced">
+          Submit!
+        </button>
+      </div>
+      <div ng-if="isReader" class="topic-field">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Topic</span>
+          <input ng-model="topic" ng-focus="typingTopic = true" ng-blur="typingTopic = false" type="text" placeholder="Be creative">
+        </label>
+        <button ng-disabled="!topic.trim().length" ng-if="typingTopic || topic.trim().length" class="button button-block button-balanced">
+          Submit!
+        </button>
+      </div>
     </div>
 
-    <ul class="list players">
+    <ul class="list card players">
       <ion-content overflow-scroll="true">
+        <div class="item item-divider">
+          Players
+        </div>
         <ion-list>
-          <li class="item">Ben B</li>
-          <li class="item">Tom C</li>
-          <li class="item">Daniel R</li>
-          <li class="item">Noel F</li>
+          <li 
+            class="item"
+            ng-repeat="player in game.players"
+          >
+            {{player.full_name}}
+          </li>
         </ion-list>
       </ion-content>
     </ul> 
 
-    <ul class="list responses">
+    <ul class="list card responses">
       <ion-content overflow-scroll="true">
+        <div class="item item-divider">
+          Responses
+        </div>
         <ion-list>
-          <li class="item">Gold plate the whitehouse</li>
-          <li class="item">Nothing</li>
-          <li class="item">Move me to Canada, effectively</li>
-          <li class="item">Build a wall with his name on it</li>
+          <li 
+            class="item"
+            ng-repeat="response in game.current_round.responses"
+          >
+            <div ng-if="game.current_round.ready">
+              {{response.text}}
+            </div>
+            <div ng-if="!game.current_round.ready">
+              ***REDACTED***
+            </div>
+          </li>
+          <li 
+            class="item"
+            ng-if="!game.current_round.responses.length"
+          >
+            None yet...
+          </li>
         </ion-list>
       </ion-content>
 

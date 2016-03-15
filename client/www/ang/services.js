@@ -9,7 +9,7 @@ angular.module('app.services', [])
 
     topic: '',
 
-    myTopic: '',
+    isReader: false,
 
     game: {
 
@@ -21,6 +21,8 @@ angular.module('app.services', [])
       //Object containing all pertinent info for the round
       current_round: {
 
+        reader: undefined,
+
         reader_id: undefined,
 
         //All answers in, ready to start guessing
@@ -29,7 +31,10 @@ angular.module('app.services', [])
         //Array of objects, with id, text, guessed, and user_id
         responses: [
 
-        ]
+        ],
+
+        //Current round's topic
+        topic: ''
       },
 
       //Array of rounds from the server
