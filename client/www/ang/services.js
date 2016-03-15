@@ -44,7 +44,6 @@ angular.module('app.services', [])
 
     checkGame: function () {
       var remote_id = store.get('remote_id');
-      obj.game.id = remote_id;
       if (!remote_id) {
         return $q.resolve();
       }
@@ -55,6 +54,7 @@ angular.module('app.services', [])
       .then(function (response) {
         var current_game_id = response.data.user.current_game_id;
         store.set('current_game_id', current_game_id);
+        obj.game.id = current_game_id;
         return !!current_game_id;
       })
       .catch(function (error) {

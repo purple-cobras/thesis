@@ -47,11 +47,17 @@ angular.module('app.main', [])
       }
     })
     .then(function (response) {
+      if (response.status === 200) {  
+        $scope.removeInvitation(invitation);
+      }
+      $scope.updateGame()
+      .then(function () {
+        $state.go('game');
+      });
       // socket.emit(acceptInvite, {
       //   invitation: invitation,
       //   name: store.get('profile').name
       // });
-      console.log(response);
     })
     .catch(function (error) {
       console.error(error);
@@ -68,11 +74,13 @@ angular.module('app.main', [])
       }
     })
     .then(function (response) {
+      if (response.status === 200) {
+        $scope.removeInvitation(invitation);
+      }
       // socket.emit(declineInvite, {
       //   invitation: invitation,
       //   name: store.get('profile').name
       // });
-      console.log(response);
     })
     .catch(function (error) {
       console.error(error);
@@ -90,21 +98,35 @@ angular.module('app.main', [])
     });
   };
 
+  $scope.removeInvitation = function (invitation) {
+    for (var i = 0; i < $scope.invitations.length; i++) {
+      if ($scope.invitations[i] === invitation) {
+        $scope.invitations.splice(i, 1);
+        return;
+      }
+    }
+  };
+
   $scope.goToGame = function () {
     $state.go('game');
   };
 
+  $scope.updateGame = function  () {
+    return Game.checkGame()
+    .then(function (hasGame) {
+      if (hasGame) {
+        Game.getGame()
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  };
+
   $scope.getFriends();
   $scope.getInvitations();
-  Game.checkGame()
-  .then(function (hasGame) {
-    if (hasGame) {
-      Game.getGame()
-    }
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+  $scope.updateGame();
+  
 
   //Would be better along is authenticated redirect around/from login
   // socket.emit('onlineCheck', {
