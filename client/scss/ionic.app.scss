@@ -77,6 +77,14 @@ img.empty {
 }
 
 /** GAME **/
+
+.platform-android {
+  .buttons + .title.title-left.header-item {
+    margin-left: 20px;
+  }
+}
+
+
 .topic {
   text-align: center;
   font-size: 1.2em;
@@ -89,3 +97,5 @@ img.empty {
 .responses {
   height: 25vh;
 }
+
+

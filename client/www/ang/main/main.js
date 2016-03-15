@@ -2,6 +2,8 @@ angular.module('app.main', [])
 
 .controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http, Game) {
 
+  angular.extend($scope, Game);
+
   $scope.isDisabled = false;
   $scope.invitations = [];
 
@@ -93,14 +95,16 @@ angular.module('app.main', [])
     });
   };
 
+  $scope.goToGame = function () {
+    $state.go('game');
+  };
+
   $scope.getFriends();
   $scope.getInvitations();
   Game.checkGame()
-  .then(function (newGame) {
-    if (newGame) {
+  .then(function (hasGame) {
+    if (hasGame) {
       Game.getGame()
-      .then(function () {
-      });
     }
   })
   .catch(function (error) {
