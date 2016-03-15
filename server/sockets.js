@@ -12,10 +12,9 @@ module.exports = function(server){
     //TODO:1 - socket emit checkAuth to add a user that goes straight to main page
 
     socket.on('login', function (userInfo) {
-      online[userInfo.user_fb] = {
+      online[userInfo.id] = {
         socket_id: socket.id,
-        user_fb: userInfo.user_fb,
-        name: userInfo.name,
+        user_id: userInfo.id,
         loginTime: new Date()
       }
     });
@@ -29,33 +28,28 @@ module.exports = function(server){
     });
 
     socket.on('acceptInvite', function (invitationInfo) {
-      if (online[invitationInfo.invitation.creator.facebook_id]) {
-        io.to(online[invitationInfo.invitation.creator.facebook_id].socket_id).emit('inviteAccepted');
+      if (online[invitationInfo.invitation.creator.id]) {
+        io.to(online[invitationInfo.invitation.creator.id].socket_id).emit('inviteAccepted');
       }
     });
 
     socket.on('declineInvite', function (invitationInfo) {
-      if (online[invitationInfo.invitation.creator.facebook_id]) {
-        io.to(online[invitationInfo.invitation.creator.facebook_id].socket_id).emit('inviteDeclined');
+      if (online[invitationInfo.invitation.creator.id]) {
+        io.to(online[invitationInfo.invitation.creator.id].socket_id).emit('inviteDeclined');
       }
     });
 
-    socket.on('logout', function (user_fb) {
-      if (online[user_fb]) {
-        console.log('BEFORE LOGOUT', online);
-        delete online[user_fb];
-        console.log('AFTER LOGOUT', online);
-      }
+    socket.on('logout', function (user_id) {
+      delete online[user_id];
     });
 
     socket.on('disconnect', function () {
-      console.log('BEFORE DC', online);
+      //TODO: make this less performance intensive
       for (var connection in online) {
         if (online[connection].socket_id === socket.id) {
           delete online[connection];
         }
       }
-      console.log('AFTER DC', online);
     });
   });
 }
