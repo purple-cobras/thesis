@@ -50,6 +50,8 @@ angular.module('app.main', [])
       if (response.status === 200) {  
         $scope.removeInvitation(invitation);
       }
+      $scope.updateGame();
+      $state.go('game');
       // socket.emit(acceptInvite, {
       //   invitation: invitation,
       //   name: store.get('profile').name
@@ -107,17 +109,22 @@ angular.module('app.main', [])
     $state.go('game');
   };
 
+  $scope.updateGame = function  () {
+    Game.checkGame()
+    .then(function (hasGame) {
+      if (hasGame) {
+        Game.getGame()
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  };
+
   $scope.getFriends();
   $scope.getInvitations();
-  Game.checkGame()
-  .then(function (hasGame) {
-    if (hasGame) {
-      Game.getGame()
-    }
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+  $scope.updateGame();
+  
 
   //Would be better along is authenticated redirect around/from login
   // socket.emit('onlineCheck', {
