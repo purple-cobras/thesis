@@ -77,7 +77,6 @@ angular.module('app.main', [])
       //   invitation: invitation,
       //   name: store.get('profile').name
       // });
-      console.log(response);
     })
     .catch(function (error) {
       console.error(error);
