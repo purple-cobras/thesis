@@ -205,8 +205,8 @@ module.exports.getGame = function (game_id) {
     .groupBy('users.id')
     .groupBy('users.pic_url')
     .groupBy('users_games.score')
-    //.whereNot('users_games.invite', 2)
-    //.innerJoin('users', 'users_games.user_id', 'users.id')
+    .whereNot('users_games.invite', 2)
+    .whereNotNull('users_games.invite')
     .then(function (players) {
       db.knex.select('rounds.*')
       .from('rounds')
