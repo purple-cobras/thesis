@@ -11,6 +11,8 @@ angular.module('app.services', [])
 
     isReader: false,
 
+    isCreator: false,
+
     game: {
 
       id: undefined,
@@ -80,6 +82,13 @@ angular.module('app.services', [])
       .then(function (response) {
         var results = response.data.results;
         obj.game.players = results.players;
+        var my_id = store.get('remote_id');
+        for (var i = 0; i < obj.game.players.length; i++) {
+          if (obj.game.players[i].id === my_id) {
+            obj.isCreator = obj.game.players[i].creator ? true : false;
+            break;
+          }
+        }
         obj.rounds = results.rounds;
       })
       .catch(function (error) {
@@ -89,10 +98,31 @@ angular.module('app.services', [])
     },
 
     resetGame: function () {
+      obj.isReader = false;
+      obj.isCreator = false;
       obj.game.players = [];
       obj.rounds = [];
       obj.game.topic = '';
-      obj.game.myTopic = '';
+      obj.game.response = '';
+      obj.submitting = false;
+      obj.game.currentRound  = {
+
+        reader: undefined,
+
+        reader_id: undefined,
+
+        //All answers in, ready to start guessing
+        ready: false,
+
+        //Array of objects, with id, text, guessed, and user_id
+        responses: [
+
+        ],
+
+        //Current round's topic
+        topic: ''
+      };
+      obj.rounds = [];
       obj.response = '';
       obj.current_round = {
         reader_id: undefined,
@@ -109,7 +139,7 @@ angular.module('app.services', [])
       return obj.checkGame()
       .then(function (hasGame) {
         if (hasGame) {
-          obj.getGame();
+          return obj.getGame();
         }
       })
       .catch(function (error) {
