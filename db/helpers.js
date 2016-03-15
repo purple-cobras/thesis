@@ -3,6 +3,8 @@ var models = require('./models.js');
 var Promise = require('bluebird');
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
+var path = require('path');
+var socket = require(path.resolve('server/sockets'));
 
 module.exports.findOrCreate = function (Model, attributes) {
 
@@ -102,6 +104,7 @@ module.exports.inviteFriends = function (game, friends, my_id) {
       }
       module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: friend.id, invite: invite})
       .then(function (userGame) {
+        socket.inviteFriend(friend.id);
         if (++inviteCount === friends.length) {
           res(game);
         }
