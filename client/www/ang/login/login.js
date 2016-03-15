@@ -1,6 +1,6 @@
 angular.module('app.login', [])
 
-.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game) {
+.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game, Auth) {
   $scope.auth = auth;
   $scope.login = function () {
     auth.signin({
@@ -40,13 +40,7 @@ angular.module('app.login', [])
   };
 
   $scope.logout = function () {
-    auth.signout();
-    //SOCKET EMIT logout userInfo.fb ,.name
-    store.remove('profile');
-    store.remove('token');
-    store.remove('fb_access_token');
-    store.remove('remote_id');
-    $state.go('login');
+    Auth.logout();
   };
 
   if (auth.isAuthenticated) {
