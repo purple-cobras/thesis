@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.factory('Game', ['$q', '$http', 'store', function($q, $http, store){
+.factory('Game', ['$q', '$http', 'store', 'socket', function($q, $http, store, socket){
 
   var obj = {
     submitting: false,
@@ -100,6 +100,10 @@ angular.module('app.services', [])
       }
     }
   }
+
+  socket.on('invite response', function () {
+    obj.getGame();
+  });
 
   return obj;
   
