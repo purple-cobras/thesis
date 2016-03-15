@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.factory('Game', ['$q', '$http', 'store', function($q, $http, store){
+.factory('Game', ['$q', '$http', 'store', 'socket', function($q, $http, store, socket){
 
   var obj = {
     submitting: false,
@@ -98,15 +98,31 @@ angular.module('app.services', [])
         user: undefined,
         response: undefined
       }
+    },
+
+    updateGame: function  () {
+      return obj.checkGame()
+      .then(function (hasGame) {
+        if (hasGame) {
+          obj.getGame();
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
   }
+
+  socket.on('invite response', function () {
+    obj.getGame();
+  });
 
   return obj;
   
 }])
 
 .factory('socket', function (socketFactory) {
-  var io_socket = io(Config.api);
+  var io_socket = io(Config.api, {'forceNew': true});
   var socket = socketFactory({
     ioSocket: io_socket
   });

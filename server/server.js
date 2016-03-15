@@ -17,7 +17,7 @@ app.use(morgan('dev'));
 
 var port = process.env.PORT || 8080;
 
-io(server);
+io.init(server);
 
 server.listen(port, function () {
   console.log('Listening on port ' + port);

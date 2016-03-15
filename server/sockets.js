@@ -2,7 +2,7 @@ var helpers = require('../db/helpers');
 
 var online = {};
 
-module.exports = function(server){
+module.exports.init = function(server){
   //TODO:1 - ON DC AND RECONNECTION ADD TO ONLINE FROM MAIN CLIENT PAGE
   var io = require('socket.io')(server);
 
@@ -57,8 +57,25 @@ module.exports = function(server){
         loginTime: new Date()
       }
     };
+
+    /** Invitations **/
+    module.exports.inviteFriend = function (user_id) {
+      if (!online[user_id]) {
+        return;
+      }
+      io.to(online[user_id].socket_id).emit('invited');
+    };
+
+    module.exports.inviteResult = function (players, result) {
+      players.forEach(function (player) {
+        if (!online[player.id]) {
+          return;
+        }
+        io.to(online[player.id].socket_id).emit('invite response');
+      });
+    };
+
   });
 
-
-}
+};
 

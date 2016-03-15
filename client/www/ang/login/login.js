@@ -45,14 +45,23 @@ angular.module('app.login', [])
     Auth.logout();
   };
 
-  if (auth.isAuthenticated) {
+  var establish = function () {
     socket.emit('establish', {
       id: store.get('remote_id')
+    });
+  };
+
+  if (auth.isAuthenticated) {
+    establish();
+    socket.on('connect', function () {
+      establish();
     });
     $ionicHistory.nextViewOptions({
       disableAnimate: true
     })
     $state.go('main');
   }
+
+  
 
 });
