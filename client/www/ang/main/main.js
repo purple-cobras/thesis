@@ -50,8 +50,10 @@ angular.module('app.main', [])
       if (response.status === 200) {  
         $scope.removeInvitation(invitation);
       }
-      $scope.updateGame();
-      $state.go('game');
+      $scope.updateGame()
+      .then(function () {
+        $state.go('game');
+      });
       // socket.emit(acceptInvite, {
       //   invitation: invitation,
       //   name: store.get('profile').name
@@ -110,7 +112,7 @@ angular.module('app.main', [])
   };
 
   $scope.updateGame = function  () {
-    Game.checkGame()
+    return Game.checkGame()
     .then(function (hasGame) {
       if (hasGame) {
         Game.getGame()
