@@ -1,6 +1,17 @@
 angular.module('app.main', [])
 
-.controller('mainCtrl', function($scope, $state, $ionicHistory, Facebook, store, $rootScope, $http, Game, Auth) {
+.controller('mainCtrl', function(
+    $scope, 
+    $state, 
+    $ionicHistory, 
+    Facebook, 
+    store, 
+    $rootScope, 
+    $http, 
+    Game, 
+    Auth, 
+    socket,
+    $ionicPopup) {
 
   angular.extend($scope, Game);
 
@@ -126,6 +137,10 @@ angular.module('app.main', [])
   $scope.getFriends();
   $scope.getInvitations();
   $scope.updateGame();
+
+  socket.on('invited', function () {
+    $scope.getInvitations();
+  });
   
 
   //Would be better along is authenticated redirect around/from login
