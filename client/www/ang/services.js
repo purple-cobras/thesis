@@ -9,6 +9,8 @@ angular.module('app.services', [])
 
     topic: '',
 
+    isReader: false,
+
     game: {
 
       id: undefined,
@@ -20,6 +22,8 @@ angular.module('app.services', [])
       current_round: {
 
         reader: undefined,
+
+        reader_id: undefined,
 
         //All answers in, ready to start guessing
         ready: false,

@@ -9793,6 +9793,16 @@ img.empty {
 .platform-android .buttons + .title.title-left.header-item {
   margin-left: 20px; }
 
+.game-inputs input[type="text"] {
+  width: 95%;
+  padding-left: 5px;
+  border-radius: 5px;
+  font-size: 1.3em;
+  height: 2em;
+  line-height: 2em; }
+  .game-inputs input[type="text"][disabled="disabled"] {
+    background-color: white; }
+
 .topic {
   text-align: center;
   font-size: 1.2em; }

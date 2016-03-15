@@ -8,11 +8,25 @@
     <h4 class="topic" ng-bind="game.current_round.topic"></h4>
     <h4>Reader: <span ng-bind="game.current_round.reader"></h4>  
     <hr />
-    <div class="list">
-    <label class="item item-input">
-        <span class="input-label">Response</span>
-        <input type="text" placeholder="">
-    </label>
+    <div class="list game-inputs">
+      <div ng-if="!isReader" class="response-field">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Response</span>
+          <input ng-model="response" ng-disabled="!game.current_round.topic.length" ng-focus="typingResponse = true" ng-blur="typingResponse = false" type="text" placeholder="{{game.current_round.topic.length ? 'Be creative' : 'No topic yet'}}">
+        </label>
+        <button ng-disabled="!response.trim().length" ng-if="typingResponse || response.trim().length" class="button button-block button-balanced">
+          Submit!
+        </button>
+      </div>
+      <div ng-if="isReader" class="topic-field">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Topic</span>
+          <input ng-model="topic" ng-focus="typingTopic = true" ng-blur="typingTopic = false" type="text" placeholder="Be creative">
+        </label>
+        <button ng-disabled="!topic.trim().length" ng-if="typingTopic || topic.trim().length" class="button button-block button-balanced">
+          Submit!
+        </button>
+      </div>
     </div>
 
     <ul class="list card players">
@@ -52,7 +66,7 @@
             class="item"
             ng-if="!game.current_round.responses.length"
           >
-            Waiting...
+            None yet...
           </li>
         </ion-list>
       </ion-content>
