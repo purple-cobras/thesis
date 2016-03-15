@@ -1,6 +1,7 @@
 var helpers = require('../db/helpers');
 
 var online = {};
+var index = {};
 
 module.exports.init = function(server){
   //TODO:1 - ON DC AND RECONNECTION ADD TO ONLINE FROM MAIN CLIENT PAGE
@@ -43,11 +44,10 @@ module.exports.init = function(server){
 
     socket.on('disconnect', function () {
       //TODO: make this less performance intensive
-      for (var connection in online) {
-        if (online[connection].socket_id === socket.id) {
-          delete online[connection];
-        }
-      }
+      var user_id = index[socket.id];
+      delete online[user_id];
+      delete index[socket.id];
+
     });
 
     var markConnected = function (userInfo) {
@@ -56,6 +56,7 @@ module.exports.init = function(server){
         user_id: userInfo.id,
         loginTime: new Date()
       }
+      index[socket.id] = userInfo.id;
     };
 
     /** Invitations **/
