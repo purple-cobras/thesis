@@ -1,6 +1,6 @@
 
 describe('loginCtrl', function () {
-    var $rootScope, $scope, store, $state, createController, auth, Auth,$ionicHistory, $http, $httpBackend, $controller;
+    var $rootScope, $scope, store, $state, socket, createController, auth, Auth,$ionicHistory, $http, $httpBackend, $controller;
 
 
     beforeEach(module('app'));
@@ -16,6 +16,7 @@ describe('loginCtrl', function () {
         $controller = $injector.get('$controller');
         $state = $injector.get('$state');
         Auth = $injector.get('Auth');
+        socket = $injector.get('socket');
 
         createController = function () {
           return $controller('loginCtrl', {
@@ -26,7 +27,8 @@ describe('loginCtrl', function () {
             $ionicHistory: $ionicHistory,
             $http: $http,
             $state: $state,
-            Auth: Auth
+            Auth: Auth,
+            socket: socket
           });
         };
     }));
@@ -40,7 +42,7 @@ describe('loginCtrl', function () {
 
     it('if successful, should change to state to main', function() {
         createController();
-        spyOn($state, '$scope.login')
+        spyOn($controller, '$scope.login');
         expect($state.go).toHaveBeenCalledWith('main');
     });
   });
