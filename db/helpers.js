@@ -233,7 +233,19 @@ module.exports.getPlayers = function (game_id) {
     .whereNot('users_games.invite', 2)
     .whereNotNull('users_games.invite')
     .then(function (players) {
-      res(players);
+      models.Game.forge({id: game_id}).fetch()
+      .then(function (game) {
+        if (!game) {
+          return;
+        }
+        for (var i = 0; i < players.length; i++) {
+          if (game.attributes.creator_id === players[i].id) {
+            players[i].creator = true;
+            break;
+          }
+        }
+        res(players);
+      });
     })
     .catch(function (error) {
       rej(error);
