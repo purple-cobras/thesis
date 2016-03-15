@@ -5,6 +5,8 @@ angular.module('app.services', [])
   var obj = {
     submitting: false,
 
+    started: false,
+
     response: '',
 
     topic: '',
@@ -90,6 +92,7 @@ angular.module('app.services', [])
           }
         }
         obj.rounds = results.rounds;
+        obj.started = response.data.results.game.started;
       })
       .catch(function (error) {
         console.log(error);
@@ -99,6 +102,7 @@ angular.module('app.services', [])
 
     resetGame: function () {
       obj.isReader = false;
+      obj.started = false;
       obj.isCreator = false;
       obj.game.players = [];
       obj.rounds = [];

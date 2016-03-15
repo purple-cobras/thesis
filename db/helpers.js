@@ -209,7 +209,14 @@ module.exports.getGame = function (game_id) {
       .from('rounds')
       .where('rounds.game_id', game_id)
       .then(function (rounds) {
-        res({players: players, rounds: rounds});
+        models.Game.forge({id: game_id}).fetch()
+        .then(function (game) {
+          res({
+            players: players, 
+            rounds: rounds,
+            game: game
+          });
+        })
       })
     })
     .catch(function (error) {
