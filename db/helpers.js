@@ -169,7 +169,17 @@ module.exports.resolveInvite = function (user_fb, invitation, accepted) {
         invite: invite
       })
       .then( function (result) {
-        res(result);
+        if (accepted) {
+          user.set('current_game_id', invitation.id).save()
+          .then(function () {
+            res(result);
+          })
+          .catch(function (error) {
+            rej(error);
+          });
+        } else {
+          res(result);
+        }
       });
     })
     .catch( function (error) {
