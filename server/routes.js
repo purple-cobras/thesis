@@ -18,7 +18,14 @@ var jwtCheck = expressjwt({
   audience: process.env.AUTH_ID
 });
 
-var authRoutes = ['/users', '/profile', '/invitations', '/signin', '/games'];
+var authRoutes = [
+  '/users', 
+  '/profile', 
+  '/invitations', 
+  '/signin', 
+  '/games', 
+  '/games/:id/start'
+];
 
 var routes = [
   {
@@ -98,6 +105,19 @@ var routes = [
       .catch(function (error) {
         res.status(500)
         res.send({error: error});
+      })
+    }
+  },
+  {
+    path: '/games/:id/start',
+    post: function (req, res) {
+      helpers.startGame(req.params.id)
+      .then(function () {
+        res.json({started: true});
+      })
+      .catch(function (error) {
+        res.status(500);
+        res.json({error: error});
       })
     }
   },

@@ -50,6 +50,10 @@ module.exports.init = function(server){
 
     });
 
+    socket.on('room', function (game_id) {
+      socket.join('game:' + game_id);
+    });
+
     var markConnected = function (userInfo) {
       online[userInfo.id] = {
         socket_id: socket.id,
@@ -74,6 +78,10 @@ module.exports.init = function(server){
         }
         io.to(online[player.id].socket_id).emit('invite response');
       });
+    };
+
+    module.exports.gameStarted = function (game_id) {
+      io.sockets.in('game:' + game_id).emit('start');
     };
 
   });

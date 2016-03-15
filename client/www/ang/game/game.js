@@ -1,8 +1,16 @@
 angular.module('app.game', [])
 
-.controller('gameCtrl', function($scope, $ionicHistory, $http, Game, store) {
+.controller('gameCtrl', function(
+  $scope, 
+  $ionicHistory, 
+  $http, 
+  Game, 
+  store
+) {
 
   angular.extend($scope, Game);
+
+  $scope.Game = Game;
 
   $scope.typingResponse = false;
 
@@ -16,6 +24,10 @@ angular.module('app.game', [])
       $ionicHistory.goBack();
     }
   };
+
+  $scope.kickoff = function () {
+    Game.startGame();
+  }
 
   Game.getGame();
 
