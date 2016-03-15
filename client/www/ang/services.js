@@ -110,7 +110,7 @@ angular.module('app.services', [])
 }])
 
 .factory('socket', function (socketFactory) {
-  var io_socket = io(Config.api);
+  var io_socket = io(Config.api, {'forceNew': true});
   var socket = socketFactory({
     ioSocket: io_socket
   });
