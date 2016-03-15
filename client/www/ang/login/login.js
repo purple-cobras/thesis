@@ -25,7 +25,9 @@ angular.module('app.login', [])
           Game.game.id = response.data.user.current_game_id;
           Game.getGame();
           //SOCKET EMIT login userInfo.fb ,.name
-
+          socket.emit('login', {
+            id: response.data.user.id
+          });
           $state.go('main');
         } else {
           $scope.logout();
