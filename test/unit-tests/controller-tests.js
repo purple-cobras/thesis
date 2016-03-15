@@ -1,6 +1,6 @@
 
 describe('loginCtrl', function () {
-    var $rootScope, $scope, store, $state, stateMock, createController, auth, $ionicHistory, $http, $httpBackend, $controller;
+    var $rootScope, $scope, store, $state, createController, auth, Auth,$ionicHistory, $http, $httpBackend, $controller;
 
 
     beforeEach(module('app'));
@@ -14,7 +14,8 @@ describe('loginCtrl', function () {
         $http = $injector.get('$http');
         $httpBackend = $injector.get('$httpBackend');
         $controller = $injector.get('$controller');
-        stateMock = jasmine.createSpyObj('$state spy', ['go']);
+        $state = $injector.get('$state');
+        Auth = $injector.get('Auth');
 
         createController = function () {
           return $controller('loginCtrl', {
@@ -24,7 +25,8 @@ describe('loginCtrl', function () {
             auth: auth,
             $ionicHistory: $ionicHistory,
             $http: $http,
-            $state: stateMock
+            $state: $state,
+            Auth: Auth
           });
         };
     }));
@@ -38,8 +40,8 @@ describe('loginCtrl', function () {
 
     it('if successful, should change to state to main', function() {
         createController();
-
-        expect(stateMock.go).toHaveBeenCalledWith();
+        spyOn($state, '$scope.login')
+        expect($state.go).toHaveBeenCalledWith('main');
     });
   });
 
