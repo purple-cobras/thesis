@@ -178,6 +178,10 @@ module.exports.resolveInvite = function (user_fb, invitation, accepted) {
         invite: invite
       })
       .then( function (result) {
+        module.exports.getPlayers(invitation.id)
+        .then(function (players) {
+          socket.inviteResult(players, result);
+        });
         if (accepted) {
           user.set('current_game_id', invitation.id).save()
           .then(function () {
@@ -199,6 +203,24 @@ module.exports.resolveInvite = function (user_fb, invitation, accepted) {
 
 module.exports.getGame = function (game_id) {
   return new Promise(function (res, rej) {
+    module.exports.getPlayers(game_id)
+    .then(function (players) {
+      db.knex.select('rounds.*')
+      .from('rounds')
+      .where('rounds.game_id', game_id)
+      .then(function (rounds) {
+        res({players: players, rounds: rounds});
+      })
+    })
+    .catch(function (error) {
+      console.log(error);
+      rej(error);
+    });
+  });
+};
+
+module.exports.getPlayers = function (game_id) {
+  return new Promise(function (res, rej) {
     db.knex.select('users.id', 'users.pic_url', 'users.full_name', 'users_games.score')
     .from('users_games')
     .where('users_games.game_id', game_id)
@@ -211,18 +233,12 @@ module.exports.getGame = function (game_id) {
     .whereNot('users_games.invite', 2)
     .whereNotNull('users_games.invite')
     .then(function (players) {
-      db.knex.select('rounds.*')
-      .from('rounds')
-      .where('rounds.game_id', game_id)
-      .then(function (rounds) {
-        res({players: players, rounds: rounds});
-      })
+      res(players);
     })
     .catch(function (error) {
-      console.log(error);
       rej(error);
-    })
+    });
   });
-};
+}
 
 module.exports.eventEmitter = eventEmitter;

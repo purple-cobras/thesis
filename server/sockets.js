@@ -66,6 +66,15 @@ module.exports.init = function(server){
       io.to(online[user_id].socket_id).emit('invited');
     };
 
+    module.exports.inviteResult = function (players, result) {
+      players.forEach(function (player) {
+        if (!online[player.id]) {
+          return;
+        }
+        io.to(online[player.id].socket_id).emit('invite response');
+      });
+    };
+
   });
 
 };
