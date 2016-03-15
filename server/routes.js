@@ -76,7 +76,9 @@ var routes = [
     path: '/games',
     post: function (req, res) {
       var data = req.body;
-      helpers.createGame(data)
+      var my_fb_id = req.user.sub.split('|')[1];
+      data.friends[my_fb_id] = true;
+      helpers.createGame(data, my_fb_id)
       .then(function (game) {
         res.json({game: game})
       })      

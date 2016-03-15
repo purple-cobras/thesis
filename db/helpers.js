@@ -26,13 +26,14 @@ module.exports.findOrCreate = function (Model, attributes) {
   });
 };
 
-module.exports.getFriends = function (ids_obj) {
+module.exports.getFriends = function (ids_obj, my_fb_id) {
   var ids_array = [];
   for (var id in ids_obj) {
     ids_array.push(id);
   }
   var friends = [];
   var friendCount = 0;
+  var my_id = 0;
   return new Promise(function (res, rej) {
     return ids_array.forEach(function (id) {
       return db.knex
@@ -40,18 +41,20 @@ module.exports.getFriends = function (ids_obj) {
       .from('users')
       .where('facebook_id', id)
       .then(function (user) {
+        if (id === my_fb_id && user) {
+          my_id = user[0].id;
+        }
         if (user.length) {
           friends.push(user[0]);
           if (++friendCount === ids_array.length) {
-            res(friends);
+            res({friends: friends, my_id: my_id});
           }
         } else {
           new models.User({'facebook_id': id}).save()
           .then(function (user) {
             friends.push(user);
             if (++friendCount === ids_array.length) {
-              res(friends);
-              res();
+              res({friends: friends, my_id: my_id});
             }
           })
           .catch(function (error) {
@@ -63,15 +66,14 @@ module.exports.getFriends = function (ids_obj) {
   });
 };
 
-module.exports.createGame = function (data) {
+module.exports.createGame = function (data, my_fb_id) {
   return new Promise(function (res, rej) {
-    module.exports.getFriends(data.friends)
-    .then(function (friends) {
+    module.exports.getFriends(data.friends, my_fb_id)
+    .then(function (result) {
       new models.Game({creator_id: data.creator_id}).save()
       .then(function (game) {
-        module.exports.inviteFriends(game, friends)
+        module.exports.inviteFriends(game, result.friends, result.my_id)
         .then(function (game) {
-          console.log(game);
           models.User.forge({id: game.attributes.creator_id}).fetch()
           .then(function (user) {
             user.set('current_game_id', game.attributes.id)
@@ -90,11 +92,15 @@ module.exports.createGame = function (data) {
   
 }
 
-module.exports.inviteFriends = function (game, friends) {
+module.exports.inviteFriends = function (game, friends, my_id) {
   return new Promise(function (res, rej) {
     var inviteCount = 0;
     friends.forEach(function (friend) {
-      module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: friend.id})
+      var invite = null;
+      if (my_id === friend.id) {
+        invite = 1;
+      }
+      module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: friend.id, invite: invite})
       .then(function (userGame) {
         if (++inviteCount === friends.length) {
           res(game);
