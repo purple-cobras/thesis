@@ -46,6 +46,9 @@ angular.module('app.login', [])
   };
 
   if (auth.isAuthenticated) {
+    socket.emit('establish', {
+      id: store.get('remote_id')
+    });
     $ionicHistory.nextViewOptions({
       disableAnimate: true
     })
