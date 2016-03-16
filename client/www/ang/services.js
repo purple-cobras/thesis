@@ -182,7 +182,6 @@ angular.module('app.services', [])
     },
 
     submitTopic: function () {
-      console.log(obj.topic);
       var cacheTopic = obj.topic;
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/topic',
@@ -197,6 +196,26 @@ angular.module('app.services', [])
       .catch(function (error) {
         console.log('topic post error:', error);
       })
+    },
+
+    submitResponse: function () {
+      var cacheResponse = obj.response;
+      return $http({
+        url: Config.api + '/rounds/' + obj.game.current_round.id + '/response',
+        method: 'post',
+        data: {
+          text: obj.response,
+          user_id: store.get('remote_id')
+        }
+      })
+      .then(function (response) {
+        if (response.data.submitted) {
+          obj.response = '';
+        }
+      })
+      .catch(function (error) {
+        console.log('response error: ', error);
+      });
     }
   }
 
@@ -218,6 +237,25 @@ angular.module('app.services', [])
 
   socket.on('topic', function (topic) {
     obj.game.current_round.topic = topic;
+  });
+
+  socket.on('response', function (response) {
+    var match = undefined;
+    if (obj.game.current_round.responses) {
+      for (var i = 0; i < obj.game.current_round.responses.length; i++) {
+        var checkResponse = obj.game.current_round.responses[i];
+        if (response.id === checkResponse) {
+          match = checkResponse;
+          break;
+        }
+      }
+    } else {
+      obj.game.current_round.responses = [];
+    }
+    
+    if (!match) {
+      obj.game.current_round.responses.push(response);
+    }
   });
 
   return obj;

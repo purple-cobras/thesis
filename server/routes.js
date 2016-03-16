@@ -24,7 +24,9 @@ var authRoutes = [
   '/invitations', 
   '/signin', 
   '/games', 
-  '/games/:id/start'
+  '/games/:id/start',
+  '/rounds',
+  '/rounds/:id/response'
 ];
 
 var routes = [
@@ -122,9 +124,21 @@ var routes = [
     }
   },
   {
+    path: '/rounds/:id/response',
+    post: function (req, res) {
+      helpers.saveResponse(req.params.id, req.body.text, req.body.user_id)
+      .then(function () {
+        res.json({submitted: true});
+      })
+      .catch(function (error) {
+        res.status(500);
+        res.json({error: error});
+      })
+    }
+  },
+  {
     path: '/rounds/:id/topic',
     post: function (req, res) {
-      console.log('req', req.body);
       helpers.setTopic(req.params.id, req.body.topic)
       .then(function () {
         res.json({submitted: true});

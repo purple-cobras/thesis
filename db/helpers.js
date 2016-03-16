@@ -208,20 +208,27 @@ module.exports.getGame = function (game_id) {
   return new Promise(function (res, rej) {
     module.exports.getPlayers(game_id)
     .then(function (players) {
-      db.knex.select('rounds.*', 'users.full_name AS reader_name')
-      .from('rounds')
-      .where('rounds.game_id', game_id)
-      .innerJoin('users', 'rounds.reader_id', 'users.id')
+      models.Round.query('where', 'game_id', '=', game_id).fetchAll({withRelated: ['responses', 'reader']})
       .then(function (rounds) {
         models.Game.forge({id: game_id}).fetch()
         .then(function (game) {
-          res({
-            players: players, 
-            rounds: rounds,
-            game: game
+          var polishedRounds = [];
+          rounds.forEach(function (round) {
+            polishedRounds.push(round.attributes);
+            polishedRounds[polishedRounds.length - 1].reader_name = round.relations.reader.attributes.full_name;
+            var polishedResponses = [];
+            round.relations.responses.models.forEach(function (response) {
+              polishedResponses.push(response.attributes);
+            })
+            polishedRounds[polishedRounds.length - 1].responses = polishedResponses;
           });
-        })
-      })
+          res({
+            rounds: polishedRounds,
+            players: players,
+            game: game 
+          });
+        });
+      });
     })
     .catch(function (error) {
       console.log(error);
@@ -311,7 +318,6 @@ module.exports.startRound = function (game_id, reader_id) {
 };
 
 module.exports.setTopic = function (round_id, topic) {
-  console.log('got topic', topic);
   return new Promise(function (res, rej) {
     module.exports.findOrCreate(models.Round, {id: round_id})
     .then(function (round) {
@@ -320,6 +326,34 @@ module.exports.setTopic = function (round_id, topic) {
         socket.newTopic(round, topic);
         res();
       })
+    })
+    .catch(function (error) {
+      rej(error);
+    })
+  });
+};
+
+module.exports.saveResponse = function (round_id, response, user_id) {
+  return new Promise(function (res, rej) {
+    models.Response.forge({
+      round_id: round_id, 
+      user_id: user_id
+    }).fetch()
+    .then(function (response) {
+      if (response) {
+        rej('duplicate');
+      } else {
+        models.Response.forge({
+          round_id: round_id,
+          user_id: user_id,
+          text: response
+        })
+        .save()
+        .then(function (response) {
+          socket.newResponse(round_id, response);
+          res(response);
+        })
+      }
     })
     .catch(function (error) {
       rej(error);

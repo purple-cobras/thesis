@@ -94,13 +94,22 @@ module.exports.init = function(server){
     module.exports.newTopic = function (round, topic) {
       models.Game.forge({id: round.attributes.game_id}).fetch()
       .then(function (game) {
-        console.log('sending new topic', topic);
-        io.sockets.in('game:' + game.id).emit('topic', topic);
+        io.sockets.in('game:' + game.attributes.id).emit('topic', topic);
       })
       .catch(function (error) {
         console.log('new topic error:', error);
       });
     };
+
+    module.exports.newResponse = function (round_id, response) {
+      models.Round.forge({id: round_id}).fetch()
+      .then(function (round) {
+        models.Game.forge({id: round.attributes.game_id}).fetch()
+        .then(function (game) {
+          io.sockets.in('game:' + game.attributes.id).emit('response', response);
+        })
+      })
+    }
 
   });
 

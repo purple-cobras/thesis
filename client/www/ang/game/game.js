@@ -12,6 +12,10 @@ angular.module('app.game', [])
 
   $scope.Game = Game;
 
+  $scope.Game.topic = '';
+
+  $scope.Game.response = '';
+
   $scope.typingResponse = false;
 
   $scope.typingTopic = false;
