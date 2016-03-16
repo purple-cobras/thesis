@@ -2,6 +2,7 @@ angular.module('app.login', [])
 
 .controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game, Auth, socket) {
   $scope.auth = auth;
+
   $scope.login = function () {
     auth.signin({
       authParams: {
@@ -13,6 +14,7 @@ angular.module('app.login', [])
       store.set('fb_access_token', profile.identities[0].access_token);
       store.set('token', token);
       store.set('refreshToken', refreshToken);
+      console.log('profile: ', profile)
       $http({
         method: 'post',
         url: Config.api + '/signin',
@@ -28,6 +30,9 @@ angular.module('app.login', [])
           socket.emit('login', {
             id: response.data.user.id
           });
+          $scope.profilePic_url = profile.picture;
+          $scope.coverPic_url = profile.cover.source;
+          $scope.name = profile.name;
           $state.go('main');
         } else {
           $scope.logout();
