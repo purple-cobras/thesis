@@ -1,12 +1,12 @@
 
 describe('loginCtrl', function () {
-    var $rootScope, $q, deferred, $scope, store, $state, socket, createController, auth, Auth,$ionicHistory, $http, $httpBackend, $controller;
+    var $rootScope, $q, deferred, $scope, store, $state, spy, socket, createController, auth, Auth,$ionicHistory, $http, $httpBackend, $controller;
 
 
     beforeEach(module('app'));
     beforeEach(inject(function ($injector, _$q_) {
 
-        $q = _$q_;
+        $q = $injector.get('$q');
         deferred = _$q_.defer();
         $rootScope = $injector.get('$rootScope');
         $scope = $rootScope.$new();
@@ -18,6 +18,7 @@ describe('loginCtrl', function () {
         $state = $injector.get('$state');
         Auth = $injector.get('Auth');
         socket = $injector.get('socket');
+        spy = spyOn($state, 'go');
 
         createController = function () {
           return $controller('loginCtrl', {
@@ -46,14 +47,13 @@ describe('loginCtrl', function () {
     });
 
     it('if successful, should change to state to main', function(done) {
-        var spy = spyOn($state, 'go');
+
         deferred.resolve($state.go('main'));
         expect(spy).toHaveBeenCalledWith('main');
         done();
     });
 
     it('if failure, should change state to login', function(done) {
-        var spy = spyOn($state, 'go');
         deferred.reject($state.go('login'));
         expect(spy).toHaveBeenCalledWith('login');
         done();
@@ -65,11 +65,9 @@ describe('loginCtrl', function () {
         expect($scope.logout).toEqual(jasmine.any(Function));
     });
 
-    it('should call logout() when account is logged out', function (done) {
-        var spy = spyOn($state, 'go');
-        deferred.resolve($state.go('login'));
+    it('should call logout() when account is logged out', function () {
+        $scope.logout();
         expect(spy).toHaveBeenCalledWith('login');
-        done();
     });
   });
 });
