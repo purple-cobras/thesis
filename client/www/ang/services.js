@@ -101,13 +101,15 @@ angular.module('app.services', [])
           obj.isReader = false;
         }
         obj.game.current_round = lastRound;
+        if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
+          obj.game.current_round.ready = true;
+        }
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
         obj.game.max_score = response.data.results.game.max_score;
         socket.emit('room', obj.game.id);
       })
       .catch(function (error) {
-        console.log(error);
         return error;
       })
     },
@@ -255,6 +257,10 @@ angular.module('app.services', [])
     
     if (!match) {
       obj.game.current_round.responses.push(response);
+    }
+
+    if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
+      obj.game.current_round.ready = true;
     }
   });
 
