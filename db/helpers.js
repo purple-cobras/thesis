@@ -72,10 +72,7 @@ module.exports.createGame = function (data, my_fb_id) {
   return new Promise(function (res, rej) {
     module.exports.getFriends(data.friends, my_fb_id)
     .then(function (result) {
-      new models.Game({
-        creator_id: data.creator_id,
-        max_score: data.rules.maxScore
-      }).save()
+      new models.Game({creator_id: data.creator_id}).save()
       .then(function (game) {
         module.exports.inviteFriends(game, result.friends, result.my_id)
         .then(function (game) {
