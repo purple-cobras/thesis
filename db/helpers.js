@@ -401,8 +401,10 @@ module.exports.setGuesser = function (game_id, players) {
       } else {
         newGuesserIndex = currentGuesserIndex + 1;
       }
-      game.save('guesser_id', players[newGuesserIndex].id)
+      var newGuesser = players[newGuesserIndex];
+      game.save('guesser_id', newGuesser.id)
       .then(function (game) {
+        socket.newGuesser(game_id, newGuesser);
         res();
       })
     })

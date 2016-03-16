@@ -109,7 +109,11 @@ module.exports.init = function(server){
           io.sockets.in('game:' + game.attributes.id).emit('response', response);
         })
       })
-    }
+    };
+
+    module.exports.newGuesser = function (game_id, player) {
+      io.sockets.in('game:' + game_id).emite('guesser', player);
+    };
 
   });
 
