@@ -334,6 +334,7 @@ module.exports.setTopic = function (round_id, topic) {
 };
 
 module.exports.saveResponse = function (round_id, response, user_id) {
+  var text = response;
   return new Promise(function (res, rej) {
     models.Response.forge({
       round_id: round_id, 
@@ -346,7 +347,7 @@ module.exports.saveResponse = function (round_id, response, user_id) {
         models.Response.forge({
           round_id: round_id,
           user_id: user_id,
-          text: response
+          text: text
         })
         .save()
         .then(function (response) {
