@@ -15,7 +15,7 @@
     <h4 class="max-score">Game to: <span ng-bind="game.max_score"></h4>  
     <hr />
     <div class="list game-inputs">
-      <div ng-if="!Game.isReader" class="response-field">
+      <div ng-if="!Game.isReader || Game.game.current_round.topic.length" class="response-field">
         <label class="item item-input item-stacked-label">
           <span class="input-label">Response</span>
           <input ng-model="response" ng-disabled="!game.current_round.topic.length" ng-focus="typingResponse = true" ng-blur="typingResponse = false" type="text" placeholder="{{game.current_round.topic.length ? 'Be creative' : 'No topic yet'}}">
@@ -24,12 +24,12 @@
           Submit!
         </button>
       </div>
-      <div ng-if="Game.isReader" class="topic-field">
+      <div ng-if="Game.isReader && !Game.game.current_round.topic.length" class="topic-field">
         <label class="item item-input item-stacked-label">
           <span class="input-label">Topic</span>
-          <input ng-model="topic" ng-focus="typingTopic = true" ng-blur="typingTopic = false" type="text" placeholder="Be creative">
+          <input ng-model="Game.topic" ng-focus="typingTopic = true" ng-blur="typingTopic = false" type="text" placeholder="Be creative">
         </label>
-        <button ng-disabled="!topic.trim().length" ng-if="typingTopic || topic.trim().length" class="button button-block button-balanced">
+        <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length" ng-click="submitTopic()" class="button button-block button-balanced">
           Submit!
         </button>
       </div>

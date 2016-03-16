@@ -1,4 +1,5 @@
 var helpers = require('../db/helpers');
+var models = require('../db/models');
 
 var online = {};
 var index = {};
@@ -88,6 +89,17 @@ module.exports.init = function(server){
       var polishedRound = round.attributes;
       polishedRound.reader_name = round.relations.reader.attributes.full_name;
       io.sockets.in('game:' + game_id).emit('round', polishedRound);
+    };
+
+    module.exports.newTopic = function (round, topic) {
+      models.Game.forge({id: round.attributes.game_id}).fetch()
+      .then(function (game) {
+        console.log('sending new topic', topic);
+        io.sockets.in('game:' + game.id).emit('topic', topic);
+      })
+      .catch(function (error) {
+        console.log('new topic error:', error);
+      });
     };
 
   });

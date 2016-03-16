@@ -310,4 +310,21 @@ module.exports.startRound = function (game_id, reader_id) {
   });
 };
 
+module.exports.setTopic = function (round_id, topic) {
+  console.log('got topic', topic);
+  return new Promise(function (res, rej) {
+    module.exports.findOrCreate(models.Round, {id: round_id})
+    .then(function (round) {
+      round.save({topic: topic})
+      .then(function () {
+        socket.newTopic(round, topic);
+        res();
+      })
+    })
+    .catch(function (error) {
+      rej(error);
+    })
+  });
+};
+
 module.exports.eventEmitter = eventEmitter;

@@ -122,6 +122,20 @@ var routes = [
     }
   },
   {
+    path: '/rounds/:id/topic',
+    post: function (req, res) {
+      console.log('req', req.body);
+      helpers.setTopic(req.params.id, req.body.topic)
+      .then(function () {
+        res.json({submitted: true});
+      })
+      .catch(function (error) {
+        res.status(500);
+        res.json({error: error});
+      })
+    }
+  },
+  {
     path: '/invitations',
     get: function (req, res) {
       helpers.getInvites(req.user.sub.split('|')[1])
