@@ -31,25 +31,37 @@ describe('loginCtrl', function () {
             socket: socket
           });
         };
+
     }));
   describe('#login', function() {
 
 
-    it('should have a login method on the $scope', function () {
+    beforeEach(function () {
         createController();
-        expect(typeof $scope.login).toEqual('function');
+      //  loginCredentials = createFakeLoginCredentials();
     });
 
-    it('if successful, should change to state to main', function() {
-        createController();
-        spyOn($controller, '$scope.login');
-        expect($state.go).toHaveBeenCalledWith('main');
+    it('should have a login method on the $scope', function () {
+        expect($scope.login).toEqual(jasmine.any(Function));
+    });
+
+    it('if successful, should change to state to main', function(done) {
+        var spy = spyOn($state, 'go')
+//$('go', function() {
+          expect(spy).toHaveBeenCalledWith('main');
+          done();
+      //  })
+        $scope.login();
     });
   });
 
 
     it('should have a logout method on the $scope', function () {
         createController();
-        expect(typeof $scope.logout).toEqual('function');
+        expect($scope.logout).toEqual(jasmine.any(Function));
+    });
+
+    it('should call logout() when account is logged out', function () {
+
     });
 });
