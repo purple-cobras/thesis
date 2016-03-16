@@ -64,10 +64,21 @@ var UserGame = db.Model.extend({
   }
 });
 
+var UserRound = db.Model.extend({
+  tableName: 'users_rounds',
+  user: function () {
+    return this.belongsTo(User, 'user_id');
+  },
+  round: function () {
+    return this.belongsTo(Round, 'round_id');
+  }
+});
+
 module.exports = {
   User: User,
   Game: Game,
   Round: Round,
   Response: Response,
-  UserGame: UserGame
+  UserGame: UserGame,
+  UserRound: UserRound
 };
