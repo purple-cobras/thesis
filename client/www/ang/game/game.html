@@ -5,17 +5,16 @@
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="true" class="has-header">
-    <button ng-click="kickoff()" ng-disabled="game.players.length < 2" ng-if="!Game.started && isCreator" class="button button-block button-royal">
+    <button ng-click="kickoff()" ng-disabled="game.players.length < 2" ng-if="!Game.started && Game.isCreator" class="button button-block button-royal">
       Kick this party off
     </button>
     <div ng-if="game.players.length < 2">You need at least one friend to join</div>
-    <div ng-if="!Game.started && !isCreator">Waiting to start the game...</div>
+    <div ng-if="!Game.started && !Game.isCreator">Waiting to start the game...</div>
     <h4 class="topic" ng-bind="game.current_round.topic"></h4>
-    <h4>Reader: <span ng-bind="game.current_round.reader"></h4>  
-    <h4 class="max-score">Game to: <span ng-bind="game.max_score"></h4>
+    <h4>Reader: <span ng-bind="game.current_round.reader_name"></h4>  
     <hr />
     <div class="list game-inputs">
-      <div ng-if="!isReader" class="response-field">
+      <div ng-if="!Game.isReader" class="response-field">
         <label class="item item-input item-stacked-label">
           <span class="input-label">Response</span>
           <input ng-model="response" ng-disabled="!game.current_round.topic.length" ng-focus="typingResponse = true" ng-blur="typingResponse = false" type="text" placeholder="{{game.current_round.topic.length ? 'Be creative' : 'No topic yet'}}">
@@ -24,7 +23,7 @@
           Submit!
         </button>
       </div>
-      <div ng-if="isReader" class="topic-field">
+      <div ng-if="Game.isReader" class="topic-field">
         <label class="item item-input item-stacked-label">
           <span class="input-label">Topic</span>
           <input ng-model="topic" ng-focus="typingTopic = true" ng-blur="typingTopic = false" type="text" placeholder="Be creative">
@@ -45,7 +44,7 @@
             class="item"
             ng-repeat="player in game.players"
           >
-            {{player.full_name}} <span class="score">{{player.score}} points</span>
+            {{player.full_name}}
           </li>
         </ion-list>
       </ion-content>

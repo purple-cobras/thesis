@@ -19,15 +19,13 @@ angular.module('app.services', [])
 
       id: undefined,
 
-      max_score: undefined,
-
       //Array of objects, with id, name, guessed, and score
       players: [],
 
       //Object containing all pertinent info for the round
       current_round: {
 
-        reader: undefined,
+        reader_name: undefined,
 
         reader_id: undefined,
 
@@ -94,9 +92,15 @@ angular.module('app.services', [])
           }
         }
         obj.rounds = results.rounds;
+        var lastRound = obj.rounds[obj.rounds.length - 1];
+        if (lastRound && lastRound.reader_id === store.get('remote_id')) {
+          obj.isReader = true;
+        } else {
+          obj.isReader = false;
+        }
+        obj.game.current_round = lastRound;
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
-        obj.game.max_score = response.data.results.game.max_score;
         socket.emit('room', obj.game.id);
       })
       .catch(function (error) {
@@ -117,8 +121,6 @@ angular.module('app.services', [])
       obj.submitting = false;
       obj.game.currentRound  = {
 
-        max_score: undefined,
-
         reader: undefined,
 
         reader_id: undefined,
@@ -138,6 +140,7 @@ angular.module('app.services', [])
       obj.response = '';
       obj.current_round = {
         reader_id: undefined,
+        reader_name: undefined,
         ready: false,
         response: []
       }
@@ -181,6 +184,14 @@ angular.module('app.services', [])
 
   socket.on('start', function () {
     obj.started = true;
+  });
+
+  socket.on('round', function (round) {
+    obj.rounds.push(round);
+    if (round.reader_id === store.get('remote_id')) {
+      obj.isReader = true;
+    }
+    obj.game.current_round = round;
   });
 
   return obj;

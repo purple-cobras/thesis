@@ -72,10 +72,7 @@ module.exports.createGame = function (data, my_fb_id) {
   return new Promise(function (res, rej) {
     module.exports.getFriends(data.friends, my_fb_id)
     .then(function (result) {
-      new models.Game({
-        creator_id: data.creator_id,
-        max_score: data.rules.maxScore
-      }).save()
+      new models.Game({creator_id: data.creator_id}).save()
       .then(function (game) {
         module.exports.inviteFriends(game, result.friends, result.my_id)
         .then(function (game) {
@@ -208,9 +205,10 @@ module.exports.getGame = function (game_id) {
   return new Promise(function (res, rej) {
     module.exports.getPlayers(game_id)
     .then(function (players) {
-      db.knex.select('rounds.*')
+      db.knex.select('rounds.*', 'users.full_name AS reader_name')
       .from('rounds')
       .where('rounds.game_id', game_id)
+      .innerJoin('users', 'rounds.reader_id', 'users.id')
       .then(function (rounds) {
         models.Game.forge({id: game_id}).fetch()
         .then(function (game) {
@@ -271,11 +269,39 @@ module.exports.startGame = function (game_id) {
       .save()
       .then(function (game) {
         socket.gameStarted(game_id);
+        module.exports.startRound(game_id, game.get('creator_id'));
         res();
       });
     })
     .catch(function (error) {
       console.log(error);
+      rej(error);
+    })
+  });
+};
+
+module.exports.startRound = function (game_id, reader_id) {
+  return new Promise(function (res, rej) {
+    models.Game.forge({id: game_id}).fetch()
+    .then(function (game) {
+      models.Round.forge({
+        game_id: game_id,
+        reader_id: reader_id,
+        topic: ''
+      })
+      .save()
+      .then(function (round) {
+        round.fetch({withRelated: ['reader']})
+        .then(function (round) {
+          socket.newRound(game_id, round);
+          res(round); 
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      });
+    })
+    .catch(function (error) {
       rej(error);
     })
   });
