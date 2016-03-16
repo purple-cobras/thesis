@@ -38,7 +38,7 @@ module.exports = function(config) {
       'client/www/ang/**/*.js',
 
 
-      'test/unit-tests/controller-tests.js'
+      'test/unit-tests/*.js'
     ],
 
 

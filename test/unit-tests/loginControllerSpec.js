@@ -14,7 +14,6 @@ describe('loginCtrl', function () {
         auth  = $injector.get('auth');
         $ionicHistory = $injector.get('$ionicHistory');
         $http = $injector.get('$http');
-        $httpBackend = $injector.get('$httpBackend');
         $controller = $injector.get('$controller');
         $state = $injector.get('$state');
         Auth = $injector.get('Auth');
