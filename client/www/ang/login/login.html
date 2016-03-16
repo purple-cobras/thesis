@@ -8,9 +8,17 @@
             <div>
                 <p class="auth-error"></p>
             </div>
-            <div class="spacer" style="height: 40px;"></div>
+            <!-- <div class="spacer" style="height: 40px;"></div> -->
             <a ng-if="!auth.isAuthenticated" ng-click="login()" class="button button-stable button-block button-large">Log in</a>
-            <a ng-if="auth.isAuthenticated" ng-click="logout()" class="button button-stable button-block button-large">Log out</a>
+            <div ng-if="auth.isAuthenticated">
+                <img class="coverPic" ng-src={{coverPic_url}}>
+                <div class="profileContainer">
+                    <img class="profilePic" ng-src={{profilePic_url}}>
+                    <span class="name">{{name}}<span>
+                </div>
+                <a ng-click="logout()" class="button button-stable button-block button-large">Log out</a>
+            </div>
+
         </form>
     </ion-content>
 </ion-view>
