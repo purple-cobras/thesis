@@ -19,8 +19,6 @@ angular.module('app.services', [])
 
       id: undefined,
 
-      max_score: undefined,
-
       //Array of objects, with id, name, guessed, and score
       players: [],
 
@@ -96,7 +94,6 @@ angular.module('app.services', [])
         obj.rounds = results.rounds;
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
-        obj.game.max_score = response.data.results.game.max_score;
         socket.emit('room', obj.game.id);
       })
       .catch(function (error) {
@@ -116,8 +113,6 @@ angular.module('app.services', [])
       obj.game.response = '';
       obj.submitting = false;
       obj.game.currentRound  = {
-
-        max_score: undefined,
 
         reader: undefined,
 
