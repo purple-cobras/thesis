@@ -27,9 +27,9 @@
       <div ng-if="Game.isReader" class="topic-field">
         <label class="item item-input item-stacked-label">
           <span class="input-label">Topic</span>
-          <input ng-model="topic" ng-focus="typingTopic = true" ng-blur="typingTopic = false" type="text" placeholder="Be creative">
+          <input ng-model="Game.topic" ng-focus="typingTopic = true" ng-blur="typingTopic = false" type="text" placeholder="Be creative">
         </label>
-        <button ng-disabled="!topic.trim().length" ng-if="typingTopic || topic.trim().length" class="button button-block button-balanced">
+        <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length" ng-click="submitTopic()" class="button button-block button-balanced">
           Submit!
         </button>
       </div>

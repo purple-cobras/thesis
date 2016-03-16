@@ -179,6 +179,24 @@ angular.module('app.services', [])
       .catch(function (error) {
         console.log('starting game error:', error);
       });
+    },
+
+    submitTopic: function () {
+      console.log(obj.topic);
+      var cacheTopic = obj.topic;
+      return $http({
+        url: Config.api + '/rounds/' + obj.game.current_round.id + '/topic',
+        method: 'post',
+        data: {topic: obj.topic}
+      })
+      .then(function (response) {
+        if (response.data.submitted) {
+          obj.game.current_round.topic = cacheTopic;
+        }
+      })
+      .catch(function (error) {
+        console.log('topic post error:', error);
+      })
     }
   }
 
@@ -196,6 +214,10 @@ angular.module('app.services', [])
       obj.isReader = true;
     }
     obj.game.current_round = round;
+  });
+
+  socket.on('topic', function (topic) {
+    obj.game.current_round.topic = topic;
   });
 
   return obj;
