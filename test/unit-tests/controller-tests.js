@@ -1,11 +1,13 @@
 
 describe('loginCtrl', function () {
-    var $rootScope, $scope, store, $state, socket, createController, auth, Auth,$ionicHistory, $http, $httpBackend, $controller;
+    var $rootScope, $q, deferred, $scope, store, $state, socket, createController, auth, Auth,$ionicHistory, $http, $httpBackend, $controller;
 
 
     beforeEach(module('app'));
-    beforeEach(inject(function ($injector) {
+    beforeEach(inject(function ($injector, _$q_) {
 
+        $q = _$q_;
+        deferred = _$q_.defer();
         $rootScope = $injector.get('$rootScope');
         $scope = $rootScope.$new();
         store = $injector.get('store');
@@ -33,35 +35,42 @@ describe('loginCtrl', function () {
         };
 
     }));
-  describe('#login', function() {
-
 
     beforeEach(function () {
         createController();
-      //  loginCredentials = createFakeLoginCredentials();
     });
+
+  describe('#login', function() {
 
     it('should have a login method on the $scope', function () {
         expect($scope.login).toEqual(jasmine.any(Function));
     });
 
     it('if successful, should change to state to main', function(done) {
-        var spy = spyOn($state, 'go')
-//$('go', function() {
-          expect(spy).toHaveBeenCalledWith('main');
-          done();
-      //  })
-        $scope.login();
+        var spy = spyOn($state, 'go');
+        deferred.resolve($state.go('main'));
+        expect(spy).toHaveBeenCalledWith('main');
+        done();
+    });
+
+    it('if failure, should change state to login', function(done) {
+        var spy = spyOn($state, 'go');
+        deferred.reject($state.go('login'));
+        expect(spy).toHaveBeenCalledWith('login');
+        done();
     });
   });
 
-
+  describe('#logout', function () {
     it('should have a logout method on the $scope', function () {
-        createController();
         expect($scope.logout).toEqual(jasmine.any(Function));
     });
 
-    it('should call logout() when account is logged out', function () {
-
+    it('should call logout() when account is logged out', function (done) {
+        var spy = spyOn($state, 'go');
+        deferred.resolve($state.go('login'));
+        expect(spy).toHaveBeenCalledWith('login');
+        done();
     });
+  });
 });
