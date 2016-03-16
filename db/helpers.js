@@ -221,6 +221,11 @@ module.exports.getGame = function (game_id) {
               polishedResponses.push(response.attributes);
             })
             polishedRounds[polishedRounds.length - 1].responses = polishedResponses;
+            var polishedGuesses = {};
+            round.relations.guesses.models.forEach(function (guess) {
+              polishedGuesses[guess.attributes.user_id] = guess.attributes.guessed;
+            });
+            polishedRounds[polishedRounds.length - 1].guesses = polishedGuesses;
           });
           res({
             rounds: polishedRounds,
