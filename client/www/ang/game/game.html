@@ -12,6 +12,7 @@
     <div ng-if="!Game.started && !isCreator">Waiting to start the game...</div>
     <h4 class="topic" ng-bind="game.current_round.topic"></h4>
     <h4>Reader: <span ng-bind="game.current_round.reader"></h4>  
+    <h4 class="max-score">Game to: <span ng-bind="game.max_score"></h4>
     <hr />
     <div class="list game-inputs">
       <div ng-if="!isReader" class="response-field">
@@ -44,7 +45,7 @@
             class="item"
             ng-repeat="player in game.players"
           >
-            {{player.full_name}}
+            {{player.full_name}} <span class="score">{{player.score}} points</span>
           </li>
         </ion-list>
       </ion-content>
