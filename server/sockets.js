@@ -84,6 +84,12 @@ module.exports.init = function(server){
       io.sockets.in('game:' + game_id).emit('start');
     };
 
+    module.exports.newRound = function (game_id, round) {
+      var polishedRound = round.attributes;
+      polishedRound.reader_name = round.relations.reader.attributes.full_name;
+      io.sockets.in('game:' + game_id).emit('round', polishedRound);
+    };
+
   });
 
 };
