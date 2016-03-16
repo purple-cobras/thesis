@@ -42,7 +42,7 @@ var Round = db.Model.extend({
   game: function () {
     return this.belongsTo(Game, 'game_id');
   },
-  users_rounds: function () {
+  guesses: function () {
     return this.hasMany(UserRound, 'round_id');
   }
 });

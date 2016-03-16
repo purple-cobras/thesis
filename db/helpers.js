@@ -208,7 +208,7 @@ module.exports.getGame = function (game_id) {
   return new Promise(function (res, rej) {
     module.exports.getPlayers(game_id)
     .then(function (players) {
-      models.Round.query('where', 'game_id', '=', game_id).fetchAll({withRelated: ['responses', 'reader']})
+      models.Round.query('where', 'game_id', '=', game_id).fetchAll({withRelated: ['responses', 'reader', 'guesses']})
       .then(function (rounds) {
         models.Game.forge({id: game_id}).fetch()
         .then(function (game) {
