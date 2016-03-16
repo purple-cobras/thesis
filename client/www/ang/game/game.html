@@ -59,18 +59,18 @@
         <ion-list>
           <li 
             class="item"
-            ng-repeat="response in game.current_round.responses"
+            ng-repeat="response in Game.game.current_round.responses"
           >
-            <div ng-if="game.current_round.ready">
+            <div ng-if="Game.game.current_round.ready">
               {{response.text}}
             </div>
-            <div ng-if="!game.current_round.ready">
+            <div ng-if="!Game.game.current_round.ready">
               ***REDACTED***
             </div>
           </li>
           <li 
             class="item"
-            ng-if="!game.current_round.responses.length"
+            ng-if="!Game.game.current_round.responses.length"
           >
             None yet...
           </li>
