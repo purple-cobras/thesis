@@ -9815,3 +9815,25 @@ img.empty {
 
 .score {
   float: right; }
+
+/** PROFILE **/
+.coverPic {
+  width: 100%;
+  height: auto; }
+
+.profileContainer {
+  position: absolute;
+  left: 3%;
+  top: 60%; }
+
+.profilePic {
+  float: left;
+  border: 2px solid #fff;
+  border-radius: 2px; }
+
+.name {
+  position: absolute;
+  top: 20%;
+  padding: 2px;
+  color: #fff;
+  font-size: 20px; }
