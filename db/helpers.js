@@ -311,7 +311,6 @@ module.exports.startRound = function (game_id, reader_id) {
 };
 
 module.exports.setTopic = function (round_id, topic) {
-  console.log('got topic', topic);
   return new Promise(function (res, rej) {
     module.exports.findOrCreate(models.Round, {id: round_id})
     .then(function (round) {
@@ -320,6 +319,33 @@ module.exports.setTopic = function (round_id, topic) {
         socket.newTopic(round, topic);
         res();
       })
+    })
+    .catch(function (error) {
+      rej(error);
+    })
+  });
+};
+
+module.exports.saveResponse = function (round_id, response, user_id) {
+  return new Promise(function (res, rej) {
+    models.Response.forge({
+      round_id: round_id, 
+      user_id: user_id
+    }).fetch()
+    .then(function (response) {
+      if (response) {
+        rej('duplicate');
+      } else {
+        models.Response.forge({
+          round_id: round_id,
+          user_id: user_id,
+          text: response
+        })
+        .save()
+        .then(function (response) {
+          res(response);
+        })
+      }
     })
     .catch(function (error) {
       rej(error);

@@ -24,7 +24,9 @@ var authRoutes = [
   '/invitations', 
   '/signin', 
   '/games', 
-  '/games/:id/start'
+  '/games/:id/start',
+  '/rounds',
+  '/rounds/:id/response'
 ];
 
 var routes = [
