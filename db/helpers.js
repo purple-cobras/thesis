@@ -283,9 +283,12 @@ module.exports.startGame = function (game_id) {
       game.set('started', true)
       .save()
       .then(function (game) {
-        socket.gameStarted(game_id);
-        module.exports.startRound(game_id, game.get('creator_id'));
-        res();
+        module.exports.getPlayers(game_id)
+        .then(function (players) {
+          socket.gameStarted(game_id);
+          module.exports.startRound(game_id, game.get('creator_id'));
+          res();
+        });
       });
     })
     .catch(function (error) {
@@ -357,7 +360,18 @@ module.exports.saveResponse = function (round_id, response, user_id) {
         .save()
         .then(function (response) {
           socket.newResponse(round_id, response);
-          res(response);
+          models.Round.forge({id: round_id}).fetch({withRelated: ['responses']})
+          .then(function (round) {
+            module.exports.getPlayers(round.attributes.game_id)
+            .then(function (players) {
+              if (players.length === round.relations.responses.models.length) {
+                module.exports.setGuesser(round.attributes.game_id, players)
+                .then(function () {
+                  res(response);
+                });
+              }
+            })
+          })
         })
       }
     })
@@ -365,6 +379,37 @@ module.exports.saveResponse = function (round_id, response, user_id) {
       rej(error);
     })
   });
+};
+
+module.exports.setGuesser = function (game_id, players) {
+  return new Promise(function (res, rej) {
+    models.Game.forge({id: game_id}).fetch({withRelated: ['guesser']})
+    .then(function (game) {
+      var newGuesserIndex;
+      var currentGuesserIndex;
+      if (game.relations.guesser) {
+        for (var i = 0; i < players.length; i++) {
+          var player = players[i];
+          if (player.id === game.relations.guesser.attributes.id) {
+            currentGuesserIndex = i;
+            break;
+          }
+        }
+      }
+      if (currentGuesserIndex === undefined || currentGuesserIndex === players.length) {
+        newGuesserIndex = 1;
+      } else {
+        newGuesserIndex = currentGuesserIndex + 1;
+      }
+      game.save('guesser_id', players[newGuesserIndex].id)
+      .then(function (game) {
+        res();
+      })
+    })
+    .catch(function (error) {
+      rej(error);
+    })
+  }); 
 };
 
 module.exports.eventEmitter = eventEmitter;

@@ -19,7 +19,8 @@ var User = db.Model.extend({
 var Game = db.Model.extend({
   tableName: 'games',
   users: function () {
-    return this.hasMany(User, 'user_id', 'id').through(UserGame, 'game_id', 'user_id');  },
+    return this.hasMany(User).through(UserGame);  
+  },
   rounds: function () {
     return this.hasMany(Round, 'game_id');
   },
