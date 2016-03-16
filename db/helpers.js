@@ -350,6 +350,7 @@ module.exports.saveResponse = function (round_id, response, user_id) {
         })
         .save()
         .then(function (response) {
+          socket.newResponse(round_id, response);
           res(response);
         })
       }

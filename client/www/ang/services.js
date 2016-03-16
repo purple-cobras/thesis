@@ -239,6 +239,25 @@ angular.module('app.services', [])
     obj.game.current_round.topic = topic;
   });
 
+  socket.on('response', function (response) {
+    var match = undefined;
+    if (obj.game.current_round.responses) {
+      for (var i = 0; i < obj.game.current_round.responses.length; i++) {
+        var checkResponse = obj.game.current_round.responses[i];
+        if (response.id === checkResponse) {
+          match = checkResponse;
+          break;
+        }
+      }
+    } else {
+      obj.game.current_round.responses = [];
+    }
+    
+    if (!match) {
+      obj.game.current_round.responses.push(response);
+    }
+  });
+
   return obj;
   
 }])
