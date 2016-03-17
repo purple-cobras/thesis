@@ -272,6 +272,20 @@ angular.module('app.services', [])
     obj.game.guesser = guesser;
   });
 
+  socket.on('guess', function (guess) {
+    var guesser  = obj.game.guesser;
+    for (var i = 0; i < obj.game.players.length; i++) {
+      var player = obj.game.players[i];
+      if (player.id === guess.details.guesser_id) {
+        guesser = player;
+        break;
+      }
+     }
+    if (guess.result) {
+      guesser.score = guesser.score + 1;
+    }
+  });
+
   return obj;
   
 }])
