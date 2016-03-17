@@ -63,7 +63,7 @@ angular.module('app.game', [])
                 })
                 .then( function (res) {
                   if (res.data.result === true) {
-                    $($event.target).text($($event.target).text() + ' - Guessed correctly as ' + $scope.Game.game.players[i].full_name);
+                    $($event.target).text($($event.target).text());
                   }
                 });
               };

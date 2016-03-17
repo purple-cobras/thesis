@@ -70,7 +70,7 @@
             <div
               ng-if="Game.game.current_round.ready && Game.remote_id !== response.user_id && response.guessed"
             >
-              {{response.text}} - Correctly guessed as {{Game.getPlayer(response.user_id).full_name}}
+              {{response.text}}
             </div>
             <div ng-if="!Game.game.current_round.ready && Game.game.guesser.id !== response.user_id">
               ***REDACTED***
