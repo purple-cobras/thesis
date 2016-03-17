@@ -9816,6 +9816,14 @@ img.empty {
 .score {
   float: right; }
 
+.guesser {
+  text-align: center;
+  background-color: #DDDDDD;
+  font-size: 1.5em;
+  border-radius: 5px; }
+  .guesser p {
+    padding: 8px; }
+
 /** PROFILE **/
 .name {
   float: top;

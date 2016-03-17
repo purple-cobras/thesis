@@ -13,7 +13,7 @@
     <h4 class="topic" ng-bind="game.current_round.topic"></h4>
     <h4>Reader: <span ng-bind="game.current_round.reader_name"></h4>
     <h4 class="max-score">Game to: <span ng-bind="game.max_score"></h4>
-    <hr />
+  <hr />
     <div class="list game-inputs">
       <div ng-if="!Game.isReader || Game.game.current_round.topic.length" class="response-field">
         <label class="item item-input item-stacked-label">
@@ -33,6 +33,9 @@
           Submit!
         </button>
       </div>
+    </div>
+    <div class="guesser" ng-if="Game.game.guesser.id">
+      <p>Guesser: {{Game.amGuesser() ? "IT\'S YOU. GUESS." : Game.game.guesser.full_name}}</p>
     </div>
 
     <ul class="list card players">

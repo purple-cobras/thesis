@@ -38,8 +38,6 @@ angular.module('app.game', [])
 
   Game.getGame();
 
-  console.log($scope.Game);
-
   $scope.displayGuessChoices = function (response_id, $event) {
     var buttons = [];
     for (var i = 0; i < $scope.Game.game.players.length; i++) {

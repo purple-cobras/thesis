@@ -248,6 +248,10 @@ angular.module('app.services', [])
         }
       }
       return player;
+    },
+
+    amGuesser: function () {
+      return obj.game.guesser.id === store.get('remote_id');
     }
   }
 
