@@ -422,7 +422,17 @@ module.exports.resolveGuess = function (round_id, guess) {
     models.Round.forge({id: round_id}).fetch({withRelated: ['responses']})
     .then(function (round) {
       var correct = round.relations.responses._byId[guess.response_id].attributes.user_id === guess.guessee_id;
-      res(correct);
+      if (correct) {
+        module.exports.findOrCreate(models.UserRound, {user_id: guess.guessee_id, round_id: round_id})
+        .then(function (userRound) {
+          userRound.save({guessed: true})
+          .then(function () {
+            res(correct);
+          })
+        });
+      } else {
+        res(correct);
+      }
     })
     .catch(function (error) {
       console.log(error);
