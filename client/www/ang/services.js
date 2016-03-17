@@ -125,6 +125,7 @@ angular.module('app.services', [])
       obj.rounds = [];
       obj.game.topic = '';
       obj.game.id = undefined;
+      obj.game.guesser = undefined;
       obj.game.response = '';
       obj.submitting = false;
       obj.game.currentRound  = {
@@ -265,6 +266,10 @@ angular.module('app.services', [])
     if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
       obj.game.current_round.ready = true;
     }
+  });
+
+  socket.on('guesser', function (guesser) {
+    obj.game.guesser = guesser;
   });
 
   return obj;
