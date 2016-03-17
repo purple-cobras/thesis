@@ -112,7 +112,14 @@ module.exports.init = function(server){
     };
 
     module.exports.newGuesser = function (game_id, player) {
-      io.sockets.in('game:' + game_id).emite('guesser', player);
+      io.sockets.in('game:' + game_id).emit('guesser', player);
+    };
+
+    module.exports.newGuess = function (round, guess) {
+      models.Game.forge({id: round.get('game_id')}).fetch()
+      .then(function (game) {
+        io.sockets.in('game:' + game.get('id')).emit('guess', guess);
+      });
     };
 
   });

@@ -399,10 +399,14 @@ module.exports.setGuesser = function (game_id, players) {
           }
         }
       }
-      if (currentGuesserIndex === undefined || currentGuesserIndex === players.length) {
+      if (currentGuesserIndex === undefined ) {
         newGuesserIndex = 1;
       } else {
-        newGuesserIndex = currentGuesserIndex + 1;
+        if (currentGuesserIndex === players.length - 1) {
+          newGuesserIndex = 0;
+        } else {
+          newGuesserIndex = currentGuesserIndex + 1;
+        }
       }
       var newGuesser = players[newGuesserIndex];
       game.save('guesser_id', newGuesser.id)
@@ -427,11 +431,19 @@ module.exports.resolveGuess = function (round_id, guess) {
         .then(function (userRound) {
           userRound.save({guessed: true})
           .then(function () {
+            socket.newGuess(round, guess);
             res(correct);
           })
         });
       } else {
-        res(correct);
+        module.exports.getPlayers(round.get('game_id'))
+        .then(function (players) {
+          module.exports.setGuesser(round.get('game_id'), players)
+          .then(function () {
+            socket.newGuess(round, guess);
+            res(correct);
+          });
+        });
       }
     })
     .catch(function (error) {
