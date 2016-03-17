@@ -219,7 +219,7 @@ module.exports.getGame = function (game_id) {
             var polishedResponses = [];
             round.relations.responses.models.forEach(function (response) {
               polishedResponses.push(response.attributes);
-            })
+            });
             polishedRounds[polishedRounds.length - 1].responses = polishedResponses;
             var polishedGuesses = {};
             round.relations.guesses.models.forEach(function (guess) {
@@ -435,16 +435,29 @@ module.exports.resolveGuess = function (round_id, guess) {
         .then(function (userRound) {
           userRound.save({guessed: true})
           .then(function () {
-            socket.newGuess(round, guess);
-            res(correct);
-          })
+            models.UserGame.forge({user_id: guess.guesser_id, game_id: round.get('game_id')}).fetch()
+            .then(function (user_game) {
+              var newScore = user_game.get('score') + 1;
+              user_game.save({score: newScore})
+              .then(function () {
+                models.Response.forge({id: guess.response_id}).fetch()
+                .then(function (response) {
+                  response.save({guessed: true})
+                  .then(function () {
+                    socket.newGuess(round, {result: correct, details: guess});
+                    res(correct);
+                  });
+                });
+              });
+            });
+          });
         });
       } else {
         module.exports.getPlayers(round.get('game_id'))
         .then(function (players) {
           module.exports.setGuesser(round.get('game_id'), players)
           .then(function () {
-            socket.newGuess(round, guess);
+            socket.newGuess(round, {result: correct, details: guess});
             res(correct);
           });
         });
