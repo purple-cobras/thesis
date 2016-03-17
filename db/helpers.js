@@ -423,8 +423,12 @@ module.exports.setGuesser = function (game_id, players) {
 
 module.exports.resolveGuess = function (round_id, guess) {
   return new Promise(function (res, rej) {
-    models.Round.forge({id: round_id}).fetch({withRelated: ['responses']})
+    models.Round.forge({id: round_id}).fetch({withRelated: ['responses', 'game']})
     .then(function (round) {
+      if (round.relations.game.attributes.guesser_id !== guess.guesser_id) {
+        rej({error: 'not your turn'});
+        return;
+      }
       var correct = round.relations.responses._byId[guess.response_id].attributes.user_id === guess.guessee_id;
       if (correct) {
         module.exports.findOrCreate(models.UserRound, {user_id: guess.guessee_id, round_id: round_id})
