@@ -4,10 +4,10 @@ describe('loginCtrl', function () {
 
 
     beforeEach(module('app'));
-    beforeEach(inject(function ($injector, _$q_) {
+    beforeEach(inject(function ($injector) {
 
         $q = $injector.get('$q');
-        deferred = _$q_.defer();
+        deferred = $q.defer();
         $rootScope = $injector.get('$rootScope');
         $scope = $rootScope.$new();
         store = $injector.get('store');
@@ -49,6 +49,7 @@ describe('loginCtrl', function () {
     it('if successful, should change to state to main', function(done) {
 
         deferred.resolve($state.go('main'));
+        $scope.login();
         expect(spy).toHaveBeenCalledWith('main');
         done();
     });
@@ -65,7 +66,7 @@ describe('loginCtrl', function () {
         expect($scope.logout).toEqual(jasmine.any(Function));
     });
 
-    it('should call logout() when account is logged out', function () {
+    it('should call logout when account is logged out', function () {
         $scope.logout();
         expect(spy).toHaveBeenCalledWith('login');
     });

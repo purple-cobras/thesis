@@ -4,7 +4,7 @@ describe('mainCtrl', function () {
 
 
   beforeEach(module('app'));
-  beforeEach(inject(function ($injector, _$q_) {
+  beforeEach(inject(function ($injector) {
 
     $q = $injector.get('$q');
     deferred = $q.defer();
