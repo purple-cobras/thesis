@@ -228,7 +228,7 @@ module.exports.getGame = function (game_id) {
             polishedRounds[polishedRounds.length - 1].guesses = polishedGuesses;
           });
           if (game.relations.guesser) {
-            game.attributes.guesser = game.relations.guesser;
+            game.attributes.guesser = game.relations.guesser
           }
           res({
             rounds: polishedRounds,
@@ -415,6 +415,20 @@ module.exports.setGuesser = function (game_id, players) {
       rej(error);
     })
   }); 
+};
+
+module.exports.resolveGuess = function (round_id, guess) {
+  return new Promise(function (res, rej) {
+    models.Round.forge({id: round_id}).fetch({withRelated: ['responses']})
+    .then(function (round) {
+      var correct = round.relations.responses._byId[guess.response_id].attributes.user_id === guess.guessee_id;
+      res(correct);
+    })
+    .catch(function (error) {
+      console.log(error);
+      rej(error);
+    })
+  });
 };
 
 module.exports.eventEmitter = eventEmitter;

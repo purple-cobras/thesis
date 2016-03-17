@@ -173,6 +173,20 @@ var routes = [
     }
   },
   {
+    path: '/rounds/:id/guess',
+    post: function (req, res) {
+      helpers.resolveGuess(req.params.id, req.body.guess)
+      .then(function (correct) {
+        res.status(200);
+        res.json({result: correct});
+      })
+      .catch(function (error) {
+        res.status(500);
+        res.json({error: error});
+      });
+    }
+  },
+  {
     path: '*',
     get: function (req, res) {
       res.redirect('/');
