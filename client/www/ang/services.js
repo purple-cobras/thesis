@@ -304,6 +304,8 @@ angular.module('app.services', [])
     auth.signout();
     socket.emit('logout', store.get('remote_id'));
     store.remove('profile');
+    store.remove('pic_url');
+    store.remove('name');
     store.remove('token');
     store.remove('fb_access_token');
     store.remove('remote_id');

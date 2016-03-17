@@ -9815,3 +9815,9 @@ img.empty {
 
 .score {
   float: right; }
+
+/** PROFILE **/
+.name {
+  float: top;
+  color: #444;
+  font-size: 22px; }

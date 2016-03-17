@@ -2,6 +2,7 @@ angular.module('app.login', [])
 
 .controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game, Auth, socket) {
   $scope.auth = auth;
+
   $scope.login = function () {
     auth.signin({
       authParams: {
@@ -9,10 +10,15 @@ angular.module('app.login', [])
         device: 'Mobile device'
       },
     }, function (profile, token, accessToken, state, refreshToken) {
+      console.log('profile: ', profile)
       store.set('profile', profile);
+      store.set('pic_url', profile.picture);
+      store.set('name', profile.name);
       store.set('fb_access_token', profile.identities[0].access_token);
       store.set('token', token);
       store.set('refreshToken', refreshToken);
+      $scope.pic_url = profile.picture;
+      $scope.name = profile.name;
       $http({
         method: 'post',
         url: Config.api + '/signin',
@@ -40,6 +46,9 @@ angular.module('app.login', [])
       $scope.logout();
     });
   };
+
+  $scope.pic_url = store.get('pic_url');
+  $scope.name = store.get('name');
 
   $scope.logout = function () {
     Auth.logout();
