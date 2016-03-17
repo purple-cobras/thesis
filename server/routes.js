@@ -19,11 +19,11 @@ var jwtCheck = expressjwt({
 });
 
 var authRoutes = [
-  '/users', 
-  '/profile', 
-  '/invitations', 
-  '/signin', 
-  '/games', 
+  '/users',
+  '/profile',
+  '/invitations',
+  '/signin',
+  '/games',
   '/games/:id/start',
   '/rounds',
   '/rounds/:id/response'
@@ -90,7 +90,7 @@ var routes = [
       helpers.createGame(data, my_fb_id)
       .then(function (game) {
         res.json({game: game})
-      })      
+      })
       .catch(function(error) {
         res.status(500);
         res.json({error: error});

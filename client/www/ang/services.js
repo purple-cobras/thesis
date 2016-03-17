@@ -222,6 +222,17 @@ angular.module('app.services', [])
       .catch(function (error) {
         console.log('response error: ', error);
       });
+    },
+
+    submitGuess: function (guessInfo) {
+      return $http({
+        url: Config.api + '/rounds/' + obj.game.current_round.id + '/guess',
+        method: 'POST',
+        data: guessInfo
+      })
+      .then( function (res) {
+        console.log(res);
+      })
     }
   }
 
@@ -258,7 +269,7 @@ angular.module('app.services', [])
     } else {
       obj.game.current_round.responses = [];
     }
-    
+
     if (!match) {
       obj.game.current_round.responses.push(response);
     }
@@ -287,7 +298,7 @@ angular.module('app.services', [])
   });
 
   return obj;
-  
+
 }])
 
 .factory('socket', function (socketFactory) {
@@ -299,7 +310,7 @@ angular.module('app.services', [])
 })
 
 .factory('Auth', ['auth', 'store', '$state', 'socket', function(auth, store, $state, socket){
-  
+
   var logout = function () {
     auth.signout();
     socket.emit('logout', store.get('remote_id'));

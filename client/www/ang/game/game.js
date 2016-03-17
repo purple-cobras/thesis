@@ -36,7 +36,7 @@ angular.module('app.game', [])
 
   Game.getGame();
 
-  $scope.listChoices = function () {
+  $scope.listChoices = function (response_id) {
     var buttons = [];
     for (var i = 0; i < $scope.Game.game.players.length; i++) {
       if ($scope.Game.game.players[i].id !== store.get('remote_id')) {
@@ -45,7 +45,11 @@ angular.module('app.game', [])
           type: 'button',
           onTap: function (i) {
             return function() {
-              console.log($scope.Game.topic);
+              Game.submitGuess({
+                respond_id: response_id,
+                guesser_id: store.get('remote_id'),
+                guessee_id: $scope.Game.game.players[i].id
+              })
             }
           }(i)
         });

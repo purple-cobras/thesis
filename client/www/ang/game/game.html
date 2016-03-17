@@ -63,7 +63,7 @@
           >
             <div
               ng-if="Game.game.current_round.ready"
-              ng-click="listChoices()"
+              ng-click="listChoices({{response.id}})"
             >
               {{response.text}}
             </div>
