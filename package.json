@@ -25,15 +25,19 @@
     "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
     "bookshelf": "^0.9.2",
+    "chai": "^3.5.0",
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-jwt": "^3.3.0",
+    "jasmine": "^2.4.1",
+    "jasmine-core": "^2.4.1",
     "jsonwebtoken": "^5.7.0",
     "karma": "^0.13.22",
     "knex": "^0.10.0",
     "morgan": "^1.7.0",
     "node-env-file": "^0.1.8",
     "pg": "^4.5.1",
+    "phantomjs-prebuilt": "^2.1.5",
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
@@ -43,6 +47,7 @@
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.7",
     "karma-phantomjs-launcher": "^1.0.0",
+    "karma-spec-reporter": "0.0.24",
     "mocha": "^2.4.5"
   }
 }
