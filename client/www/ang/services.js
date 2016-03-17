@@ -21,6 +21,8 @@ angular.module('app.services', [])
 
       max_score: undefined,
 
+      guesser: undefined,
+
       //Array of objects, with id, name, guessed, and score
       players: [],
 
@@ -86,6 +88,7 @@ angular.module('app.services', [])
       .then(function (response) {
         var results = response.data.results;
         obj.game.players = results.players;
+        obj.game.guesser = results.game.guesser;
         var my_id = store.get('remote_id');
         for (var i = 0; i < obj.game.players.length; i++) {
           if (obj.game.players[i].id === my_id) {
@@ -122,6 +125,7 @@ angular.module('app.services', [])
       obj.rounds = [];
       obj.game.topic = '';
       obj.game.id = undefined;
+      obj.game.guesser = undefined;
       obj.game.response = '';
       obj.submitting = false;
       obj.game.currentRound  = {
@@ -261,6 +265,24 @@ angular.module('app.services', [])
 
     if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
       obj.game.current_round.ready = true;
+    }
+  });
+
+  socket.on('guesser', function (guesser) {
+    obj.game.guesser = guesser;
+  });
+
+  socket.on('guess', function (guess) {
+    var guesser  = obj.game.guesser;
+    for (var i = 0; i < obj.game.players.length; i++) {
+      var player = obj.game.players[i];
+      if (player.id === guess.details.guesser_id) {
+        guesser = player;
+        break;
+      }
+     }
+    if (guess.result) {
+      guesser.score = guesser.score + 1;
     }
   });
 
