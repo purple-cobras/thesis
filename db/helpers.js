@@ -210,7 +210,7 @@ module.exports.getGame = function (game_id) {
     .then(function (players) {
       models.Round.query('where', 'game_id', '=', game_id).fetchAll({withRelated: ['responses', 'reader', 'guesses']})
       .then(function (rounds) {
-        models.Game.forge({id: game_id}).fetch()
+        models.Game.forge({id: game_id}).fetch({withRelated: 'guesser'})
         .then(function (game) {
           var polishedRounds = [];
           rounds.forEach(function (round) {
@@ -227,6 +227,9 @@ module.exports.getGame = function (game_id) {
             });
             polishedRounds[polishedRounds.length - 1].guesses = polishedGuesses;
           });
+          if (game.relations.guesser) {
+            game.attributes.guesser = game.relations.guesser;
+          }
           res({
             rounds: polishedRounds,
             players: players,
