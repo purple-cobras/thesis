@@ -15,7 +15,7 @@
     <h4 class="max-score">Game to: <span ng-bind="game.max_score"></h4>
   <hr />
     <div class="list game-inputs">
-      <div ng-if="!Game.isReader || Game.game.current_round.topic.length" class="response-field">
+      <div ng-if="(!Game.isReader || Game.game.current_round.topic.length) && !Game.game.current_round.ready" class="response-field">
         <label class="item item-input item-stacked-label">
           <span class="input-label">Response</span>
           <input ng-model="Game.response" ng-disabled="!Game.game.current_round.topic.length" ng-focus="typingResponse = true" ng-blur="typingResponse = false" type="text" placeholder="{{game.current_round.topic.length ? 'Be creative' : 'No topic yet'}}">
@@ -38,6 +38,13 @@
       <p>Guesser: {{Game.amGuesser() ? "IT\'S YOU. GUESS." : Game.game.guesser.full_name}}</p>
     </div>
 
+    <div class="guess-space" ng-if="Game.amGuesser()">
+      <p>Select below to match player with a guess, then submit.</p>
+      <button ng-click="submitGuess({guessee_id: Game.guess.user.id, response_id: Game.guess.response.id})"class="button button-block button-balanced" ng-click="submitGuess()" ng-disabled="!Game.guess.user || !Game.guess.response">
+        Guess
+      </button>
+    </div>
+
     <ul class="list card players">
       <ion-content overflow-scroll="true">
         <div class="item item-divider">
@@ -47,8 +54,12 @@
           <li
             class="item"
             ng-repeat="player in game.players"
+            ng-class="{guessed: Game.game.current_round.guesses[player.id], guessing: Game.guess.user === player}"
+            ng-click="processPlayerSelection(player, $event)"
           >
-            {{player.full_name}} <span class="score">{{player.score}} points</span>
+            <div class="guessable">
+              {{player.full_name}} <span class="score">{{player.score}} points</span>
+            </div>
           </li>
         </ion-list>
       </ion-content>
@@ -63,20 +74,11 @@
           <li
             class="item"
             ng-repeat="response in Game.game.current_round.responses"
+            ng-class="{guessed: response.guessed, guessing: Game.guess.response === response}"
+            ng-click="processResponseSelection(response, $event)"
           >
-            <div
-              ng-if="Game.game.current_round.ready && Game.remote_id !== response.user_id && !response.guessed"
-              ng-click="displayGuessChoices({{response.id}}, $event)"
-            >
-              {{response.text}}
-            </div>
-            <div
-              ng-if="Game.game.current_round.ready && Game.remote_id !== response.user_id && response.guessed"
-            >
-              {{response.text}}
-            </div>
-            <div ng-if="!Game.game.current_round.ready && Game.game.guesser.id !== response.user_id">
-              ***REDACTED***
+            <div class="guessable">
+              {{Game.game.current_round.ready ? response.text : "*** REDACTED ***"}}
             </div>
           </li>
           <li

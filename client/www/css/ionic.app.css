@@ -9824,6 +9824,17 @@ img.empty {
   .guesser p {
     padding: 8px; }
 
+.guessed {
+  color: #9d9d9d; }
+  .guessed .guessable {
+    text-decoration: line-through; }
+
+.players .guessing, .responses .guessing {
+  background-color: #beadf3; }
+
+.players .activated, .responses .activated {
+  background-color: #e1dafa; }
+
 /** PROFILE **/
 .name {
   float: top;

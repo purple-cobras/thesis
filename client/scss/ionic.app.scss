@@ -35,6 +35,7 @@ $dark-accent: #295A34;
 $darker-accent: #164B22;
 
 $gray: #DDDDDD;
+$dark-gray: darken($gray, 25%);
 
 $font: "HelveticaNeue-Light";
 
@@ -124,6 +125,23 @@ img.empty {
   p {
     padding: 8px;
   }
+}
+
+.guessed {
+  color: $dark-gray;
+  .guessable {
+    text-decoration: line-through;
+  }
+}
+
+.players, .responses {
+  .guessing {
+    background-color: lighten($royal, 15%);
+  }
+  .activated {
+    background-color: lighten($royal, 25%);
+  }
+
 }
 
 

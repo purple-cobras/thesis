@@ -34,11 +34,36 @@ angular.module('app.game', [])
 
   $scope.kickoff = function () {
     Game.startGame();
-  }
+  };
+
+  $scope.processPlayerSelection = function (player, $event) {
+    if (!Game.amGuesser() || (Game.game.current_round.guesses && Game.game.current_round.guesses[player.id])) {
+      return;
+    } else {
+      $($event.target).siblings().removeClass('guessing');
+      if (Game.guess.user === player) {
+        Game.guess.user = undefined;
+      } else {
+        Game.guess.user = player;        
+      }
+    }
+  };
+
+  $scope.processResponseSelection = function (response, $event) {
+    if (!Game.amGuesser() || response.guessed) {
+      return;
+    } else {
+      if (Game.guess.response === response) {
+        Game.guess.response = undefined;
+      } else {
+        Game.guess.response = response;
+      }
+    }
+  };
 
   Game.getGame();
 
-  $scope.displayGuessChoices = function (response_id, $event) {
+  /*$scope.displayGuessChoices = function (response_id, $event) {
     var buttons = [];
     for (var i = 0; i < $scope.Game.game.players.length; i++) {
       if ($scope.Game.game.players[i].id !== store.get('remote_id')) {
@@ -70,12 +95,14 @@ angular.module('app.game', [])
         }
       }
     }
+    
+    
     var popup = $ionicPopup.show({
       template: '',
       title: $scope.Game.topic,
       scope: $scope,
       buttons: buttons
     });
-  }
+  }*/
 
 });

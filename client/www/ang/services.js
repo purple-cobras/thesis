@@ -225,6 +225,7 @@ angular.module('app.services', [])
     },
 
     submitGuess: function (guessInfo) {
+      guessInfo.guesser_id = store.get('remote_id');
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/guess',
         method: 'POST',
@@ -238,6 +239,10 @@ angular.module('app.services', [])
       .catch( function (error) {
         console.error(error);
       })
+      .finally(function () {
+        obj.guess.user = undefined;
+        obj.guess.response = undefined;
+      });
     },
 
     getPlayer: function (id) {
@@ -308,9 +313,21 @@ angular.module('app.services', [])
       var player = obj.game.players[i];
       if (player.id === guess.details.guesser_id) {
         guesser = player;
-        break;
       }
-     }
+      if (guess.result && guess.details.guessee_id === player.id) {
+        obj.game.current_round.guesses = obj.game.current_round.guesses || {};
+        obj.game.current_round.guesses[player.id] = true;
+      }
+    }
+    if (guess.result) {
+      for (var i = 0; i < obj.game.current_round.responses.length; i++) {
+        var response = obj.game.current_round.responses[i];
+        if (response.id === guess.details.response_id) {
+          response.guessed = true;
+          break;
+        }
+      }
+    }
     if (guess.result) {
       guesser.score = guesser.score + 1;
     }
