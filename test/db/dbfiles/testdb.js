@@ -5,7 +5,7 @@ var path = require('path');
 var expect = require('chai').expect;
 var request = require('request');
 var helpers = require('../server/helpers.js');
-var routes = require('../server/routes.js'
+var routes = require('../server/routes.js');
 var inputs = require('./schema').reverse();
 
 if (process.env.NODE_ENV !== 'production') {
