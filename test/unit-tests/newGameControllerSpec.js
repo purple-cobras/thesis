@@ -37,7 +37,7 @@ describe('newGameCtrl', function () {
       expect($scope.toggleInvite).toEqual(jasmine.any(Function));
     });
 
-    it('should do something with remove invites', function () {
+    xit('should remove invites', function () {
       var friend = {};
       if($scope.inviting[friend.id]){
         delete $scope.inviting[friend.id];
@@ -50,6 +50,45 @@ describe('newGameCtrl', function () {
       } else {
         $('.friends-count').text('(' + count + ' invited)');
       }
+    });
+  });
+
+  describe('#restrictScore', function () {
+
+    it('should not allow a player to pick a score higher than 50 or lower than 10', function () {
+      var spy = spyOn($scope, 'restrictScore');
+      $scope.restrictScore();
+        expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('#createGame', function () {
+
+    it('should create a game', function (done) {
+      $httpBackend.when('POST', Config.api + '/games');
+      done();
+    });
+
+    it('should redirect you to game upon successful completion', function () {
+      expect($scope.isDisabled).toEqual(false);
+      $httpBackend.when('POST', Config.api + '/games');
+      deferred.resolve(function (response){
+        if (response.data.game) {
+          //SOCKET EMIT gameCreated gameInfo.friend, .invitedBy
+          Game.updateGame()
+          .then(function () {
+            expect(spy).toHaveBeenCalledWith('game');
+          });
+        } else {
+          expect(console.log).toEqual('something went wrong');
+        }
+      });
+      deferred.reject(function (error) {
+          expect(console.log).toEqual(error);
+      });
+      deferred.resolve(function () {
+        expect($scope.isDisabled).toEqual(false);
+      })
     });
   });
 });

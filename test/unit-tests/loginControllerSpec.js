@@ -66,6 +66,8 @@ describe('loginCtrl', function () {
         expect($scope.logout).toEqual(jasmine.any(Function));
     });
 
+
+
     it('should call logout when account is logged out', function () {
         $scope.logout();
         expect(spy).toHaveBeenCalledWith('login');
