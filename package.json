@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha --reporter spec 'test/**/tests/*.js'",
-    "start": "gulp dev; nodemon server/server.js",
+    "start": "gulp dev && nodemon server/server.js",
     "postinstall": "npm install -g bower && cd client && npm install && bower install"
   },
   "repository": {
