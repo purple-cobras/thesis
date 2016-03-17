@@ -1,15 +1,15 @@
 angular.module('app.main', [])
 
 .controller('mainCtrl', function(
-    $scope, 
-    $state, 
-    $ionicHistory, 
-    Facebook, 
-    store, 
-    $rootScope, 
-    $http, 
-    Game, 
-    Auth, 
+    $scope,
+    $state,
+    $ionicHistory,
+    Facebook,
+    store,
+    $rootScope,
+    $http,
+    Game,
+    Auth,
     socket,
     $ionicPopup) {
 
@@ -23,7 +23,7 @@ angular.module('app.main', [])
     $state.go('newGame');
     $scope.isDisabled = false;
   };
-  
+
   $scope.account = function () {
     $ionicHistory.goBack();
   };
@@ -41,7 +41,7 @@ angular.module('app.main', [])
             $scope.invitations.push(invitation);
           }
         });
-      } 
+      }
     })
     .catch(function (error) {
       console.dir(error);
@@ -58,7 +58,7 @@ angular.module('app.main', [])
       }
     })
     .then(function (response) {
-      if (response.status === 200) {  
+      if (response.status === 200) {
         $scope.removeInvitation(invitation);
       }
       $scope.updateGame()
@@ -130,11 +130,5 @@ angular.module('app.main', [])
   socket.on('invited', function () {
     $scope.getInvitations();
   });
-  
 
-  //Would be better along is authenticated redirect around/from login
-  // socket.emit('onlineCheck', {
-  //   user_fb: store.get('profile').user_id.split('|')[1],
-  //   name: store.get('profile').name
-  // });
 });
