@@ -62,12 +62,17 @@
             ng-repeat="response in Game.game.current_round.responses"
           >
             <div
-              ng-if="Game.game.current_round.ready"
-              ng-click="listChoices({{response.id}})"
+              ng-if="Game.game.current_round.ready && Game.remote_id !== response.user_id && !response.guessed"
+              ng-click="displayGuessChoices({{response.id}}, $event)"
             >
               {{response.text}}
             </div>
-            <div ng-if="!Game.game.current_round.ready">
+            <div
+              ng-if="Game.game.current_round.ready && Game.remote_id !== response.user_id && response.guessed"
+            >
+              {{response.text}} - Correctly guessed as {{Game.getPlayer(response.user_id).full_name}}
+            </div>
+            <div ng-if="!Game.game.current_round.ready && Game.game.guesser.id !== response.user_id">
               ***REDACTED***
             </div>
           </li>

@@ -94,7 +94,7 @@ module.exports.createGame = function (data, my_fb_id) {
       })
     });
   });
-  
+
 }
 
 module.exports.inviteFriends = function (game, friends, my_id) {
@@ -233,7 +233,7 @@ module.exports.getGame = function (game_id) {
           res({
             rounds: polishedRounds,
             players: players,
-            game: game 
+            game: game
           });
         });
       });
@@ -315,7 +315,7 @@ module.exports.startRound = function (game_id, reader_id) {
         round.fetch({withRelated: ['reader']})
         .then(function (round) {
           socket.newRound(game_id, round);
-          res(round); 
+          res(round);
         })
         .catch(function (error) {
           console.log(error);
@@ -348,7 +348,7 @@ module.exports.saveResponse = function (round_id, response, user_id) {
   var text = response;
   return new Promise(function (res, rej) {
     models.Response.forge({
-      round_id: round_id, 
+      round_id: round_id,
       user_id: user_id
     }).fetch()
     .then(function (response) {
@@ -418,7 +418,7 @@ module.exports.setGuesser = function (game_id, players) {
     .catch(function (error) {
       rej(error);
     })
-  }); 
+  });
 };
 
 module.exports.resolveGuess = function (round_id, guess) {

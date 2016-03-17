@@ -228,11 +228,26 @@ angular.module('app.services', [])
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/guess',
         method: 'POST',
-        data: guessInfo
+        data: {
+          guess: guessInfo
+        }
       })
       .then( function (res) {
-        console.log(res);
+        return res;
       })
+      .catch( function (error) {
+        console.error(error);
+      })
+    },
+
+    getPlayer: function (id) {
+      var player;
+      for (var i = 0; i < obj.game.players.length; i++) {
+        if (obj.game.players[i].id === id) {
+          player = obj.game.players[i];
+        }
+      }
+      return player;
     }
   }
 
