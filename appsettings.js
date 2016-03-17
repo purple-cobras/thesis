@@ -7,7 +7,7 @@ Config = {
   api: 'http://black-mamba.herokuapp.com',
   // @endif
   // @if NODE_ENV == 'PRODUCTION'
-  api: '',
+  api: 'http://black-mamba.herokuapp.com',
   // @endif
   // @if NODE_ENV == 'ANDROID'
   api: 'http://192.168.56.1:8080',
