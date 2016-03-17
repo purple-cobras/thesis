@@ -219,7 +219,7 @@ module.exports.getGame = function (game_id) {
             var polishedResponses = [];
             round.relations.responses.models.forEach(function (response) {
               polishedResponses.push(response.attributes);
-            })
+            });
             polishedRounds[polishedRounds.length - 1].responses = polishedResponses;
             var polishedGuesses = {};
             round.relations.guesses.models.forEach(function (guess) {
@@ -228,7 +228,7 @@ module.exports.getGame = function (game_id) {
             polishedRounds[polishedRounds.length - 1].guesses = polishedGuesses;
           });
           if (game.relations.guesser) {
-            game.attributes.guesser = game.relations.guesser;
+            game.attributes.guesser = game.relations.guesser
           }
           res({
             rounds: polishedRounds,
@@ -399,10 +399,14 @@ module.exports.setGuesser = function (game_id, players) {
           }
         }
       }
-      if (currentGuesserIndex === undefined || currentGuesserIndex === players.length) {
+      if (currentGuesserIndex === undefined ) {
         newGuesserIndex = 1;
       } else {
-        newGuesserIndex = currentGuesserIndex + 1;
+        if (currentGuesserIndex === players.length - 1) {
+          newGuesserIndex = 0;
+        } else {
+          newGuesserIndex = currentGuesserIndex + 1;
+        }
       }
       var newGuesser = players[newGuesserIndex];
       game.save('guesser_id', newGuesser.id)
@@ -415,6 +419,55 @@ module.exports.setGuesser = function (game_id, players) {
       rej(error);
     })
   }); 
+};
+
+module.exports.resolveGuess = function (round_id, guess) {
+  return new Promise(function (res, rej) {
+    models.Round.forge({id: round_id}).fetch({withRelated: ['responses', 'game']})
+    .then(function (round) {
+      if (round.relations.game.attributes.guesser_id !== guess.guesser_id) {
+        rej({error: 'not your turn'});
+        return;
+      }
+      var correct = round.relations.responses._byId[guess.response_id].attributes.user_id === guess.guessee_id;
+      if (correct) {
+        module.exports.findOrCreate(models.UserRound, {user_id: guess.guessee_id, round_id: round_id})
+        .then(function (userRound) {
+          userRound.save({guessed: true})
+          .then(function () {
+            models.UserGame.forge({user_id: guess.guesser_id, game_id: round.get('game_id')}).fetch()
+            .then(function (user_game) {
+              var newScore = user_game.get('score') + 1;
+              user_game.save({score: newScore})
+              .then(function () {
+                models.Response.forge({id: guess.response_id}).fetch()
+                .then(function (response) {
+                  response.save({guessed: true})
+                  .then(function () {
+                    socket.newGuess(round, {result: correct, details: guess});
+                    res(correct);
+                  });
+                });
+              });
+            });
+          });
+        });
+      } else {
+        module.exports.getPlayers(round.get('game_id'))
+        .then(function (players) {
+          module.exports.setGuesser(round.get('game_id'), players)
+          .then(function () {
+            socket.newGuess(round, {result: correct, details: guess});
+            res(correct);
+          });
+        });
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+      rej(error);
+    })
+  });
 };
 
 module.exports.eventEmitter = eventEmitter;
