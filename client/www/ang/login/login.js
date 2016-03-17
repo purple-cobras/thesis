@@ -71,6 +71,6 @@ angular.module('app.login', [])
     $state.go('main');
   }
 
-  
+
 
 });
