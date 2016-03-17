@@ -3,9 +3,7 @@ var Bookshelf = require('bookshelf');
 var env = require('node-env-file');
 var path = require('path');
 var expect = require('chai').expect;
-var helpers = require('../server/helpers.js');
-var routes = require('../server/routes.js');
-var inputs = require('./schema').reverse();
+
 
 if (process.env.NODE_ENV !== 'production') {
   env(path.resolve('.env'));
