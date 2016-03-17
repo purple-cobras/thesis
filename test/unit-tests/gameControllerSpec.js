@@ -39,8 +39,8 @@ describe('gameCtrl', function () {
       expect($scope.back).toEqual(jasmine.any(Function));
     });
 
-    it('should do something with IonicHistory', function () {
-    
+    xit('should do something with IonicHistory', function () {
+
     });
   });
 });

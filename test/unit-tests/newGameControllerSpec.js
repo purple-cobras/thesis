@@ -88,7 +88,7 @@ describe('newGameCtrl', function () {
       });
       deferred.resolve(function () {
         expect($scope.isDisabled).toEqual(false);
-      })
+      });
     });
   });
 });
