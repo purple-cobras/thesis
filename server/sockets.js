@@ -127,7 +127,14 @@ module.exports.init = function(server){
       });
     };
 
+    module.exports.refreshInvites = function (user_ids) {
+      user_ids.forEach( function (user_id) {
+        online[user_id].forEach( function (instance) {
+          io.to(instance.socket_id).emit('refreshInvites');
+        });
+      });
+    }
+
   });
 
 };
-
