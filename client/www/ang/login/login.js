@@ -25,7 +25,6 @@ angular.module('app.login', [])
           store.set('games', response.data.games.length);
           store.set('created_at', response.data.user.created_at);
           getProfilePic().then(function (response) {
-            // console.log('***pic_url: ', pic_url)
             $scope.profile = {
               name: store.get('profile').name,
               pic_url: store.get('pic_url'),
@@ -58,15 +57,10 @@ angular.module('app.login', [])
     Auth.logout();
   };
 
-  var establish = function () {
-    socket.emit('establish', {
-      id: store.get('remote_id')
-    });
-  };
-
   var getProfilePic = function () {
     var facebookId = store.get('profile').user_id.split('|')[1];
-    var query = '/' + facebookId + '/picture' + '?access_token' + store.get('fb_access_token') + '$type=normal';
+    console.log('facebookId: ', facebookId)
+    var query = '/' + facebookId + '/picture' + '?access_token=' + store.get('fb_access_token') + '&type=normal';
     return Facebook.api(query, function (response) {
         if (response.error) {
           console.log('Facebook API error: ', response.error);
@@ -75,6 +69,12 @@ angular.module('app.login', [])
         store.set('pic_url', response.data.url);
       }
     )
+  };
+
+  var establish = function () {
+    socket.emit('establish', {
+      id: store.get('remote_id')
+    });
   };
 
   if (auth.isAuthenticated) {
@@ -87,7 +87,5 @@ angular.module('app.login', [])
     })
     $state.go('main');
   }
-
-
 
 });
