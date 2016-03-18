@@ -310,12 +310,11 @@ angular.module('app.services', [])
   });
 
   socket.on('guess', function (guess) {
-    var guesser  = obj.game.guesser;
     var guessedResponse;
     for (var i = 0; i < obj.game.players.length; i++) {
       var player = obj.game.players[i];
       if (player.id === guess.details.guesser_id) {
-        guesser = player;
+        obj.game.guesser = player;
       }
       if (guess.result && guess.details.guessee_id === player.id) {
         obj.game.current_round.guesses = obj.game.current_round.guesses || {};
@@ -331,9 +330,7 @@ angular.module('app.services', [])
           break;
         }
       }
-    }
-    if (guess.result) {
-      guesser.score = guesser.score + 1;
+      obj.game.guesser.score = obj.game.guesser.score + 1;
     }
     if (obj.amGuesser()) {
       return;
@@ -343,7 +340,6 @@ angular.module('app.services', [])
     $timeout(function () {
       obj.game.guess_message = '';
     }, 2500);
-
   });
 
   return obj;
