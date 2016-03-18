@@ -42,6 +42,7 @@ module.exports.init = function(server){
       for (var i = 0; i < online[user_id].length; i++) {
         if (online[user_id][i] && online[user_id][i].socket_id === socket.id) {
           online[user_id].splice(i, 1);
+          break;
         }
       }
       delete index[socket.id];
