@@ -18,7 +18,9 @@ module.exports.init = function(server){
     socket.on('gameCreated', function (gameInfo) {
       for(var friend in gameInfo.friends) {
         if (online[friend]) {
-          io.to(online[friend].socket_id).emit('invite', gameInfo.invitedBy);
+          for (var i = 0; i < online[friend].length; i++) {
+            io.to(online[friend][i].socket_id).emit('invite', gameInfo.invitedBy);
+          }
         }
       }
     });
@@ -46,7 +48,14 @@ module.exports.init = function(server){
     socket.on('disconnect', function () {
       //TODO: make this less performance intensive
       var user_id = index[socket.id];
-      delete online[user_id];
+      if (!online[user_id]) {
+        return;
+      }
+      for (var i = 0; i < online[user_id].length; i++) {
+        if (online[user_id][i] && online[user_id][i].socket_id === socket.id) {
+          online[user_id].splice(i, 1);
+        }
+      }
       delete index[socket.id];
 
     });
@@ -56,11 +65,14 @@ module.exports.init = function(server){
     });
 
     var markConnected = function (userInfo) {
-      online[userInfo.id] = {
+      if (!online[userInfo.id]) {
+        online[userInfo.id] = [];
+      }
+      online[userInfo.id].push({
         socket_id: socket.id,
         user_id: userInfo.id,
         loginTime: new Date()
-      }
+      });
       index[socket.id] = userInfo.id;
     };
 
@@ -69,7 +81,9 @@ module.exports.init = function(server){
       if (!online[user_id]) {
         return;
       }
-      io.to(online[user_id].socket_id).emit('invited');
+      for (var i = 0; i < online[user_id].length; i++) {
+        io.to(online[user_id][i].socket_id).emit('invited');
+      }
     };
 
     module.exports.inviteResult = function (players, result) {
@@ -77,7 +91,9 @@ module.exports.init = function(server){
         if (!online[player.id]) {
           return;
         }
-        io.to(online[player.id].socket_id).emit('invite response');
+        for (var i = 0; i < online[player.id].length; i++) {
+          io.to(online[player.id][i].socket_id).emit('invite response');
+        }
       });
     };
 
