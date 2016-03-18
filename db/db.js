@@ -41,7 +41,7 @@ var runInput = function (inputs) {
       console.log('any/all pending migrations complete');
     })
     .catch(function (error) {
-      console.log('migration error');
+      console.error('migration error: ', error);
     });
   }
 };

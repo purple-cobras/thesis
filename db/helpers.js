@@ -6,6 +6,20 @@ var eventEmitter = new events.EventEmitter();
 var path = require('path');
 var socket = require(path.resolve('server/sockets'));
 
+module.exports.getAllUserGames = function (user_id) {
+  return new Promise (function (resolve, reject) {
+    db.knex.select()
+      .from('users_games')
+      .where('user_id', user_id)
+      .then(function (games) {
+        resolve(games);
+      })
+      .catch(function (error) {
+        reject(error);
+      })
+  });
+};
+
 module.exports.findOrCreate = function (Model, attributes) {
 
   return new Promise (function (resolve, reject) {
