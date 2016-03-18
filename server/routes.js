@@ -67,7 +67,6 @@ var routes = [
   {
     path: '/signin',
     post: function (req, res) {
-      helpers.getAllUserGames(1);
       helpers.findOrCreate(models.User, {'facebook_id': req.user.sub.split('|')[1]})
       .then( function (user) {
         user.set('full_name', req.body.name)

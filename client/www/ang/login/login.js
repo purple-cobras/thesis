@@ -23,7 +23,6 @@ angular.module('app.login', [])
         data: {name: profile.name, pic_url: profile.picture}
       })
       .then(function (response) {
-        // console.log('response.data.user: ', response.data.user)
         if (response.data.user) {
           store.set('games', response.data.games.length);
           store.set('created_at', response.data.user.created_at);
