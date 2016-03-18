@@ -59,8 +59,7 @@ angular.module('app.login', [])
 
   var getProfilePic = function () {
     var facebookId = store.get('profile').user_id.split('|')[1];
-    console.log('facebookId: ', facebookId)
-    var query = '/' + facebookId + '/picture' + '?access_token=' + store.get('fb_access_token') + '&type=normal';
+    var query = '/' + facebookId + '/picture?access_token=' + store.get('fb_access_token') + '&type=normal';
     return Facebook.api(query, function (response) {
         if (response.error) {
           console.log('Facebook API error: ', response.error);

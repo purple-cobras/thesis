@@ -6,11 +6,14 @@ var eventEmitter = new events.EventEmitter();
 var path = require('path');
 var socket = require(path.resolve('server/sockets'));
 
-module.exports.getAllUserGames = function (user_id) {
+module.exports.getGamesProfile = function (user_id) {
   return new Promise (function (resolve, reject) {
     db.knex.select()
       .from('users_games')
-      .where('user_id', user_id)
+      .where({
+        user_id: user_id,
+        invite: 1
+      })
       .then(function (games) {
         resolve(games);
       })
