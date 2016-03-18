@@ -18,7 +18,8 @@ angular.module('app',
     'auth0',
     'angular-storage',
     'facebook',
-    'angular-jwt'
+    'angular-jwt',
+    'ionic-toast'
   ]
 )
 

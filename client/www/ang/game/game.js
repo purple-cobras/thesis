@@ -37,7 +37,7 @@ angular.module('app.game', [])
   };
 
   $scope.processPlayerSelection = function (player, $event) {
-    if (!Game.amGuesser() || 
+    if (!Game.amGuesser() ||
         (Game.game.current_round.guesses && Game.game.current_round.guesses[player.id]) ||
         player.id === store.get('remote_id')) {
       return;
@@ -45,7 +45,7 @@ angular.module('app.game', [])
       if (Game.guess.user === player) {
         Game.guess.user = undefined;
       } else {
-        Game.guess.user = player;        
+        Game.guess.user = player;
       }
     }
   };
@@ -96,8 +96,8 @@ angular.module('app.game', [])
         }
       }
     }
-    
-    
+
+
     var popup = $ionicPopup.show({
       template: '',
       title: $scope.Game.topic,

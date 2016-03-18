@@ -307,7 +307,24 @@ module.exports.startGame = function (game_id) {
         .then(function (players) {
           socket.gameStarted(game_id);
           module.exports.startRound(game_id, game.get('creator_id'));
-          res();
+          db.knex('users_games')
+          .where('game_id', game_id)
+          .whereNull('invite')
+          .then( function (usersGames) {
+            var playersRejected = [];
+            usersGames.forEach(function (userGame) {
+              if (userGame.invite === null) {
+                playersRejected.push(userGame.user_id);
+                models.UserGame.forge({id: userGame.id}).fetch()
+                .then( function (ug) {
+                  ug.set('invite', 2)
+                  .save();
+                });
+              }
+            });
+            socket.refreshInvites(playersRejected);
+            res();
+          });
         });
       });
     })

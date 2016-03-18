@@ -62,6 +62,7 @@ angular.module('app.newGame', [])
       }
     })
     .catch(function (error) {
+      console.dir(error)
         console.log('error', error);
     })
     .finally(function () {

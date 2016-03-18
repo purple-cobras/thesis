@@ -11,7 +11,8 @@ angular.module('app.main', [])
     Game,
     Auth,
     socket,
-    $ionicPopup) {
+    $ionicPopup,
+    ionicToast) {
 
   angular.extend($scope, Game);
 
@@ -128,6 +129,11 @@ angular.module('app.main', [])
   Game.updateGame();
 
   socket.on('invited', function () {
+    $scope.getInvitations();
+  });
+
+  socket.on('refreshInvites', function () {
+    ionicToast.show('Missed the boat', 'top', false, 2000);
     $scope.getInvitations();
   });
 
