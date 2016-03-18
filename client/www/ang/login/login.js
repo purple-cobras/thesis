@@ -17,15 +17,22 @@ angular.module('app.login', [])
       store.set('fb_access_token', profile.identities[0].access_token);
       store.set('token', token);
       store.set('refreshToken', refreshToken);
-      $scope.pic_url = profile.picture;
-      $scope.name = profile.name;
       $http({
         method: 'post',
         url: Config.api + '/signin',
         data: {name: profile.name, pic_url: profile.picture}
       })
       .then(function (response) {
+        // console.log('response.data.user: ', response.data.user)
         if (response.data.user) {
+          store.set('games', response.data.games.length);
+          store.set('created_at', response.data.user.created_at);
+          $scope.profile = {
+            name: store.get('name'),
+            pic_url: store.get('pic_url'),
+            games: store.get('games'),
+            created_at: store.get('created_at')
+          }
           store.set('remote_id', response.data.user.id);
           store.set('current_game_id', response.data.user.current_game_id);
           Game.game.id = response.data.user.current_game_id;
@@ -46,9 +53,6 @@ angular.module('app.login', [])
       $scope.logout();
     });
   };
-
-  $scope.pic_url = store.get('pic_url');
-  $scope.name = store.get('name');
 
   $scope.logout = function () {
     Auth.logout();

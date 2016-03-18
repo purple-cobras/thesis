@@ -67,12 +67,16 @@ var routes = [
   {
     path: '/signin',
     post: function (req, res) {
+      helpers.getAllUserGames(1);
       helpers.findOrCreate(models.User, {'facebook_id': req.user.sub.split('|')[1]})
       .then( function (user) {
         user.set('full_name', req.body.name)
         .set('pic_url', req.body.pic_url).save()
         .then(function (user) {
-          res.json({user: user});
+          helpers.getAllUserGames(user.id)
+            .then(function (games) {
+              res.json({user: user, games: games});
+            })
         })
       })
       .catch(function (error) {
