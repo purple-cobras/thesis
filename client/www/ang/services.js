@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.factory('Game', ['$q', '$http', 'store', 'socket', function($q, $http, store, socket){
+.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', function($q, $http, store, socket, $timeout){
 
   var obj = {
     submitting: false,
@@ -22,6 +22,8 @@ angular.module('app.services', [])
       max_score: undefined,
 
       guesser: undefined,
+
+      guess_message: '',
 
       //Array of objects, with id, name, guessed, and score
       players: [],
@@ -256,7 +258,7 @@ angular.module('app.services', [])
     },
 
     amGuesser: function () {
-      return obj.game.guesser.id === store.get('remote_id');
+      return obj.game.guesser && obj.game.guesser.id === store.get('remote_id');
     }
   }
 
@@ -309,6 +311,7 @@ angular.module('app.services', [])
 
   socket.on('guess', function (guess) {
     var guesser  = obj.game.guesser;
+    var guessedResponse;
     for (var i = 0; i < obj.game.players.length; i++) {
       var player = obj.game.players[i];
       if (player.id === guess.details.guesser_id) {
@@ -323,6 +326,7 @@ angular.module('app.services', [])
       for (var i = 0; i < obj.game.current_round.responses.length; i++) {
         var response = obj.game.current_round.responses[i];
         if (response.id === guess.details.response_id) {
+          guessedResponse = response;
           response.guessed = true;
           break;
         }
@@ -331,6 +335,15 @@ angular.module('app.services', [])
     if (guess.result) {
       guesser.score = guesser.score + 1;
     }
+    if (obj.amGuesser()) {
+      return;
+    }
+    var result = guess.result ? 'Correct!' : 'Wrong!'
+    obj.game.guess_message = guesser.full_name + ' guessed "' + guessedResponse.text + '". ' + result + '. ';
+    $timeout(function () {
+      obj.game.guess_message = '';
+    }, 2500);
+
   });
 
   return obj;

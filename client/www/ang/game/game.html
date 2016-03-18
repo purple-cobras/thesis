@@ -36,6 +36,7 @@
     </div>
     <div class="guesser" ng-if="Game.game.guesser.id">
       <p>Guesser: {{Game.amGuesser() ? "IT\'S YOU. GUESS." : Game.game.guesser.full_name}}</p>
+      <p ng-bind="Game.game.guess_message"></p>
     </div>
 
     <div class="guess-space" ng-if="Game.amGuesser()">
