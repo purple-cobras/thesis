@@ -9803,6 +9803,9 @@ img.empty {
   .game-inputs input[type="text"][disabled="disabled"] {
     background-color: white; }
 
+.round-count {
+  text-align: right; }
+
 .topic {
   text-align: center;
   font-size: 1.2em; }
@@ -9841,7 +9844,12 @@ img.empty {
   padding: 0px; }
 
 /** PROFILE **/
+.profile {
+  color: #444; }
+
 .name {
   float: top;
-  color: #444;
-  font-size: 22px; }
+  font-size: 1.5em; }
+
+.stats {
+  font-size: 0.9em; }

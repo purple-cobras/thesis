@@ -98,8 +98,8 @@ angular.module('app.services', [])
             break;
           }
         }
-        obj.rounds = results.rounds;
-        var lastRound = obj.rounds[obj.rounds.length - 1];
+        obj.game.rounds = results.rounds;
+        var lastRound = obj.game.rounds[0];
         if (lastRound && lastRound.reader_id === store.get('remote_id')) {
           obj.isReader = true;
         } else {
@@ -124,7 +124,7 @@ angular.module('app.services', [])
       obj.started = false;
       obj.isCreator = false;
       obj.game.players = [];
-      obj.rounds = [];
+      obj.game.rounds = [];
       obj.game.topic = '';
       obj.game.id = undefined;
       obj.game.guesser = undefined;
@@ -147,7 +147,7 @@ angular.module('app.services', [])
         //Current round's topic
         topic: ''
       };
-      obj.rounds = [];
+      obj.game.rounds = [];
       obj.response = '';
       obj.current_round = {
         max_score: undefined,
@@ -198,6 +198,7 @@ angular.module('app.services', [])
       })
       .then(function (response) {
         if (response.data.submitted) {
+          obj.topic = '';
           obj.game.current_round.topic = cacheTopic;
         }
       })
@@ -271,11 +272,17 @@ angular.module('app.services', [])
   });
 
   socket.on('round', function (round) {
-    obj.rounds.push(round);
+    obj.game.rounds.unshift(round);
     if (round.reader_id === store.get('remote_id')) {
       obj.isReader = true;
+    } else {
+      obj.isReader = false;
     }
+    obj.game.guesser = undefined;
+    obj.game.guess_message = '';
     obj.game.current_round = round;
+    obj.game.current_round.ready = false;
+    obj.game.current_round.topic = '';
   });
 
   socket.on('topic', function (topic) {
@@ -306,6 +313,7 @@ angular.module('app.services', [])
   });
 
   socket.on('guesser', function (guesser) {
+    obj.response = '';
     obj.game.guesser = guesser;
   });
 
@@ -336,7 +344,7 @@ angular.module('app.services', [])
       return;
     }
     var result = guess.result ? 'Correct!' : 'Wrong!'
-    obj.game.guess_message = guesser.full_name + ' guessed "' + guessedResponse.text + '". ' + result + '. ';
+    obj.game.guess_message = obj.game.guesser.full_name + ' guessed "' + guessedResponse.text + '". ' + result + '. ';
     $timeout(function () {
       obj.game.guess_message = '';
     }, 2500);
