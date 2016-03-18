@@ -35,6 +35,7 @@ $dark-accent: #295A34;
 $darker-accent: #164B22;
 
 $gray: #DDDDDD;
+$dark-gray: darken($gray, 25%);
 
 $font: "HelveticaNeue-Light";
 
@@ -114,6 +115,41 @@ img.empty {
 
 .score {
   float: right;
+}
+
+.guesser {
+  text-align: center;
+  background-color: $gray;
+  font-size: 1.5em;
+  border-radius: 5px;
+  p {
+    padding: 8px;
+  }
+}
+
+.guessed {
+  color: $dark-gray;
+  .guessable {
+    text-decoration: line-through;
+  }
+}
+
+.players, .responses {
+  .guessing {
+    background-color: lighten($royal, 15%);
+  }
+  .activated {
+    background-color: lighten($royal, 25%);
+  }
+
+}
+
+.guesser {
+  p:empty {
+    height: 0px;
+    margin: 0px;
+    padding: 0px;
+  }
 }
 
 

@@ -9816,6 +9816,30 @@ img.empty {
 .score {
   float: right; }
 
+.guesser {
+  text-align: center;
+  background-color: #DDDDDD;
+  font-size: 1.5em;
+  border-radius: 5px; }
+  .guesser p {
+    padding: 8px; }
+
+.guessed {
+  color: #9d9d9d; }
+  .guessed .guessable {
+    text-decoration: line-through; }
+
+.players .guessing, .responses .guessing {
+  background-color: #beadf3; }
+
+.players .activated, .responses .activated {
+  background-color: #e1dafa; }
+
+.guesser p:empty {
+  height: 0px;
+  margin: 0px;
+  padding: 0px; }
+
 /** PROFILE **/
 .name {
   float: top;
