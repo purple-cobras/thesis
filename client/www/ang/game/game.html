@@ -9,10 +9,22 @@
       Kick this party off
     </button>
     <div ng-if="game.players.length < 2">You need at least one friend to join</div>
-    <div ng-if="!Game.started && !Game.isCreator">Waiting to start the game...</div>
+    <h4 class="topic" ng-if="!Game.started && !Game.isCreator">Waiting to start the game...</h4>
     <h4 class="topic" ng-bind="game.current_round.topic"></h4>
-    <h4>Reader: <span ng-bind="game.current_round.reader_name"></h4>
-    <h4 class="max-score">Game to: <span ng-bind="game.max_score"></h4>
+    <h4 class="topic" ng-if="Game.started && !game.current_round.topic.length">Waiting for a clever topic...</h4>
+    <div class="row">
+      <div class="col">
+        <h4>Reader: <span ng-bind="game.current_round.reader_name"></span></h4>
+      </div>
+      <div class="col">
+        <h4 ng-if="Game.game.rounds.length" class="round-count">Round #{{Game.game.rounds.length}}</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h4 class="max-score">Game to: <span ng-bind="game.max_score"></span></h4>
+      </div>
+    </div>
   <hr />
     <div class="list game-inputs">
       <div ng-if="(!Game.isReader || Game.game.current_round.topic.length) && !Game.game.current_round.ready" class="response-field">

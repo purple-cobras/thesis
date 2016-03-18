@@ -9803,6 +9803,9 @@ img.empty {
   .game-inputs input[type="text"][disabled="disabled"] {
     background-color: white; }
 
+.round-count {
+  text-align: right; }
+
 .topic {
   text-align: center;
   font-size: 1.2em; }
