@@ -317,10 +317,11 @@ angular.module('app.services', [])
   socket.on('guess', function (guess) {
     var guessedResponse;
     var guessee;
+    var guesser;
     for (var i = 0; i < obj.game.players.length; i++) {
       var player = obj.game.players[i];
       if (player.id === guess.details.guesser_id) {
-        obj.game.guesser = player;
+        guesser = player;
       }
       if (player.id === guess.details.guessee_id) {
         guessee = player;
@@ -330,22 +331,21 @@ angular.module('app.services', [])
         obj.game.current_round.guesses[player.id] = true;
       }
     }
-    if (guess.result) {
-      for (var i = 0; i < obj.game.current_round.responses.length; i++) {
-        var response = obj.game.current_round.responses[i];
-        if (response.id === guess.details.response_id) {
-          guessedResponse = response;
+    for (var i = 0; i < obj.game.current_round.responses.length; i++) {
+      var response = obj.game.current_round.responses[i];
+      if (response.id === guess.details.response_id) {
+        guessedResponse = response;
+        if (guess.result) {
           response.guessed = true;
-          break;
         }
+        break;
       }
-      obj.game.guesser.score = obj.game.guesser.score + 1;
     }
-    if (obj.amGuesser()) {
-      return;
+    if (guess.result) {
+      guesser.score = guesser.score + 1;
     }
     var result = guess.result ? 'Correct!' : 'Wrong!'
-    var guess_message = obj.game.guesser.full_name + ' guessed "' + guessedResponse.text + '" was written by ' + guessee.full_name + '. ' + result;
+    var guess_message = guesser.full_name + ' guessed "' + guessedResponse.text + '" was written by ' + guessee.full_name + '. ' + result;
     ionicToast.show(guess_message, 'top', false, 2500);
   });
 
