@@ -131,4 +131,8 @@ angular.module('app.main', [])
     $scope.getInvitations();
   });
 
+  socket.on('refreshInvites', function () {
+    $scope.getInvitations();
+  });
+
 });
