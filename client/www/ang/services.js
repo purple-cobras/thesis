@@ -198,7 +198,7 @@ angular.module('app.services', [])
       })
       .then(function (response) {
         if (response.data.submitted) {
-          obj.game.topic = '';
+          obj.topic = '';
           obj.game.current_round.topic = cacheTopic;
         }
       })
