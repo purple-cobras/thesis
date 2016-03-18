@@ -8,13 +8,16 @@
             <div>
                 <p class="auth-error"></p>
             </div>
-<!--             <div class="spacer" style="height: 40px;"></div> -->
             <a ng-if="!auth.isAuthenticated" ng-click="login()" class="button button-stable button-block button-large">Log in</a>
             <div ng-if="auth.isAuthenticated">
                     <div class="list">
                         <div class="item-thumbnail-left">
-                            <img ng-src={{pic_url}}>
-                            <span class="name">{{name}}</span>
+                            <img ng-src={{profile.pic_url}}>
+                            <span class="profile name">{{profile.name}}</span>
+                            <br>
+                            <span class="profile stats">Black Mamba player since {{profile.created_at | date:'mediumDate'}}</span>
+                            <br>
+                            <span class="profile stats">Games played: {{profile.games}}</span>
                         </div>
                     </div>
                     <a ng-click="logout()" class="button button-stable button-block button-large">Log out</a>
