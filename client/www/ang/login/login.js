@@ -10,7 +10,6 @@ angular.module('app.login', [])
         device: 'Mobile device'
       },
     }, function (profile, token, accessToken, state, refreshToken) {
-      console.log('profile: ', profile)
       store.set('profile', profile);
       store.set('fb_access_token', profile.identities[0].access_token);
       store.set('token', token);
@@ -22,18 +21,11 @@ angular.module('app.login', [])
       })
       .then(function (response) {
         if (response.data.user) {
-          store.set('games', response.data.games.length);
+          store.set('games_played', response.data.games.length);
           store.set('created_at', response.data.user.created_at);
-          getProfilePic().then(function (response) {
-            $scope.profile = {
-              name: store.get('profile').name,
-              pic_url: store.get('pic_url'),
-              games: store.get('games'),
-              created_at: store.get('created_at')
-            };
-          });
           store.set('remote_id', response.data.user.id);
           store.set('current_game_id', response.data.user.current_game_id);
+          setProfile();
           Game.game.id = response.data.user.current_game_id;
           Game.getGame();
           //SOCKET EMIT login userInfo.fb ,.name
@@ -68,6 +60,17 @@ angular.module('app.login', [])
         store.set('pic_url', response.data.url);
       }
     )
+  };
+
+  var setProfile = function () {
+    getProfilePic().then(function() {
+      $scope.profile = {
+        name: store.get('profile').name,
+        picUrl: store.get('pic_url'),
+        gamesPlayed: store.get('games_played'),
+        createdAt: store.get('created_at')
+      };      
+    });
   };
 
   var establish = function () {
