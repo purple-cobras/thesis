@@ -65,7 +65,7 @@
         </div>
         <ion-list>
           <li
-            class="item"
+            class="item item-text-wrap"
             ng-repeat="player in game.players"
             ng-class="{guessed: Game.game.current_round.guesses[player.id], guessing: Game.guess.user === player}"
             ng-click="processPlayerSelection(player, $event)"
@@ -85,7 +85,7 @@
         </div>
         <ion-list>
           <li
-            class="item"
+            class="item item-text-wrap"
             ng-repeat="response in Game.game.current_round.responses"
             ng-class="{guessed: response.guessed, guessing: Game.guess.response === response}"
             ng-click="processResponseSelection(response, $event)"
