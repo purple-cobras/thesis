@@ -1,6 +1,6 @@
 angular.module('app.login', [])
 
-.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game, Auth, socket) {
+.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game, Auth, socket, Facebook) {
   $scope.auth = auth;
 
   $scope.login = function () {
@@ -12,8 +12,6 @@ angular.module('app.login', [])
     }, function (profile, token, accessToken, state, refreshToken) {
       console.log('profile: ', profile)
       store.set('profile', profile);
-      store.set('pic_url', profile.picture);
-      store.set('name', profile.name);
       store.set('fb_access_token', profile.identities[0].access_token);
       store.set('token', token);
       store.set('refreshToken', refreshToken);
@@ -26,12 +24,15 @@ angular.module('app.login', [])
         if (response.data.user) {
           store.set('games', response.data.games.length);
           store.set('created_at', response.data.user.created_at);
-          $scope.profile = {
-            name: store.get('name'),
-            pic_url: store.get('pic_url'),
-            games: store.get('games'),
-            created_at: store.get('created_at')
-          }
+          getProfilePic().then(function (response) {
+            // console.log('***pic_url: ', pic_url)
+            $scope.profile = {
+              name: store.get('profile').name,
+              pic_url: store.get('pic_url'),
+              games: store.get('games'),
+              created_at: store.get('created_at')
+            };
+          });
           store.set('remote_id', response.data.user.id);
           store.set('current_game_id', response.data.user.current_game_id);
           Game.game.id = response.data.user.current_game_id;
@@ -61,6 +62,19 @@ angular.module('app.login', [])
     socket.emit('establish', {
       id: store.get('remote_id')
     });
+  };
+
+  var getProfilePic = function () {
+    var facebookId = store.get('profile').user_id.split('|')[1];
+    var query = '/' + facebookId + '/picture' + '?access_token' + store.get('fb_access_token') + '$type=normal';
+    return Facebook.api(query, function (response) {
+        if (response.error) {
+          console.log('Facebook API error: ', response.error);
+          return;
+        } 
+        store.set('pic_url', response.data.url);
+      }
+    )
   };
 
   if (auth.isAuthenticated) {
