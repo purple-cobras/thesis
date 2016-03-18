@@ -276,6 +276,7 @@ module.exports.getPlayers = function (game_id) {
     .groupBy('users.id')
     .groupBy('users.pic_url')
     .groupBy('users_games.score')
+    .orderBy('users.id', 'desc')
     .whereNot('users_games.invite', 2)
     .whereNotNull('users_games.invite')
     .then(function (players) {
@@ -405,7 +406,7 @@ module.exports.saveResponse = function (round_id, response, user_id) {
             module.exports.getPlayers(round.attributes.game_id)
             .then(function (players) {
               if (players.length === round.relations.responses.models.length) {
-                module.exports.setGuesser(round.attributes.game_id, players)
+                module.exports.setGuesser(round.attributes.game_id, players, round)
                 .then(function () {
                   res(response);
                 })
@@ -430,7 +431,7 @@ module.exports.saveResponse = function (round_id, response, user_id) {
   });
 };
 
-module.exports.setGuesser = function (game_id, players) {
+module.exports.setGuesser = function (game_id, players, round) {
   return new Promise(function (res, rej) {
     models.Game.forge({id: game_id}).fetch({withRelated: ['guesser']})
     .then(function (game) {
@@ -445,8 +446,14 @@ module.exports.setGuesser = function (game_id, players) {
           }
         }
       }
-      if (currentGuesserIndex === undefined ) {
+      if (currentGuesserIndex === undefined) {
         newGuesserIndex = 1;
+        if (round && players[newGuesserIndex].id === round.get('reader_id')) {
+          newGuesserIndex++;
+          if (newGuesserIndex >= players.length) {
+            newGuesserIndex = 0;
+          }
+        }
       } else {
         if (currentGuesserIndex === players.length - 1) {
           newGuesserIndex = 0;
