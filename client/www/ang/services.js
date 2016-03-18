@@ -344,7 +344,7 @@ angular.module('app.services', [])
       return;
     }
     var result = guess.result ? 'Correct!' : 'Wrong!'
-    obj.game.guess_message = guesser.full_name + ' guessed "' + guessedResponse.text + '". ' + result + '. ';
+    obj.game.guess_message = obj.game.guesser.full_name + ' guessed "' + guessedResponse.text + '". ' + result + '. ';
     $timeout(function () {
       obj.game.guess_message = '';
     }, 2500);
