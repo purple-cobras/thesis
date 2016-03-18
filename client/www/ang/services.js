@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', function($q, $http, store, socket, $timeout){
+.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', function($q, $http, store, socket, $timeout, ionicToast){
 
   var obj = {
     submitting: false,
@@ -22,8 +22,6 @@ angular.module('app.services', [])
       max_score: undefined,
 
       guesser: undefined,
-
-      guess_message: '',
 
       //Array of objects, with id, name, guessed, and score
       players: [],
@@ -279,7 +277,6 @@ angular.module('app.services', [])
       obj.isReader = false;
     }
     obj.game.guesser = undefined;
-    obj.game.guess_message = '';
     obj.game.current_round = round;
     obj.game.current_round.ready = false;
     obj.game.current_round.topic = '';
@@ -319,10 +316,14 @@ angular.module('app.services', [])
 
   socket.on('guess', function (guess) {
     var guessedResponse;
+    var guessee;
     for (var i = 0; i < obj.game.players.length; i++) {
       var player = obj.game.players[i];
       if (player.id === guess.details.guesser_id) {
         obj.game.guesser = player;
+      }
+      if (player.id === guess.details.guessee_id) {
+        guessee = player;
       }
       if (guess.result && guess.details.guessee_id === player.id) {
         obj.game.current_round.guesses = obj.game.current_round.guesses || {};
@@ -344,10 +345,8 @@ angular.module('app.services', [])
       return;
     }
     var result = guess.result ? 'Correct!' : 'Wrong!'
-    obj.game.guess_message = obj.game.guesser.full_name + ' guessed "' + guessedResponse.text + '". ' + result + '. ';
-    $timeout(function () {
-      obj.game.guess_message = '';
-    }, 2500);
+    var guess_message = obj.game.guesser.full_name + ' guessed "' + guessedResponse.text + '" was written by ' + guessee.full_name + '. ' + result;
+    ionicToast.show(guess_message, 'top', false, 2500);
   });
 
   return obj;
