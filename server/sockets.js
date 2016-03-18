@@ -25,18 +25,6 @@ module.exports.init = function(server){
       }
     });
 
-    socket.on('acceptInvite', function (invitationInfo) {
-      if (online[invitationInfo.invitation.creator.id]) {
-        io.to(online[invitationInfo.invitation.creator.id].socket_id).emit('inviteAccepted');
-      }
-    });
-
-    socket.on('declineInvite', function (invitationInfo) {
-      if (online[invitationInfo.invitation.creator.id]) {
-        io.to(online[invitationInfo.invitation.creator.id].socket_id).emit('inviteDeclined');
-      }
-    });
-
     socket.on('logout', function (user_id) {
       delete online[user_id];
     });
