@@ -37,10 +37,11 @@ angular.module('app.game', [])
   };
 
   $scope.processPlayerSelection = function (player, $event) {
-    if (!Game.amGuesser() || (Game.game.current_round.guesses && Game.game.current_round.guesses[player.id])) {
+    if (!Game.amGuesser() || 
+        (Game.game.current_round.guesses && Game.game.current_round.guesses[player.id]) ||
+        player.id === store.get('remote_id')) {
       return;
     } else {
-      $($event.target).siblings().removeClass('guessing');
       if (Game.guess.user === player) {
         Game.guess.user = undefined;
       } else {
@@ -50,7 +51,7 @@ angular.module('app.game', [])
   };
 
   $scope.processResponseSelection = function (response, $event) {
-    if (!Game.amGuesser() || response.guessed) {
+    if (!Game.amGuesser() || response.guessed || response.user_id === store.get('remote_id')) {
       return;
     } else {
       if (Game.guess.response === response) {
