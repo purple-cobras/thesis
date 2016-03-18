@@ -222,7 +222,10 @@ module.exports.getGame = function (game_id) {
   return new Promise(function (res, rej) {
     module.exports.getPlayers(game_id)
     .then(function (players) {
-      models.Round.query('where', 'game_id', '=', game_id).fetchAll({withRelated: ['responses', 'reader', 'guesses']})
+      models.Round.query(function (qb) {
+        qb.where('game_id', '=', game_id)
+        .orderBy('id', 'desc');
+      }).fetchAll({withRelated: ['responses', 'reader', 'guesses']})
       .then(function (rounds) {
         models.Game.forge({id: game_id}).fetch({withRelated: 'guesser'})
         .then(function (game) {
@@ -319,21 +322,21 @@ module.exports.startRound = function (game_id, reader_id) {
   return new Promise(function (res, rej) {
     models.Game.forge({id: game_id}).fetch()
     .then(function (game) {
-      models.Round.forge({
-        game_id: game_id,
-        reader_id: reader_id,
-        topic: ''
-      })
-      .save()
-      .then(function (round) {
-        round.fetch({withRelated: ['reader']})
+      game.save({guesser_id: null})
+      .then(function (game) {
+        models.Round.forge({
+          game_id: game_id,
+          reader_id: reader_id,
+          topic: ''
+        })
+        .save()
         .then(function (round) {
-          socket.newRound(game_id, round);
-          res(round);
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
+          round.fetch({withRelated: ['reader']})
+          .then(function (round) {
+            socket.newRound(game_id, round);
+            res(round);
+          });
+        });
       });
     })
     .catch(function (error) {
@@ -385,10 +388,19 @@ module.exports.saveResponse = function (round_id, response, user_id) {
                 module.exports.setGuesser(round.attributes.game_id, players)
                 .then(function () {
                   res(response);
-                });
+                })
+                .catch(function (error) {
+                  console.log('errorshit', error);
+                })
+              } else {
+                res(response);
               }
             })
           })
+        })
+        .catch(function(error) {
+          console.log('errorballs', error);
+          rej(error);
         })
       }
     })
@@ -430,10 +442,47 @@ module.exports.setGuesser = function (game_id, players) {
       })
     })
     .catch(function (error) {
+      console.log('guess', error);
       rej(error);
     })
   });
 };
+
+module.exports.setReader = function (game_id, current_round_id, players) {
+  return new Promise(function (res, rej) {
+    models.Round.forge({id: current_round_id}).fetch({withRelated: ['reader']})
+    .then(function (round) {
+      var newReaderIndex;
+      var currentReaderIndex;
+      if (round.relations.reader) {
+        for (var i = 0; i < players.length; i++) {
+          var player = players[i];
+          if (player.id === round.relations.reader.attributes.id) {
+            currentReaderIndex = i;
+            break;
+          }
+        }
+      }
+      if (currentReaderIndex === undefined) {
+        newReaderIndex = 1;
+      } else {
+        if (currentReaderIndex === players.length - 1) {
+          newReaderIndex = 0;
+        } else {
+          newReaderIndex = currentReaderIndex + 1;
+        }
+      }
+      var newReader = players[newReaderIndex];
+      round.save('reader_id', newReader.id)
+      .then(function (round) {
+        res(newReader);
+      })
+      .catch(function (error) {
+        rej(error);
+      });
+    });
+  });
+}
 
 module.exports.resolveGuess = function (round_id, guess) {
   return new Promise(function (res, rej) {
@@ -458,8 +507,23 @@ module.exports.resolveGuess = function (round_id, guess) {
                 .then(function (response) {
                   response.save({guessed: true})
                   .then(function () {
-                    socket.newGuess(round, {result: correct, details: guess});
-                    res(correct);
+                    models.Response.query({where: {round_id: round_id, guessed: false}}).fetchAll({withRelated: ['user']})
+                    .then(function (responses) {
+                      var game_id = round.get('game_id');
+                      socket.newGuess(round, {result: correct, details: guess});
+                      if (responses.models.length === 0 || (responses.models.length === 1 && responses.models[0].get('user_id') === guess.guesser_id)) {
+                        module.exports.getPlayers(game_id)
+                        .then(function (players) {
+                          module.exports.setReader(game_id, round_id, players)
+                          .then(function (reader) {
+                            module.exports.startRound(game_id, reader.id)
+                            .then(function (round) {
+                              res(correct);
+                            });
+                          });
+                        });
+                      }
+                    });
                   });
                 });
               });
