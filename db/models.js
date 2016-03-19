@@ -32,6 +32,9 @@ var Game = db.Model.extend({
   },
   guesser: function () {
     return this.belongsTo(User, 'guesser_id');
+  },
+  winner: function () {
+    return this.belongsTo(User, 'winner_id');
   }
 });
 
