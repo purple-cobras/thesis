@@ -77,6 +77,37 @@ angular.module('app.game', [])
     });
   };
 
+  $scope.playerIndex = function (response) {
+    var player = $scope.game.players.find(function (player) {
+      return player.id === response.user_id;
+    });
+    return $scope.game.players.indexOf(player);
+  }
+
+  $scope.icons = [
+    'ion-ios-flower',
+    'ion-ios-rose',
+    'ion-ios-paw',
+    'ion-ios-flame',
+    'ion-ios-sunny',
+    'ion-ios-cloudy',
+    'ion-ios-thunderstorm',
+    'ion-ios-snowy',
+    'ion-ios-moon',
+    'ion-ios-cloudy-night',
+    'ion-ios-flower-outline',
+    'ion-ios-rose-outline',
+    'ion-ios-paw-outline',
+    'ion-ios-flame-outline',
+    'ion-ios-sunny-outline',
+    'ion-ios-cloudy-outline',
+    'ion-ios-thunderstorm-outline',
+    'ion-ios-snowy-',
+    'ion-ios-moon-outline',
+    'ion-ios-cloudy-night-outline'
+  ];
+
+
   Game.getGame();
 
   /*$scope.displayGuessChoices = function (response_id, $event) {

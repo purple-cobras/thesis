@@ -9832,6 +9832,9 @@ img.empty {
   .guessed .guessable {
     text-decoration: line-through; }
 
+.guessable .icon {
+  margin-left: 20px; }
+
 .players .guessing, .responses .guessing {
   background-color: #beadf3; }
 

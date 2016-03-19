@@ -70,7 +70,7 @@
             ng-click="processPlayerSelection(player, $event)"
           >
             <div class="guessable">
-              {{player.full_name}} <span class="score">{{player.score}} points</span>
+              {{player.full_name}} <i class="icon" ng-class="Game.game.current_round.guesses[player.id] ? icons[$index] : ''"></i><span class="score">{{player.score}} points</span>
             </div>
           </li>
         </ion-list>
@@ -90,7 +90,7 @@
             ng-click="processResponseSelection(response, $event)"
           >
             <div class="guessable">
-              {{Game.game.current_round.ready ? response.text : "*** REDACTED ***"}}
+              {{Game.game.current_round.ready ? response.text : "*** REDACTED ***"}} <i class="icon" ng-class="response.guessed ? icons[playerIndex(response)] : ''"></i>
             </div>
           </li>
           <li
