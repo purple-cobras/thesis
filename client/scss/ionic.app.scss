@@ -162,6 +162,15 @@ img.empty {
   }
 }
 
+.reader {
+  text-align: center;
+  color: $dark;
+  background-color: $stable;
+}
+
+.alert {
+  background-color: $energized;
+}
 
 /** PROFILE **/
 
