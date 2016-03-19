@@ -544,6 +544,8 @@ module.exports.resolveGuess = function (round_id, guess) {
                             });
                           });
                         });
+                      } else {
+                        res(correct);
                       }
                     });
                   });

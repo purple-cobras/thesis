@@ -28,22 +28,22 @@
   <hr />
     <div class="list game-inputs">
       <div ng-if="(!Game.isReader || Game.game.current_round.topic.length) && !Game.game.current_round.ready" class="response-field">
+        <button ng-click="submitRes()" ng-disabled="!Game.response.trim().length" ng-if="typingResponse || Game.response.trim().length" class="button button-block button-balanced">
+            Submit!
+        </button>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Response</span>
           <input ng-model="Game.response" ng-disabled="!Game.game.current_round.topic.length" ng-focus="typingResponse = true" ng-blur="typingResponse = false" type="text" placeholder="{{game.current_round.topic.length ? 'Be creative' : 'No topic yet'}}">
         </label>
-        <button ng-click="submitResponse()" ng-disabled="!Game.response.trim().length" ng-if="typingResponse || Game.response.trim().length" class="button button-block button-balanced">
-          Submit!
-        </button>
       </div>
       <div ng-if="Game.isReader && !Game.game.current_round.topic.length" class="topic-field">
+        <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length" ng-click="submitTop()" class="button button-block button-balanced">
+          Submit!
+        </button>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Topic</span>
           <input ng-model="Game.topic" ng-focus="typingTopic = true" ng-blur="typingTopic = false" type="text" placeholder="Be creative">
         </label>
-        <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length" ng-click="submitTopic()" class="button button-block button-balanced">
-          Submit!
-        </button>
       </div>
     </div>
     <div class="guesser" ng-if="Game.game.guesser.id">
@@ -60,7 +60,7 @@
     <ul class="list card players">
       <ion-content>
         <div class="item item-divider">
-          Players
+          Players {{game.players.length ? '(' + game.players.length + ')' : ''}}
         </div>
         <ion-list>
           <li
@@ -80,7 +80,7 @@
     <ul class="list card responses">
       <ion-content>
         <div class="item item-divider">
-          Responses
+          Responses {{Game.game.current_round.responses.length ? '(' + Game.game.current_round.responses.length + ')' : ''}}
         </div>
         <ion-list>
           <li
