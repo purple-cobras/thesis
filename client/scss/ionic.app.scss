@@ -138,6 +138,12 @@ img.empty {
   }
 }
 
+.guessable {
+  .icon {
+    margin-left: 20px;
+  }
+}
+
 .players, .responses {
   .guessing {
     background-color: lighten($royal, 15%);
