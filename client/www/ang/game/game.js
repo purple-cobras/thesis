@@ -6,7 +6,8 @@ angular.module('app.game', [])
   $http,
   Game,
   store,
-  $ionicPopup
+  $ionicPopup,
+  $ionicScrollDelegate
 ) {
 
   angular.extend($scope, Game);
@@ -60,6 +61,20 @@ angular.module('app.game', [])
         Game.guess.response = response;
       }
     }
+  };
+
+  $scope.submitTop = function () {
+    Game.submitTopic()
+    .then(function () {
+      $ionicScrollDelegate.scrollTop(true);
+    });
+  };
+
+  $scope.submitRes = function () {
+    Game.submitResponse()
+    .then(function () {
+      $ionicScrollDelegate.scrollTop(true);
+    });
   };
 
   Game.getGame();

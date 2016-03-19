@@ -203,6 +203,8 @@ angular.module('app.services', [])
       .catch(function (error) {
         console.log('topic post error:', error);
       })
+      .finally(function () {
+      });
     },
 
     submitResponse: function () {
@@ -222,6 +224,8 @@ angular.module('app.services', [])
       })
       .catch(function (error) {
         console.log('response error: ', error);
+      })
+      .finally(function () {
       });
     },
 
