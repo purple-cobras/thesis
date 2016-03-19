@@ -143,12 +143,13 @@ module.exports.getInvites = function (user_fb) {
       db.knex('users_games').where({
         user_id: user.attributes.id,
         invite: null
-      }).select('game_id')
+      })
+      .select('game_id')
       .then(function (userGames) {
         var invitedGames = [];
-        userGames.forEach(function (userGame) {
-          invitedGames.push(module.exports.findOrCreate(models.Game, {id: userGame.game_id}));
-        });
+        for (var i = userGames.length - 1; i >= 0; i--) {
+          invitedGames.push(module.exports.findOrCreate(models.Game, {id: userGames[i].game_id}));
+        }
         Promise.all(invitedGames)
         .then(function (games) {
           var creators = [];
@@ -165,6 +166,7 @@ module.exports.getInvites = function (user_fb) {
               result.id = gameResults[i].id;
               result.name = gameResults[i].name;
               result.creator = creators[i].attributes;
+              result.created_at = gameResults[i].created_at;
               results.push(result);
             }
             res(results);
