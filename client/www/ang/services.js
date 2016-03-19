@@ -90,6 +90,7 @@ angular.module('app.services', [])
         method: 'get'
       })
       .then(function (response) {
+        console.log(response)
         var results = response.data.results;
         obj.game.players = results.players;
         obj.game.guesser = results.game.guesser;
