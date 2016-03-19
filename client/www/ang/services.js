@@ -237,10 +237,14 @@ angular.module('app.services', [])
       })
       .then(function (response) {
         if (response.data.submitted) {
+          ionicToast.show('Response submitted!', 'top', false, 2500);
           obj.response = '';
+        } else {
+          ionicToast.show('There was an error...', 'top', false, 2500);
         }
       })
       .catch(function (error) {
+        ionicToast.show('There was an error...', 'top', false, 2500);
         console.log('response error: ', error);
       })
       .finally(function () {
