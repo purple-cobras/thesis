@@ -123,10 +123,11 @@ angular.module('app.main', [])
     $state.go('game');
   };
 
-
-  $scope.getFriends();
-  $scope.getInvitations();
-  Game.updateGame();
+  $scope.$on('$ionicView.beforeEnter', function () {
+    $scope.getFriends();
+    $scope.getInvitations();
+    Game.updateGame();
+  });
 
   socket.on('invited', function () {
     $scope.getInvitations();

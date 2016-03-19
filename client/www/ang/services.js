@@ -21,6 +21,10 @@ angular.module('app.services', [])
 
       max_score: undefined,
 
+      winner: undefined,
+
+      completed: false,
+
       guesser: undefined,
 
       //Array of objects, with id, name, guessed, and score
@@ -89,6 +93,7 @@ angular.module('app.services', [])
         var results = response.data.results;
         obj.game.players = results.players;
         obj.game.guesser = results.game.guesser;
+        obj.game.winner = results.game.winner;
         var my_id = store.get('remote_id');
         for (var i = 0; i < obj.game.players.length; i++) {
           if (obj.game.players[i].id === my_id) {
@@ -112,6 +117,7 @@ angular.module('app.services', [])
           obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
           obj.game.current_round.ready = true;
         }
+        obj.game.completed = response.data.results.game.completed;
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
         obj.game.max_score = response.data.results.game.max_score;
@@ -132,6 +138,8 @@ angular.module('app.services', [])
       obj.game.id = undefined;
       obj.game.guesser = undefined;
       obj.game.response = '';
+      obj.game.winner = undefined;
+      obj.game.completed = false;
       obj.submitting = false;
       obj.game.currentRound  = {
 
@@ -357,6 +365,11 @@ angular.module('app.services', [])
       guesser.score = guesser.score + 1;
     }
     var result = guess.result ? 'Correct!' : 'Wrong!'
+    if (guess.won) {
+      obj.game.winner = guesser;
+      obj.game.completed = true;
+      result = 'Game Over!'
+    }
     var guess_message = guesser.full_name + ' guessed "' + guessedResponse.text + '" was written by ' + guessee.full_name + '. ' + result;
     ionicToast.show(guess_message, 'top', false, 2500);
   });
