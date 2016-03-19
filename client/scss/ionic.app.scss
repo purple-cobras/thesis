@@ -136,6 +136,10 @@ img.empty {
   }
 }
 
+.me-guessing {
+  background-color: $energized;
+}
+
 .guessed {
   color: $dark-gray;
   .guessable {

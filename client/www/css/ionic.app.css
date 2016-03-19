@@ -9830,6 +9830,9 @@ img.empty {
   .guesser p {
     padding: 8px; }
 
+.me-guessing {
+  background-color: #ffc900; }
+
 .guessed {
   color: #9d9d9d; }
   .guessed .guessable {
