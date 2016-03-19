@@ -31,6 +31,9 @@
       <div class="col">
         <h4 class="max-score">Game to: <span ng-bind="game.max_score"></span></h4>
       </div>
+      <div class="col">
+        <h4 ng-if="Game.game.winner" class="winner">Winner: <span ng-bind="Game.game.winner.full_name"></span></h4>
+      </div>
     </div>
   <hr />
     <div class="list game-inputs">
@@ -53,7 +56,7 @@
         </label>
       </div>
     </div>
-    <div class="guesser" ng-if="Game.game.guesser.id">
+    <div ng-if="!Game.game.completed" class="guesser" ng-if="Game.game.guesser.id">
       <p>Guesser: {{Game.amGuesser() ? "IT\'S YOU. GUESS." : Game.game.guesser.full_name}}</p>
     </div>
 
