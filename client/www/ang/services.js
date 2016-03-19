@@ -135,7 +135,7 @@ angular.module('app.services', [])
       obj.submitting = false;
       obj.game.currentRound  = {
 
-        reader: undefined,
+        reader_name: undefined,
 
         reader_id: undefined,
 
