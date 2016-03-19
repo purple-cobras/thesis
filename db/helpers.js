@@ -506,6 +506,31 @@ module.exports.setReader = function (game_id, current_round_id, players) {
   });
 }
 
+module.exports.winGame = function (game, user_id) {
+  return new Promise(function (res, rej) {
+    game.save({completed: true, winner_id: user_id})
+    .then(function (game) {
+      var updatedCount = 0;
+      models.User.query({where: {current_game_id: game.get('id')}})
+      .fetchAll()
+      .then(function (users) {
+        users.models.forEach(function (user) {
+          user.save({current_game_id: null})
+          .then(function (user) {
+            updatedCount++;
+            if (updatedCount === users.models.length) {
+              res();
+            }
+          });
+        });
+      });
+    })
+    .catch(function (error) {
+      rej(error);
+    })
+  })
+};
+
 module.exports.resolveGuess = function (round_id, guess) {
   return new Promise(function (res, rej) {
     models.Round.forge({id: round_id}).fetch({withRelated: ['responses', 'game']})
@@ -532,21 +557,32 @@ module.exports.resolveGuess = function (round_id, guess) {
                     models.Response.query({where: {round_id: round_id, guessed: false}}).fetchAll({withRelated: ['user']})
                     .then(function (responses) {
                       var game_id = round.get('game_id');
-                      socket.newGuess(round, {result: correct, details: guess});
-                      if (responses.models.length === 0 || (responses.models.length === 1 && responses.models[0].get('user_id') === guess.guesser_id)) {
-                        module.exports.getPlayers(game_id)
-                        .then(function (players) {
-                          module.exports.setReader(game_id, round_id, players)
-                          .then(function (reader) {
-                            module.exports.startRound(game_id, reader.id)
-                            .then(function (round) {
-                              res(correct);
+                      models.Game.forge({id: game_id}).fetch()
+                      .then(function (game) {
+                        if (game.get('max_score') <= newScore) {
+                          module.exports.winGame(game, guess.guesser_id)
+                          .then(function () {
+                            socket.newGuess(round, {result: correct, details: guess, won: true});
+                            res(correct);
+                          })
+                        } else {
+                          socket.newGuess(round, {result: correct, details: guess});
+                          if (responses.models.length === 0 || (responses.models.length === 1 && responses.models[0].get('user_id') === guess.guesser_id)) {
+                            module.exports.getPlayers(game_id)
+                            .then(function (players) {
+                              module.exports.setReader(game_id, round_id, players)
+                              .then(function (reader) {
+                                module.exports.startRound(game_id, reader.id)
+                                .then(function (round) {
+                                  res(correct);
+                                });
+                              });
                             });
-                          });
-                        });
-                      } else {
-                        res(correct);
-                      }
+                          } else {
+                            res(correct);
+                          }
+                        }
+                      });
                     });
                   });
                 });
