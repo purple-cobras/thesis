@@ -15,6 +15,8 @@ angular.module('app.services', [])
 
     isCreator: false,
 
+    submitting_response: false,
+
     game: {
 
       id: undefined,
@@ -119,6 +121,7 @@ angular.module('app.services', [])
           obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
           obj.game.current_round.ready = true;
         }
+        obj.submitting_response = false;
         obj.game.completed = response.data.results.game.completed;
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
@@ -135,6 +138,7 @@ angular.module('app.services', [])
       obj.isReader = false;
       obj.started = false;
       obj.isCreator = false;
+      obj.submitting_response = false;
       obj.game.players = [];
       obj.game.rounds = [];
       obj.game.topic = '';
@@ -226,6 +230,7 @@ angular.module('app.services', [])
     },
 
     submitResponse: function () {
+      obj.submitting_response = true;
       var cacheResponse = obj.response;
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/response',
@@ -248,6 +253,7 @@ angular.module('app.services', [])
         console.log('response error: ', error);
       })
       .finally(function () {
+        obj.submitting_response = false;
       });
     },
 
