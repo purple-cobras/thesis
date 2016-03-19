@@ -411,7 +411,6 @@ module.exports.saveResponse = function (round_id, response, user_id) {
                   res(response);
                 })
                 .catch(function (error) {
-                  console.log('errorshit', error);
                 })
               } else {
                 res(response);
@@ -420,7 +419,6 @@ module.exports.saveResponse = function (round_id, response, user_id) {
           })
         })
         .catch(function(error) {
-          console.log('errorballs', error);
           rej(error);
         })
       }
