@@ -25,6 +25,8 @@ angular.module('app.services', [])
 
       completed: false,
 
+      skip_if_guessed: undefined,
+
       guesser: undefined,
 
       //Array of objects, with id, name, guessed, and score
@@ -121,6 +123,7 @@ angular.module('app.services', [])
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
         obj.game.max_score = response.data.results.game.max_score;
+        obj.game.skip_if_guessed = response.data.results.game.skip_if_guessed;
         socket.emit('room', obj.game.id);
       })
       .catch(function (error) {
@@ -149,6 +152,8 @@ angular.module('app.services', [])
 
         //All answers in, ready to start guessing
         ready: false,
+
+        skip_if_guessed: undefined,
 
         //Array of objects, with id, text, guessed, and user_id
         responses: [
