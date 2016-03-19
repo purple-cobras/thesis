@@ -1,6 +1,19 @@
 angular.module('app.login', [])
 
-.controller('loginCtrl', function($rootScope, $scope, store, $state, auth, $ionicHistory, $http, Game, Auth, socket, Facebook) {
+.controller('loginCtrl', function(
+  $rootScope, 
+  $scope, 
+  store, 
+  $state, 
+  auth, 
+  $ionicHistory, 
+  $http, 
+  Game, 
+  Auth, 
+  socket, 
+  Facebook
+) {
+
   $scope.auth = auth;
 
   $scope.login = function () {
