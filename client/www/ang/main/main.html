@@ -7,7 +7,10 @@
         <ion-scroll class="invitations-list">
         <ion-list>
           <ion-item class="item-button-right" ng-repeat="invitation in invitations">
-            From {{invitation.creator.full_name}}
+            From {{invitation.creator.full_name}} 
+            <div class="timestamp">
+              {{invitation.created_at | date : 'MM/dd/yy, h:mm a'}}
+            </div>
             <div class="buttons">
               <button ng-click="accept(invitation)" class="button">
                 <i class="icon ion-checkmark-circled"></i>

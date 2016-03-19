@@ -9779,6 +9779,9 @@ img.empty {
 /** MAIN **/
 .invitations-list {
   max-height: 40vh; }
+  .invitations-list .timestamp {
+    font-size: 0.6em;
+    font-style: italic; }
 
 .account {
   position: absolute;
@@ -9845,6 +9848,14 @@ img.empty {
   height: 0px;
   margin: 0px;
   padding: 0px; }
+
+.reader {
+  text-align: center;
+  color: #444;
+  background-color: #f8f8f8; }
+
+.alert {
+  background-color: #ffc900; }
 
 /** PROFILE **/
 .profile {
