@@ -437,42 +437,73 @@ module.exports.saveResponse = function (round_id, response, user_id) {
 
 module.exports.setGuesser = function (game_id, players, round) {
   return new Promise(function (res, rej) {
-    models.Game.forge({id: game_id}).fetch({withRelated: ['guesser']})
+    var guessedIndex = {};
+    db.knex('games').where('id', round.attributes.game_id)
     .then(function (game) {
-      var readerIndex;
-      var newGuesserIndex;
-      var currentGuesserIndex;
-      for (var i = 0; i < players.length; i++) {
-        var player = players[i];
-        if (game.relations.guesser && player.id === game.relations.guesser.attributes.id) {
-          currentGuesserIndex = i;
+      db.knex('users_rounds').where('round_id', round.attributes.id)
+      .then(function (usersRounds) {
+        for (var i = 0; i < usersRounds.length; i++) {
+          var index;
+          for (var j = 0; j < players.length; j++) {
+            if (usersRounds[i].user_id === players[j].id) {
+              guessedIndex[j] = true;
+              break;
+            }
+          }
         }
-        if (player.id === round.get('reader_id')) {
-          readerIndex = i;
-        }
-        if (readerIndex !== undefined && (currentGuesserIndex !== undefined || !game.relations.guesser)) {
-          break;
-        }
-      }
-      if (currentGuesserIndex === undefined) {
-        newGuesserIndex = readerIndex + 1;
-      } else {
-        newGuesserIndex = currentGuesserIndex + 1;
-      }
-      if (newGuesserIndex > players.length - 1) {
-        newGuesserIndex = 0;
-      }
-      var newGuesser = players[newGuesserIndex];
-      game.save('guesser_id', newGuesser.id)
-      .then(function (game) {
-        socket.newGuesser(game_id, newGuesser);
-        res();
-      })
-    })
-    .catch(function (error) {
-      console.log('guess', error);
-      rej(error);
-    })
+        models.Game.forge({id: game_id}).fetch({withRelated: ['guesser']})
+        .then(function (game) {
+          var readerIndex;
+          var newGuesserIndex;
+          var currentGuesserIndex;
+          for (var i = 0; i < players.length; i++) {
+            var player = players[i];
+            if (game.relations.guesser && player.id === game.relations.guesser.attributes.id) {
+              currentGuesserIndex = i;
+            }
+            if (player.id === round.get('reader_id')) {
+              readerIndex = i;
+            }
+            if (readerIndex !== undefined && (currentGuesserIndex !== undefined || !game.relations.guesser)) {
+              break;
+            }
+          }
+          if (game.attributes.skip_if_guessed) {
+            if (currentGuesserIndex === undefined) {
+              newGuesserIndex = readerIndex + 1;
+            } else {
+              var validGuesser = false;
+              newGuesserIndex = currentGuesserIndex;
+              while (!validGuesser) {
+                newGuesserIndex = (newGuesserIndex + 1) % players.length;
+                if (!guessedIndex[newGuesserIndex]) {
+                  validGuesser = true;
+                }
+              }
+            }
+          } else {
+            if (currentGuesserIndex === undefined) {
+              newGuesserIndex = readerIndex + 1;
+            } else {
+              newGuesserIndex = currentGuesserIndex + 1;
+            }
+            if (newGuesserIndex > players.length - 1) {
+              newGuesserIndex = 0;
+            }
+          }
+          var newGuesser = players[newGuesserIndex];
+          game.save('guesser_id', newGuesser.id)
+          .then(function (game) {
+            socket.newGuesser(game_id, newGuesser);
+            res();
+          })
+        })
+        .catch(function (error) {
+          console.log('guess', error);
+          rej(error);
+        });
+      });
+    });
   });
 };
 
