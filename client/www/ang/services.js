@@ -235,14 +235,12 @@ angular.module('app.services', [])
         }
       })
       .then( function (res) {
+        obj.guess.user = undefined;
+        obj.guess.response = undefined;
         return res;
       })
       .catch( function (error) {
         console.error(error);
-      })
-      .finally(function () {
-        obj.guess.user = undefined;
-        obj.guess.response = undefined;
       });
     },
 
