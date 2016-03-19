@@ -471,6 +471,9 @@ module.exports.setGuesser = function (game_id, players, round) {
           if (game.attributes.skip_if_guessed) {
             if (currentGuesserIndex === undefined) {
               newGuesserIndex = readerIndex + 1;
+              if (newGuesserIndex > players.length - 1) {
+                newGuesserIndex = 0;
+              }
             } else {
               var validGuesser = false;
               newGuesserIndex = currentGuesserIndex;
