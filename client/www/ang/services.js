@@ -105,6 +105,11 @@ angular.module('app.services', [])
         }
         obj.game.current_round = lastRound;
         if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
+          var randomizedResponses = [];
+          for (var i = 0; i < obj.game.players.length; i++) {
+            randomizedResponses.push(obj.game.current_round.responses.splice(Math.floor(Math.random() * obj.game.current_round.responses.length), 1)[0]);
+          }
+          obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
           obj.game.current_round.ready = true;
         }
         obj.started = response.data.results.game.started;
@@ -307,6 +312,11 @@ angular.module('app.services', [])
     }
 
     if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
+      var randomizedResponses = [];
+      for (var i = 0; i < obj.game.players.length; i++) {
+        randomizedResponses.push(obj.game.current_round.responses.splice(Math.floor(Math.random() * obj.game.current_round.responses.length), 1)[0]);
+      }
+      obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
       obj.game.current_round.ready = true;
     }
   });
