@@ -433,31 +433,28 @@ module.exports.setGuesser = function (game_id, players, round) {
   return new Promise(function (res, rej) {
     models.Game.forge({id: game_id}).fetch({withRelated: ['guesser']})
     .then(function (game) {
+      var readerIndex;
       var newGuesserIndex;
       var currentGuesserIndex;
-      if (game.relations.guesser) {
-        for (var i = 0; i < players.length; i++) {
-          var player = players[i];
-          if (player.id === game.relations.guesser.attributes.id) {
-            currentGuesserIndex = i;
-            break;
-          }
+      for (var i = 0; i < players.length; i++) {
+        var player = players[i];
+        if (game.relations.guesser && player.id === game.relations.guesser.attributes.id) {
+          currentGuesserIndex = i;
+        }
+        if (player.id === round.get('reader_id')) {
+          readerIndex = i;
+        }
+        if (readerIndex !== undefined && (currentGuesserIndex !== undefined || !game.relations.guesser)) {
+          break;
         }
       }
       if (currentGuesserIndex === undefined) {
-        newGuesserIndex = 1;
-        if (round && players[newGuesserIndex].id === round.get('reader_id')) {
-          newGuesserIndex++;
-          if (newGuesserIndex >= players.length) {
-            newGuesserIndex = 0;
-          }
-        }
+        newGuesserIndex = readerIndex + 1;
       } else {
-        if (currentGuesserIndex === players.length - 1) {
-          newGuesserIndex = 0;
-        } else {
-          newGuesserIndex = currentGuesserIndex + 1;
-        }
+        newGuesserIndex = currentGuesserIndex + 1;
+      }
+      if (newGuesserIndex > players.length - 1) {
+        newGuesserIndex = 0;
       }
       var newGuesser = players[newGuesserIndex];
       game.save('guesser_id', newGuesser.id)
@@ -558,7 +555,7 @@ module.exports.resolveGuess = function (round_id, guess) {
       } else {
         module.exports.getPlayers(round.get('game_id'))
         .then(function (players) {
-          module.exports.setGuesser(round.get('game_id'), players)
+          module.exports.setGuesser(round.get('game_id'), players, round)
           .then(function () {
             socket.newGuess(round, {result: correct, details: guess});
             res(correct);
