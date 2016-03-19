@@ -60,7 +60,7 @@
     <ul class="list card players">
       <ion-content>
         <div class="item item-divider">
-          Players
+          Players {{game.players.length ? '(' + game.players.length + ')' : ''}}
         </div>
         <ion-list>
           <li
@@ -80,7 +80,7 @@
     <ul class="list card responses">
       <ion-content>
         <div class="item item-divider">
-          Responses
+          Responses {{Game.game.current_round.responses.length ? '(' + Game.game.current_round.responses.length + ')' : ''}}
         </div>
         <ion-list>
           <li
