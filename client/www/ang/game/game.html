@@ -56,7 +56,7 @@
         </label>
       </div>
     </div>
-    <div ng-if="!Game.game.completed" class="guesser" ng-if="Game.game.guesser.id">
+    <div ng-if="!Game.game.completed && Game.game.guesser.id" class="guesser">
       <p>Guesser: {{Game.amGuesser() ? "IT\'S YOU. GUESS." : Game.game.guesser.full_name}}</p>
     </div>
 
