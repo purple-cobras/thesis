@@ -47,7 +47,7 @@
         </label>
       </div>
       <div ng-if="Game.isReader && !Game.game.current_round.topic.length" class="topic-field">
-        <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length" ng-click="submitTop()" class="button button-block button-balanced">
+        <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length || Game.submitting_response" ng-click="submitTop()" class="button button-block button-balanced">
           Submit!
         </button>
         <label class="item item-input item-stacked-label">
