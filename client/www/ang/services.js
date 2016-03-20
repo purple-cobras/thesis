@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', function($q, $http, store, socket, $timeout, ionicToast){
+.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', '$rootScope', function($q, $http, store, socket, $timeout, ionicToast, $rootScope){
 
   var obj = {
     submitting: false,
@@ -121,12 +121,24 @@ angular.module('app.services', [])
           obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
           obj.game.current_round.ready = true;
         }
+        var notRevealed = false;
+        if (obj.game.current_round && obj.game.current_round.ready) {
+          for (var k = 0; k < obj.game.current_round.responses.length; k++) {
+            if (!obj.game.current_round.responses[k].revealed) {
+              notRevealed = true;
+              break;
+            }
+          }
+        }
         obj.submitting_response = false;
         obj.game.completed = response.data.results.game.completed;
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
         obj.game.max_score = response.data.results.game.max_score;
         obj.game.skip_if_guessed = response.data.results.game.skip_if_guessed;
+        if (notRevealed) {
+          obj.revealResponses();
+        }
         socket.emit('room', obj.game.id);
       })
       .catch(function (error) {
@@ -286,6 +298,49 @@ angular.module('app.services', [])
       return player;
     },
 
+    revealResponses: function (index) {
+      console.log('here', index);
+      index = index || 0;
+      if (index > obj.game.current_round.responses.length - 1) {
+        return;
+      }
+      var response = obj.game.current_round.responses[index];
+      console.log(response);
+      if (response.revealed) {
+        obj.revealResponses(++index);
+      } else {
+        responsiveVoice.speak(response.text, $rootScope.voice, {
+          onend: function () {
+            $http({
+              'url': Config.api + '/responses/reveal',
+              method: 'post',
+              data: {
+                game_id: obj.game.id,
+                response_id: response.id
+              }
+            })
+            .then(function (response) {
+              console.log(response);
+              if (response.status === 200) {
+                $timeout(obj.revealResponses.bind(null, ++index), 800);
+              }
+            })
+            .catch(function (error) {
+              console.log('reveal error: ', error);
+            });
+          }
+        })
+      }
+    },
+
+    startReadingResponses: function () {
+      responsiveVoice.speak('Here are the responses for this round. The topic is ' + obj.game.current_round.topic, $rootScope.voice, 
+        {
+          onend: obj.revealResponses
+        }
+      );
+    },
+
     amGuesser: function () {
       return obj.game.guesser && obj.game.guesser.id === store.get('remote_id');
     }
@@ -341,6 +396,9 @@ angular.module('app.services', [])
       }
       obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
       obj.game.current_round.ready = true;
+      if (obj.isReader) {
+        obj.startReadingResponses();
+      }
     }
   });
 
@@ -387,6 +445,15 @@ angular.module('app.services', [])
     }
     var guess_message = guesser.full_name + ' guessed "' + guessedResponse.text + '" was written by ' + guessee.full_name + '. ' + result;
     ionicToast.show(guess_message, 'top', false, 2500);
+  });
+
+  socket.on('reveal', function (response_id) {
+    for (var i = 0; i < obj.game.current_round.responses.length; i++) {
+      if (obj.game.current_round.responses[i].id === response_id) {
+        obj.game.current_round.responses[i].revealed = true;
+        break;  
+      }
+    } 
   });
 
   return obj;

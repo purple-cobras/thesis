@@ -135,7 +135,11 @@ module.exports.init = function(server){
           });
         }
       });
-    }
+    };
+
+    module.exports.revealResponse = function (game_id, response_id) {
+      io.sockets.in('game:' + game_id).emit('reveal', response_id);
+    };
 
   });
 

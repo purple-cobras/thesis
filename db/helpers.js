@@ -648,4 +648,20 @@ module.exports.resolveGuess = function (round_id, guess) {
   });
 };
 
+module.exports.revealResponse = function (game_id, response_id) {
+  return new Promise(function (res, rej) {
+    models.Response.forge({id: response_id}).fetch()
+    .then(function (response) {
+      response.save({revealed: true})
+      .then(function () {
+        socket.revealResponse(game_id, response_id);
+        res();
+      });
+    })
+    .catch(function (error) {
+      rej(error);
+    })
+  });
+};
+
 module.exports.eventEmitter = eventEmitter;
