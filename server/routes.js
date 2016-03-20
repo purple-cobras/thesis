@@ -26,7 +26,8 @@ var authRoutes = [
   '/games',
   '/games/:id/start',
   '/rounds',
-  '/rounds/:id/response'
+  '/rounds/:id/response',
+  '/responses/reveal'
 ];
 
 var routes = [
@@ -187,6 +188,19 @@ var routes = [
         res.status(500);
         res.json({error: error});
       });
+    }
+  },
+  {
+    path: '/responses/reveal',
+    post: function (req, res) {
+      helpers.revealResponse(req.body.game_id, req.body.response_id)
+      .then(function () {
+        res.sendStatus(200);
+      })
+      .catch(function (error) {
+        res.status(500);
+        res.json({error: error});
+      })
     }
   },
   {

@@ -103,7 +103,7 @@
             ng-click="processResponseSelection(response, $event)"
           >
             <div class="guessable">
-              {{Game.game.current_round.ready ? response.text : "*** REDACTED ***"}} <i class="icon" ng-class="response.guessed ? icons[playerIndex(response)] : ''"></i>
+              {{response.revealed ? response.text : "*** REDACTED ***"}} <i class="icon" ng-class="response.guessed ? icons[playerIndex(response)] : ''"></i>
             </div>
           </li>
           <li

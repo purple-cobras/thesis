@@ -77,7 +77,8 @@ angular.module('app',
   $rootScope.appName = 'Game of Things';
   $rootScope.Utils = {
      keys : Object.keys
-  }
+  };
+  $rootScope.voice = 'UK English Female';
 
 
 })
