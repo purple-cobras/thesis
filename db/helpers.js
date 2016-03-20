@@ -412,12 +412,7 @@ module.exports.saveResponse = function (round_id, response, user_id) {
             module.exports.getPlayers(round.attributes.game_id)
             .then(function (players) {
               if (players.length === round.relations.responses.models.length) {
-                module.exports.setGuesser(round.attributes.game_id, players, round)
-                .then(function () {
                   res(response);
-                })
-                .catch(function (error) {
-                })
               } else {
                 res(response);
               }
@@ -655,7 +650,28 @@ module.exports.revealResponse = function (game_id, response_id) {
       response.save({revealed: true})
       .then(function () {
         socket.revealResponse(game_id, response_id);
-        res();
+        models.Response.query({
+          where: {
+            round_id: response.get('round_id'),
+            revealed: false
+          }
+        }).fetchAll()
+        .then(function (responses) {
+          if (!responses.models.length) {
+            module.exports.getPlayers(game_id)
+            .then(function (players) {
+              models.Round.forge({id: response.get('round_id')}).fetch()
+              .then(function (round) {
+                module.exports.setGuesser(game_id, players, round)
+                .then(function () {
+                  res();
+                });
+              });
+            });
+          } else {
+            res();
+          }
+        });
       });
     })
     .catch(function (error) {

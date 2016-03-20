@@ -121,24 +121,12 @@ angular.module('app.services', [])
           obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
           obj.game.current_round.ready = true;
         }
-        var notRevealed = false;
-        if (obj.game.current_round && obj.game.current_round.ready) {
-          for (var k = 0; k < obj.game.current_round.responses.length; k++) {
-            if (!obj.game.current_round.responses[k].revealed) {
-              notRevealed = true;
-              break;
-            }
-          }
-        }
         obj.submitting_response = false;
         obj.game.completed = response.data.results.game.completed;
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
         obj.game.max_score = response.data.results.game.max_score;
         obj.game.skip_if_guessed = response.data.results.game.skip_if_guessed;
-        if (notRevealed) {
-          obj.revealResponses();
-        }
         socket.emit('room', obj.game.id);
       })
       .catch(function (error) {
@@ -299,13 +287,11 @@ angular.module('app.services', [])
     },
 
     revealResponses: function (index) {
-      console.log('here', index);
       index = index || 0;
       if (index > obj.game.current_round.responses.length - 1) {
         return;
       }
       var response = obj.game.current_round.responses[index];
-      console.log(response);
       if (response.revealed) {
         obj.revealResponses(++index);
       } else {
@@ -320,9 +306,8 @@ angular.module('app.services', [])
               }
             })
             .then(function (response) {
-              console.log(response);
               if (response.status === 200) {
-                $timeout(obj.revealResponses.bind(null, ++index), 800);
+                $timeout(obj.revealResponses.bind(null, ++index), 675);
               }
             })
             .catch(function (error) {

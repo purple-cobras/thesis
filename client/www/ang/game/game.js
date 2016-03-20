@@ -85,7 +85,7 @@ angular.module('app.game', [])
       return player.id === response.user_id;
     });
     return $scope.game.players.indexOf(player);
-  }
+  };
 
   $scope.icons = [
     'ion-ios-flower',
@@ -110,7 +110,25 @@ angular.module('app.game', [])
     'ion-ios-cloudy-night-outline'
   ];
 
-  Game.getGame();
+  $scope.$on('$ionicView.enter', function () {
+    Game.getGame()
+    .then(function () {
+      if (Game.game.current_round && Game.game.current_round.ready) {
+        var notRevealed = false;
+        for (var i = 0; i < Game.game.current_round.responses.length; i++) {
+          if (!Game.game.current_round.responses[i].revealed) {
+            notRevealed = true;
+            break;
+          }
+        }
+        if (notRevealed) {
+          Game.startReadingResponses();
+        }
+      }
+    });
+  });
+
+
 
   $ionicPlatform.on('resume', function () {
     Game.updateGame();
