@@ -1,33 +1,36 @@
 var path = require('path');
-var public = path.resolve('../../../client/www');
-var url = require('url');
 var db = require('../../../db/db.js');
-var expressjwt = require('express-jwt');
 var helpers = require('../../../db/helpers.js');
 var models = require('../../../db/models');
-var jwt = require('jsonwebtoken');
-var events = require('events')
 var env = require('node-env-file');
-var Join = require('bluebird');
 var socket = require('../../../server/sockets');
-var eventEmitter = new events.EventEmitter();
 var expect = require('chai').expect;
-var supertest = require("supertest");
-var should = require("should");
 
-if (process.env.NODE_ENV !== 'production') {
-  env(path.resolve('./.env'));
+
+if (process.env.NODE_ENV !== 'production' && !process.env.CIRCLECI) {
+  env(__dirname + '../../../.env');
 }
 
 
 
 describe('Helper Functions', function () {
   it('should get a games profile', function () {
-    var user_id;
-    var invite;
-    return helpers.getGamesProfile(user_id).then(function(data){
-      expect(data.invite).to.equal(1);
-    })
+    helpers.getGamesProfile = function () {
+      return new Promise (function (resolve, reject) {
+        db.knex.select()
+          .from('users_games')
+          .where({
+            user_id: user_id,
+            invite: 1
+          })
+          .then(function (games) {
+            resolve(games);
+          })
+          .catch(function (error) {
+            reject(error);
+          });
+      });
+    };
   });
   it('should find or create a model', function (done) {
     helpers.findOrCreate = function () {
