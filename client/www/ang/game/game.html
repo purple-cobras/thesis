@@ -70,52 +70,55 @@
       </button>
     </div>
 
-    <ul class="list card players">
-      <ion-content>
-        <div class="item item-divider">
-          Players {{game.players.length ? '(' + game.players.length + ')' : ''}}
-        </div>
-        <ion-list>
-          <li
-            class="item item-text-wrap"
-            ng-repeat="player in game.players"
-            ng-class="{guessed: Game.game.current_round.guesses[player.id], guessing: Game.guess.user === player}"
-            ng-click="processPlayerSelection(player, $event)"
-          >
-            <div class="guessable">
-              {{player.full_name}} <i class="icon" ng-class="Game.game.current_round.guesses[player.id] ? icons[$index] : ''"></i><span class="score">{{player.score}} points</span>
-            </div>
-          </li>
-        </ion-list>
-      </ion-content>
-    </ul>
+    <div class="card">
+    <div class="item item-divider list-head">
+      Players {{game.players.length ? '(' + game.players.length + ')' : ''}}
+    </div>
+      <ul class="list players">
+        <ion-content>
+          <ion-list>
+            <li
+              class="item item-text-wrap"
+              ng-repeat="player in game.players"
+              ng-class="{guessed: Game.game.current_round.guesses[player.id], guessing: Game.guess.user === player}"
+              ng-click="processPlayerSelection(player, $event)"
+            >
+              <div class="guessable">
+                {{player.full_name}} <i class="icon" ng-class="Game.game.current_round.guesses[player.id] ? icons[$index] : ''"></i><span class="score">{{player.score}} points</span>
+              </div>
+            </li>
+          </ion-list>
+        </ion-content>
+      </ul>
+    </div>
 
-    <ul class="list card responses">
-      <ion-content>
-        <div class="item item-divider">
-          Responses {{Game.game.current_round.responses.length ? '(' + Game.game.current_round.responses.length + ')' : ''}}
-        </div>
-        <ion-list>
-          <li
-            class="item item-text-wrap"
-            ng-repeat="response in Game.game.current_round.responses"
-            ng-class="{guessed: response.guessed, guessing: Game.guess.response === response}"
-            ng-click="processResponseSelection(response, $event)"
-          >
-            <div class="guessable">
-              {{response.revealed ? response.text : "*** REDACTED ***"}} <i class="icon" ng-class="response.guessed ? icons[playerIndex(response)] : ''"></i>
-            </div>
-          </li>
-          <li
-            class="item"
-            ng-if="!Game.game.current_round.responses.length"
-          >
-            None yet...
-          </li>
-        </ion-list>
-      </ion-content>
-
-    </ul>
+    <div class="card">
+    <div class="item item-divider list-head">
+        Responses {{Game.game.current_round.responses.length ? '(' + Game.game.current_round.responses.length + ')' : ''}}
+    </div>
+      <ul class="list responses">
+        <ion-content>
+          <ion-list>
+            <li
+              class="item item-text-wrap"
+              ng-repeat="response in Game.game.current_round.responses"
+              ng-class="{guessed: response.guessed, guessing: Game.guess.response === response}"
+              ng-click="processResponseSelection(response, $event)"
+            >
+              <div class="guessable">
+                {{response.revealed ? response.text : "*** REDACTED ***"}} <i class="icon" ng-class="response.guessed ? icons[playerIndex(response)] : ''"></i>
+              </div>
+            </li>
+            <li
+              class="item"
+              ng-if="!Game.game.current_round.responses.length"
+            >
+              None yet...
+            </li>
+          </ion-list>
+        </ion-content>
+      </ul>
+    </div>
 
   </ion-content>
 </ion-view>
