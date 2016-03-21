@@ -1,3 +1,5 @@
 Config = {
-  api: 'http://192.168.1.140:8080'
+  api: 'http://localhost:8080',
+  debug: true
+
 }
