@@ -229,10 +229,14 @@ angular.module('app.services', [])
         if (response.data.submitted) {
           obj.topic = '';
           obj.game.current_round.topic = cacheTopic;
+          ionicToast.show('Topic has been set!', 'top', false, 2500);
+        } else {
+          ionicToast.show('Error setting topic', 'top', false, 2500);
         }
       })
       .catch(function (error) {
         console.log('topic post error:', error);
+        ionicToast.show('Error setting topic', 'top', false, 2500);
       })
       .finally(function () {
         obj.submitting_topic = false;
