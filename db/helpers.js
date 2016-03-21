@@ -580,17 +580,22 @@ module.exports.resolveGuess = function (round_id, guess) {
         .then(function (userRound) {
           userRound.save({guessed: true})
           .then(function () {
-            models.UserGame.forge({user_id: guess.guesser_id, game_id: round.get('game_id')}).fetch()
-            .then(function (user_game) {
-              var newScore = user_game.get('score') + 1;
-              user_game.save({score: newScore})
+            models.Response.forge({id: guess.response_id}).fetch()
+            .then(function (response) {
+              response.save({guessed: true})
               .then(function () {
-                models.Response.forge({id: guess.response_id}).fetch()
-                .then(function (response) {
-                  response.save({guessed: true})
-                  .then(function () {
-                    models.Response.query({where: {round_id: round_id, guessed: false}}).fetchAll({withRelated: ['user']})
-                    .then(function (responses) {
+                models.Response.query({where: {round_id: round_id, guessed: false}}).fetchAll({withRelated: ['user']})
+                .then(function (responses) {
+                  models.UserGame.forge({user_id: guess.guesser_id, game_id: round.get('game_id')}).fetch()
+                  .then(function (user_game) {
+                    var newRound = responses.models.length === 0 || (responses.models.length === 1 && responses.models[0].get('user_id') === guess.guesser_id);
+                    if (newRound) {
+                      var newScore = user_game.get('score') + 2;
+                    } else {
+                      var newScore = user_game.get('score') + 1;
+                    }
+                    user_game.save({score: newScore})
+                    .then(function () {
                       var game_id = round.get('game_id');
                       models.Game.forge({id: game_id}).fetch()
                       .then(function (game) {
@@ -601,8 +606,8 @@ module.exports.resolveGuess = function (round_id, guess) {
                             res(correct);
                           })
                         } else {
-                          socket.newGuess(round, {result: correct, details: guess});
-                          if (responses.models.length === 0 || (responses.models.length === 1 && responses.models[0].get('user_id') === guess.guesser_id)) {
+                          socket.newGuess(round, {result: correct, details: guess, newRound: newRound});
+                          if (newRound) {
                             module.exports.getPlayers(game_id)
                             .then(function (players) {
                               module.exports.setReader(game_id, round_id, players)
