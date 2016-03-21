@@ -65,7 +65,6 @@ angular.module('app.game', [])
   };
 
   $scope.submitTop = function () {
-    responsiveVoice.speak('');
     Game.submitTopic()
     .then(function () {
       $ionicScrollDelegate.scrollTop(true);
@@ -73,7 +72,6 @@ angular.module('app.game', [])
   };
 
   $scope.submitRes = function () {
-    responsiveVoice.speak('');
     Game.submitResponse()
     .then(function () {
       $ionicScrollDelegate.scrollTop(true);

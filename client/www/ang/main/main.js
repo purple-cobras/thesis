@@ -120,7 +120,6 @@ angular.module('app.main', [])
   };
 
   $scope.goToGame = function () {
-    responsiveVoice.speak('');
     $state.go('game');
   };
 
