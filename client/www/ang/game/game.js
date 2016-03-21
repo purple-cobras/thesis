@@ -81,10 +81,11 @@ angular.module('app.game', [])
   };
 
   $scope.playerIndex = function (response) {
-    var player = $scope.game.players.find(function (player) {
-      return player.id === response.user_id;
-    });
-    return $scope.game.players.indexOf(player);
+    for (var i = 0; i < $scope.game.players.length; i++) {
+      if ($scope.game.players[i].id === response.user_id) {
+        return i;
+      }
+    }
   };
 
   $scope.icons = [

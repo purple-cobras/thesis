@@ -319,7 +319,7 @@ angular.module('app.services', [])
     },
 
     startReadingResponses: function () {
-      responsiveVoice.speak('Here are the responses for this round. The topic is ' + obj.game.current_round.topic, $rootScope.voice, 
+      responsiveVoice.speak('Here are the responses for this round. The topic is ' + obj.game.current_round.topic, $rootScope.voice,
         {
           onend: obj.revealResponses
         }
@@ -420,7 +420,11 @@ angular.module('app.services', [])
       }
     }
     if (guess.result) {
-      guesser.score = guesser.score + 1;
+      if (guess.newRound) {
+        guesser.score = guesser.score + 2;
+      } else {
+        guesser.score = guesser.score + 1;
+      }
     }
     var result = guess.result ? 'Correct!' : 'Wrong!'
     if (guess.won) {
@@ -436,9 +440,9 @@ angular.module('app.services', [])
     for (var i = 0; i < obj.game.current_round.responses.length; i++) {
       if (obj.game.current_round.responses[i].id === response_id) {
         obj.game.current_round.responses[i].revealed = true;
-        break;  
+        break;
       }
-    } 
+    }
   });
 
   return obj;
