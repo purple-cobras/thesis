@@ -156,8 +156,10 @@ module.exports.getInvites = function (user_fb) {
           var creators = [];
           var gameResults = [];
           games.forEach(function (game) {
-            gameResults.push(game.attributes);
-            creators.push(module.exports.findOrCreate(models.User, {id: game.attributes.creator_id}));
+            if (game && game.attributes.creator_id) {
+              gameResults.push(game.attributes);
+              creators.push(module.exports.findOrCreate(models.User, {id: game.attributes.creator_id}));
+            }
           });
           Promise.all(creators)
           .then(function (creators) {
