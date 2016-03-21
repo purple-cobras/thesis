@@ -65,7 +65,7 @@
 
     <div class="guess-space" ng-if="Game.amGuesser()">
       <p>Select below to match player with a guess, then submit.</p>
-      <button ng-click="submitGuess({guessee_id: Game.guess.user.id, response_id: Game.guess.response.id})"class="button button-block button-balanced" ng-click="submitGuess()" ng-disabled="!Game.guess.user || !Game.guess.response">
+      <button ng-click="submitGuess({guessee_id: Game.guess.user.id, response_id: Game.guess.response.id})"class="button button-block button-balanced" ng-click="submitGuess()" ng-disabled="!Game.guess.user || !Game.guess.response || Game.submitting_guess">
         Guess
       </button>
     </div>
