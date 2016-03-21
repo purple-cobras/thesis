@@ -91,7 +91,7 @@ img.empty {
 }
 
 .game-inputs {
-  input[type="text"] {
+  input[type="text"], textarea {
     width: 95%;
     padding-left: 5px;
     border-radius: 5px;
