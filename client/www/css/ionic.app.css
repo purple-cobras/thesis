@@ -9796,14 +9796,14 @@ img.empty {
 .platform-android .buttons + .title.title-left.header-item {
   margin-left: 20px; }
 
-.game-inputs input[type="text"] {
+.game-inputs input[type="text"], .game-inputs textarea {
   width: 95%;
   padding-left: 5px;
   border-radius: 5px;
   font-size: 1.3em;
   height: 2em;
   line-height: 2em; }
-  .game-inputs input[type="text"][disabled="disabled"] {
+  .game-inputs input[type="text"][disabled="disabled"], .game-inputs textarea[disabled="disabled"] {
     background-color: white; }
 
 .round-count {
