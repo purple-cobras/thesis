@@ -47,7 +47,7 @@
         </label>
       </div>
       <div ng-if="Game.isReader && !Game.game.current_round.topic.length" class="topic-field">
-        <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length" ng-click="submitTop()" class="button button-block button-balanced">
+        <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length || Game.submitting_topic" ng-click="submitTop()" class="button button-block button-balanced">
           Submit!
         </button>
         <label class="item item-input item-stacked-label">
@@ -56,7 +56,7 @@
         </label>
       </div>
     </div>
-    <div 
+    <div
       ng-if="!Game.game.completed && Game.game.guesser.id" class="guesser"
       ng-class="{'me-guessing': Game.amGuesser()}"
     >
@@ -65,7 +65,7 @@
 
     <div class="guess-space" ng-if="Game.amGuesser()">
       <p>Select below to match player with a guess, then submit.</p>
-      <button ng-click="submitGuess({guessee_id: Game.guess.user.id, response_id: Game.guess.response.id})"class="button button-block button-balanced" ng-click="submitGuess()" ng-disabled="!Game.guess.user || !Game.guess.response">
+      <button ng-click="submitGuess({guessee_id: Game.guess.user.id, response_id: Game.guess.response.id})"class="button button-block button-balanced" ng-click="submitGuess()" ng-disabled="!Game.guess.user || !Game.guess.response || Game.submitting_guess">
         Guess
       </button>
     </div>
