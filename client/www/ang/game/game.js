@@ -114,7 +114,7 @@ angular.module('app.game', [])
   $scope.$on('$ionicView.enter', function () {
     Game.getGame()
     .then(function () {
-      if (Game.game.current_round && Game.game.current_round.ready) {
+      if (Game.game.current_round && Game.game.current_round.ready && Game.isReader) {
         var notRevealed = false;
         for (var i = 0; i < Game.game.current_round.responses.length; i++) {
           if (!Game.game.current_round.responses[i].revealed) {
