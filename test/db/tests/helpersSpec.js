@@ -8,7 +8,7 @@ var expect = require('chai').expect;
 
 
 if (process.env.NODE_ENV !== 'production' && !process.env.CIRCLECI) {
-  env(__dirname + '../../../.env');
+  env(__dirname + '../../../../.env');
 }
 
 

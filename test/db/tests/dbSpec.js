@@ -1,5 +1,3 @@
-var Knex = require('knex');
-var Bookshelf = require('bookshelf');
 var env = require('node-env-file');
 var path = require('path');
 var expect = require('chai').expect;
