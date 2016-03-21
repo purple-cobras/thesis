@@ -7,3 +7,4 @@ client/www/lib/
 client/node_modules/
 client/platforms/
 client/plugins/
+client/www/js/appsettings.js
