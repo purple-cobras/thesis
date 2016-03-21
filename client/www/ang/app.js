@@ -80,8 +80,6 @@ angular.module('app',
      keys : Object.keys
   };
   $rootScope.voice = 'UK English Female';
-
-
 })
 
 
