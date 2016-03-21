@@ -23,7 +23,7 @@ module.exports = function(config) {
       'client/www/js/socket.io.js',
 
       'client/www/lib/angular-socket-io/socket.js',
-
+      'client/www/lib/ionic-toast/dist/ionic-toast.bundle.min.js',
       'client/www/lib/ionic/js/angular-ui/angular-ui-router.js',
       'client/www/lib/angular-animate/angular-animate.js',
       'client/www/lib/angular-sanitize/angular-sanitize.js',
