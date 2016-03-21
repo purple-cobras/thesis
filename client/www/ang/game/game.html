@@ -14,10 +14,10 @@
     <div class="card">
       <div class="item reader item-text-wrap ng-class: {alert: Game.isReader}" ng-if="Game.started && !game.current_round.topic.length">
         {{Game.isReader ? "You\'re the reader! Enter a topic." : "Waiting for a clever topic from reader"}}
-        <ion-spinner></ion-spinner>
+       <!--  <ion-spinner></ion-spinner> -->
       </div>
-      <div class="item reader item-text-wrap topic" ng-if="Game.started && game.current_round.topic.length">
-        <p class="animated rubberBand topic" id="topic-text"><strong>Topic: </strong>{{game.current_round.topic}}</p>
+      <div class="item reader item-text-wrap" ng-if="Game.started && game.current_round.topic.length">
+        <p class="animated rubberBand" id="topic-text"><strong>Topic: </strong>{{game.current_round.topic}}</p>
       </div>
     </div>
 
