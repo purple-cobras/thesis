@@ -17,6 +17,10 @@ angular.module('app.services', [])
 
     submitting_response: false,
 
+    submitting_topic: false,
+
+    submitting_guess: false,
+
     game: {
 
       id: undefined,
@@ -122,6 +126,8 @@ angular.module('app.services', [])
           obj.game.current_round.ready = true;
         }
         obj.submitting_response = false;
+        obj.submitting_topic = false;
+        obj.submitting_guess = false;
         obj.game.completed = response.data.results.game.completed;
         obj.started = response.data.results.game.started;
         obj.game.id = response.data.results.game.id;
@@ -139,6 +145,8 @@ angular.module('app.services', [])
       obj.started = false;
       obj.isCreator = false;
       obj.submitting_response = false;
+      obj.submitting_topic = false;
+      obj.submitting_guess = false;
       obj.game.players = [];
       obj.game.rounds = [];
       obj.game.topic = '';
@@ -210,6 +218,7 @@ angular.module('app.services', [])
     },
 
     submitTopic: function () {
+      obj.submitting_topic = true;
       var cacheTopic = obj.topic;
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/topic',
@@ -226,6 +235,7 @@ angular.module('app.services', [])
         console.log('topic post error:', error);
       })
       .finally(function () {
+        obj.submitting_topic = false;
       });
     },
 
@@ -258,6 +268,7 @@ angular.module('app.services', [])
     },
 
     submitGuess: function (guessInfo) {
+      obj.submitting_guess = true;
       guessInfo.guesser_id = store.get('remote_id');
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/guess',
@@ -273,6 +284,9 @@ angular.module('app.services', [])
       })
       .catch( function (error) {
         console.error(error);
+      })
+      .finally( function () {
+        obj.submitting_guess = false;
       });
     },
 
