@@ -7,8 +7,7 @@ angular.module('app.services', [])
   socket,
   $timeout,
   ionicToast,
-  $rootScope,
-  $ionicScrollDelegate){
+  $rootScope){
 
   var obj = {
     submitting: false,
