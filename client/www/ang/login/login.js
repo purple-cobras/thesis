@@ -59,6 +59,7 @@ angular.module('app.login', [])
   };
 
   $scope.logout = function () {
+    clearProfile();
     Auth.logout();
   };
 
@@ -86,16 +87,14 @@ angular.module('app.login', [])
     });
   };
 
-  // var setProfile = function () {
-  //   getProfilePic().then(function() {
-  //     $scope.profile = {
-  //       name: store.get('profile').name,
-  //       picUrl: store.get('pic_url'),
-  //       gamesPlayed: store.get('games_played'),
-  //       createdAt: store.get('created_at')
-  //     };      
-  //   });
-  // };
+  var clearProfile = function () {
+    $scope.profile = {
+      name: '',
+      picUrl: '',
+      gamesPlayed: '',
+      createdAt: ''
+    };
+  }
 
   var establish = function () {
     socket.emit('establish', {
