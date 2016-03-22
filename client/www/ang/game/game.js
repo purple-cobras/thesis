@@ -133,6 +133,13 @@ angular.module('app.game', [])
     });
   });
 
+  $scope.$on('elastic:resize', function (event, element, oldHeight, newHeight) {
+    var scrollPosition = $ionicScrollDelegate.getScrollPosition().top;
+    if (newHeight > oldHeight) {
+      $ionicScrollDelegate.scrollTo(0, $ionicScrollDelegate.getScrollPosition().top + (newHeight - oldHeight), true);
+    }
+  });
+
 
 
   $ionicPlatform.on('resume', function () {
