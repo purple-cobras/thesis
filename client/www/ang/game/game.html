@@ -57,6 +57,9 @@
       </div>
       <div ng-if="Game.isReader && !Game.game.current_round.topic.length" class="topic-field">
         <div class="button-container" ng-class="{'has-button': typingTopic || Game.topic.trim().length}">
+          <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length || Game.submitting_topic" ng-click="saveResponse()" class="button button-balanced" id="saveTopic">
+            Save
+          </button>
           <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length || Game.submitting_topic" ng-click="submitTop()" class="button button-block button-calm">
             Submit!
           </button>

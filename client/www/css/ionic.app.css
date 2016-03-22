@@ -9999,6 +9999,13 @@ hr {
 .alert {
   background-color: #F4E8C1; }
 
+#saveTopic {
+  width: 25%;
+  background-color: #1188EE; }
+
+#submitTopic {
+  width: 73%; }
+
 /** PROFILE **/
 .profile {
   color: black; }
