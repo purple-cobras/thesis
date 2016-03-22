@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --reporter spec 'test/**/tests/*.js'",
+    "test": "mocha --reporter spec 'test/**/tests/*.js' && karma start",
     "start": "gulp dev && nodemon server/server.js",
     "postinstall": "npm install -g bower && cd client && npm install && bower install"
   },
@@ -37,18 +37,15 @@
     "morgan": "^1.7.0",
     "node-env-file": "^0.1.8",
     "pg": "^4.5.1",
-    "phantomjs-prebuilt": "^2.1.5",
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-preprocess": "^2.0.0",
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.7",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.24",
-    "mocha": "^2.4.5",
-    "phantomjs-prebuilt": "^2.1.5"
+    "mocha": "^2.4.5"
   }
 }

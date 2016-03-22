@@ -35,7 +35,7 @@ describe('gameCtrl', function () {
 
   describe('#back', function () {
 
-    it('should have a back function', function () {
+    xit('should have a back function', function () {
       expect($scope.back).toEqual(jasmine.any(Function));
     });
 

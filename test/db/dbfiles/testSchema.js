@@ -5,8 +5,8 @@ var path = require('path');
 var Promise = require('bluebird');
 
 // Reads in .env variables if available
-if (process.env.NODE_ENV !== 'production') {
-  env(path.resolve('.env'));
+if (process.env.NODE_ENV !== 'production' && !process.env.CIRCLECI) {
+  env(__dirname + '../../../../.env');
 }
 
 var knex = Knex({
