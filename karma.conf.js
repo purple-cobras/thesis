@@ -41,7 +41,11 @@ module.exports = function(config) {
       'test/unit-tests/*.js'
     ],
 
-
+    plugins: [
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-spec-reporter'
+    ],
     // list of files to exclude
     exclude: [
       'karma.conf.js'
