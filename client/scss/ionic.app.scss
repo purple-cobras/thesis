@@ -91,6 +91,15 @@ hr {
   border-top-style: solid;
 }
 
+/** LOGIN **/
+.button.button-stable:active {
+  background: $stabler;
+}
+
+.login {
+  margin-top: 30px!important;
+}
+
 /** MAIN **/
 
 .invitations-list {
@@ -380,7 +389,7 @@ $rotate: 2.0deg;
 /** PROFILE **/
 
 .profile {
-  color: $dark;
+  color: black;
 }
 .name {
   float: top;

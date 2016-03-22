@@ -1,6 +1,6 @@
 <ion-view title="{{appName}}" hide-back-button="true">
     <ion-nav-buttons side="right">
-        <a ng-if="auth.isAuthenticated" ui-sref="main" class="button">Main</a>
+        <a ng-if="auth.isAuthenticated" ui-sref="main" class="button buttons button-clear header-item"><i class="icon ion-ios-arrow-forward"></i></a>
     </ion-nav-buttons>
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <form class="list">
@@ -8,10 +8,10 @@
             <div>
                 <p class="auth-error"></p>
             </div>
-            <a ng-if="!auth.isAuthenticated" ng-click="login()" class="button button-stable button-block button-large">Log in</a>
+            <a ng-if="!auth.isAuthenticated" ng-click="login()" class="button button-stable button-block button-large login">Log in</a>
             <div ng-if="auth.isAuthenticated">
-                    <div class="list">
-                        <div class="item-thumbnail-left">
+                    <div class="list card">
+                        <div class="item-thumbnail-left account-info">
                             <img ng-src={{profile.picUrl}}>
                             <span class="profile name">{{profile.name}}</span>
                             <br>

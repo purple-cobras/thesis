@@ -9770,6 +9770,13 @@ hr {
   color: white;
   border-top-style: solid; }
 
+/** LOGIN **/
+.button.button-stable:active {
+  background: #C2AD94; }
+
+.login {
+  margin-top: 30px !important; }
+
 /** MAIN **/
 .invitations-list {
   max-height: 40vh; }
@@ -9982,7 +9989,7 @@ hr {
 
 /** PROFILE **/
 .profile {
-  color: #441103; }
+  color: black; }
 
 .name {
   float: top;
