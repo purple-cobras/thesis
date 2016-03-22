@@ -44,7 +44,6 @@
     "gulp-preprocess": "^2.0.0",
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.7",
-    "karma-phantomjs-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.24",
     "mocha": "^2.4.5"
   }
