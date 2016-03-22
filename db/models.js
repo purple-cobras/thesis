@@ -19,7 +19,7 @@ var User = db.Model.extend({
 var Game = db.Model.extend({
   tableName: 'games',
   users: function () {
-    return this.hasMany(User).through(UserGame);  
+    return this.hasMany(User).through(UserGame);
   },
   rounds: function () {
     return this.hasMany(Round, 'game_id');
@@ -84,11 +84,22 @@ var UserRound = db.Model.extend({
   }
 });
 
+var SavedResponse = db.Model.extend({
+  tableName: 'saved_responses',
+  response: function () {
+    return this.belongsTo(response, 'response_id');
+  },
+  user: function () {
+    return this.belongsTo(User, 'user_id');
+  }
+});
+
 module.exports = {
   User: User,
   Game: Game,
   Round: Round,
   Response: Response,
   UserGame: UserGame,
-  UserRound: UserRound
+  UserRound: UserRound,
+  SavedResponse: SavedResponse
 };
