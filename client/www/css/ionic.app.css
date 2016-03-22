@@ -9794,7 +9794,7 @@ img.empty {
   font-weight: bold; }
 
 .list.card, .game-list {
-  background: #C2AD94;
+  background: #998369;
   border: 1px solid #BEBEBE !important; }
 
 hr {
@@ -9830,7 +9830,7 @@ hr {
   height: 2em;
   line-height: 2em; }
   .game-inputs input[type="text"][disabled="disabled"], .game-inputs textarea[disabled="disabled"] {
-    background-color: white; }
+    /*background-color: white;*/ }
 
 .game-inputs .button.ng-enter {
   -webkit-animate: slideInLeft 0.5s;
@@ -9904,13 +9904,34 @@ hr {
   margin-left: auto;
   margin-right: auto;
   display: block;
-  width: 50%; }
+  width: 75%; }
   .guesser p {
     padding: 8px; }
 
 .me-guessing {
   background-color: #AC644F;
   animation: flux 1s infinite alternate; }
+
+.urgent-reader {
+  animation: shimmy 5s infinite alternate; }
+
+@keyframes shimmy {
+  0% {
+    transform: rotate(2deg); }
+  3% {
+    transform: rotate(-2deg); }
+  6% {
+    transform: rotate(2deg); }
+  9% {
+    transform: rotate(-2deg); }
+  12% {
+    transform: rotate(2deg); }
+  15% {
+    transform: rotate(-2deg); }
+  18% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(0deg); } }
 
 @keyframes flux {
   100% {

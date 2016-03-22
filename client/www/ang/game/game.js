@@ -25,6 +25,10 @@ angular.module('app.game', [])
 
   $scope.Game.remote_id = store.get('remote_id');
 
+  $scope.toggleTypingTopic = function (val) {
+    $scope.typingTopic = val;
+  }
+
   $scope.back = function () {
     var history = $ionicHistory.viewHistory();
     if (history.currentView.backViewId !== "ion3") {

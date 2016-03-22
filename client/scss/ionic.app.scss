@@ -85,7 +85,7 @@ img.empty {
 }
 
 .list.card, .game-list {
-  background: $stabler;
+  background: $stable;
   border: 1px solid $lightest!important;
 }
 
@@ -137,7 +137,7 @@ $slide-dur: 0.5s;
     line-height: 2em;
 
     &[disabled="disabled"] {
-      background-color: white;
+      /*background-color: white;*/
     }
   }
 
@@ -231,12 +231,45 @@ $slide-dur: 0.5s;
   margin-left: auto;
   margin-right: auto;
   display: block;
-  width: 50%;
+  width: 75%;
 }
 
 .me-guessing {
   background-color: $energized;
   animation: flux 1s infinite alternate;
+}
+
+.urgent-reader {
+  animation: shimmy 5s infinite alternate;
+}
+
+$rotate: 2.0deg;
+
+@keyframes shimmy {
+  0% {
+    transform: rotate($rotate);
+  }
+  3% {
+    transform: rotate(-$rotate);
+  }
+  6% {
+    transform: rotate($rotate);
+  }
+  9% {
+    transform: rotate(-$rotate);
+  }
+  12% {
+    transform: rotate($rotate);
+  }
+  15% {
+    transform: rotate(-$rotate);
+  }
+  18% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 @keyframes flux {
