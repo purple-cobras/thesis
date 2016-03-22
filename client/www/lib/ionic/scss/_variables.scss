@@ -2,19 +2,20 @@
 // Colors
 // -------------------------------
 
-$light:                           #547586 !default;
-$stable:                          #998369 !default;
+$light:                           #F4F2F3 !default;
+$stable:                          #9EBC9F !default;
 $positive:                        #998369 !default;
-$calm:                            #387A56 !default;
-$balanced:                        #113243 !default;
-$energized:                       #AC644F !default;
+$calm:                            lighten(#706993, 17%) !default;
+$balanced:                        #656256 !default;
+$energized:                       #F4E8C1 !default;
 $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
-$dark:                            #441103 !default;
+$dark:                            #230903 !default;
 
-$lighter:                         #969696 !default;
-$lightest:                        #BEBEBE !default;
-$stabler:                         #C2AD94 !default;
+$lighter:                         lighten($light, 10%) !default;
+$lightest:                        lighten($light, 20%) !default;
+$stabler:                         lighten($stable, 9%) !default;
+$balanceder:                      lighten($balanced, 18%) !default;
 
 
 // Base

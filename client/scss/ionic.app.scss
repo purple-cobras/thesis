@@ -66,6 +66,9 @@ img.empty {
   }
 }
 
+.button.button-energized {
+  color: black;
+}
 
 .item {
   background-color: $balanced;
@@ -82,7 +85,7 @@ img.empty {
 
 .list.card, .game-list {
   background: $stable;
-  border: 1px solid $lightest!important;
+  border: 0px solid $lightest!important;
 }
 
 hr {
@@ -94,6 +97,10 @@ hr {
 /** LOGIN **/
 .button.button-stable:active {
   background: $stabler;
+}
+
+.button.button-energized:hover {
+  color: black;
 }
 
 .login {
@@ -138,8 +145,8 @@ hr {
 .friends-list {
   max-height: 40vh;
   .inviting, .active, .activated {
-    background: $light;
-    color: $stabler;
+    background: $balanceder;
+    color: black;
   }
 }
 
@@ -171,6 +178,9 @@ hr {
 $slide-dur: 0.5s;
 
 .game-inputs {
+
+  margin: 0;
+
   input[type="text"], textarea {
     width: 95%;
     padding-left: 5px;
@@ -264,6 +274,10 @@ $slide-dur: 0.5s;
 .game-info {
   padding: 0 10px;
   background: $stable;
+  .row {
+    margin-top: -10px;
+    margin-bottom: -10px;
+  }
 }
 
 .guesser {
@@ -275,6 +289,7 @@ $slide-dur: 0.5s;
   p {
     padding: 8px;
   }
+  margin-top: 2px;
   margin-left: auto;
   margin-right: auto;
   display: block;
@@ -283,6 +298,8 @@ $slide-dur: 0.5s;
 
 .me-guessing {
   background-color: $energized;
+}
+.urgent-guessing {
   animation: flux 1s infinite alternate;
 }
 
@@ -357,8 +374,8 @@ $rotate: 2.0deg;
 
 .players, .responses {
   .guessing, .activated {
-    background-color: lighten($balanced, 10%);
-    color: lighten($stable, 10%);
+    background-color: $balanceder;
+    color: $dark;
   }
   margin-top: 0px;
 }
@@ -412,6 +429,13 @@ $rotate: 2.0deg;
 #topic-text {
   font-size: $font-size-large;
   color: $lightest;
+}
+
+.topic-container {
+  border-radius: 0px;
+  .item {
+    border-radius: 0px!important;
+  }
 }
 
 .animated {

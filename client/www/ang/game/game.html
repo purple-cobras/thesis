@@ -11,7 +11,7 @@
 
     <div ng-if="game.players.length < 2">You need at least one friend to join</div>
 
-    <div class="card" ng-class="{'urgent-reader': Game.isReader && !typingTopic}">
+    <div class="card topic-container" ng-class="{'urgent-reader': Game.isReader && !typingTopic && !Game.game.current_round.topic.length}">
       <div class="item reader item-text-wrap" ng-class="{'alert': Game.isReader}" ng-if="Game.started && !game.current_round.topic.length">
         {{Game.isReader ? "You\'re the reader! Enter a topic." : "Waiting for a clever topic from reader"}}
        <!--  <ion-spinner></ion-spinner> -->
@@ -43,7 +43,7 @@
   <hr />
     <div class="list game-inputs">
       <div ng-if="(!Game.isReader || Game.game.current_round.topic.length) && !Game.game.current_round.ready && !Game.hasResponded()" class="response-field">
-        <div class="button-container" ng-class="{'has-button': typingResponse}">
+        <div class="button-container" ng-class="{'has-button': typingResponse || Game.response.trim().length}">
           <button ng-click="submitRes()" ng-disabled="!Game.response.trim().length || Game.submitting_response" ng-if="typingResponse || Game.response.trim().length" class="button button-block button-calm">
               Submit!
           </button>
@@ -56,7 +56,7 @@
         </div>
       </div>
       <div ng-if="Game.isReader && !Game.game.current_round.topic.length" class="topic-field">
-        <div class="button-container" ng-class="{'has-button': typingTopic}">
+        <div class="button-container" ng-class="{'has-button': typingTopic || Game.topic.trim().length}">
           <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length || Game.submitting_topic" ng-click="submitTop()" class="button button-block button-calm">
             Submit!
           </button>
@@ -69,7 +69,7 @@
     </div>
     <div
       ng-if="!Game.game.completed && Game.game.guesser.id" class="guesser"
-      ng-class="{'me-guessing': Game.amGuesser()}"
+      ng-class="{'me-guessing': Game.amGuesser(), 'urgent-guessing': Game.amGuesser() && (!Game.guess.user || !Game.guess.response)}"
     >
       <p>Guesser: {{Game.amGuesser() ? "YOU" : Game.game.guesser.full_name}}</p>
     </div>
@@ -85,7 +85,7 @@
       <div class="item item-divider list-head">
         Players {{game.players.length ? '(' + game.players.length + ')' : ''}}
       </div>
-      <ul class="list players">
+      <ul class="item item-body list players">
         <ion-content>
           <ion-list>
             <li
@@ -108,7 +108,7 @@
           <h3>Responses {{Game.game.current_round.responses.length ? '(' + Game.game.current_round.responses.length + ')' : ''}}
           </h3>
       </div>
-      <ul class="list responses">
+      <ul class="item item-body list responses">
         <ion-content>
           <ion-list>
             <li
