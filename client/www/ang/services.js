@@ -1,6 +1,14 @@
 angular.module('app.services', [])
 
-.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', '$rootScope', function($q, $http, store, socket, $timeout, ionicToast, $rootScope){
+.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', '$rootScope', function(
+  $q,
+  $http,
+  store,
+  socket,
+  $timeout,
+  ionicToast,
+  $rootScope,
+  $ionicScrollDelegate){
 
   var obj = {
     submitting: false,
