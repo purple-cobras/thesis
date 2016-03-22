@@ -74,19 +74,18 @@ angular.module('app.game', [])
     }
   };
 
+  $scope.toggleSave = function () {
+    $scope.saveTopic = !$scope.saveTopic;
+  }
+
   $scope.submitTop = function () {
     if (!responsiveVoice.isPlaying()) {
       responsiveVoice.speak('');
     }
-    if ($scope.saveTopic) {
-      Game.saveTopic()
-      .then(function () {
-        $scope.saveTopic = false;
-      });
-    }
-    Game.submitTopic()
+    Game.submitTopic($scope.saveTopic)
     .then(function () {
       $ionicScrollDelegate.scrollTop(true);
+      $scope.saveTopic = false;
     });
   };
 
