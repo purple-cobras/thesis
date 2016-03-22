@@ -305,7 +305,7 @@ angular.module('app.services', [])
     },
 
     hasResponded: function () {
-      if (!obj.game.current_round) {
+      if (!obj.game.current_round || !obj.game.current_round.responses) {
         return false;
       }
       for (var i = 0; i < obj.game.current_round.responses.length; i++) {
