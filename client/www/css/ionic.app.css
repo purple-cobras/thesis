@@ -9832,6 +9832,14 @@ hr {
   .game-inputs input[type="text"][disabled="disabled"], .game-inputs textarea[disabled="disabled"] {
     background-color: white; }
 
+.game-inputs .button.ng-enter {
+  -webkit-animate: slideInLeft 1s;
+  animation: slideInLeft 1s; }
+
+.game-inputs .button.ng-leave {
+  -webkit-animate: slideOutLeft 1s;
+  animation: slideOutLeft 1s; }
+
 .input-label {
   color: #969696;
   font-size: 1.3em;

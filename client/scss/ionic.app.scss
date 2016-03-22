@@ -125,6 +125,8 @@ hr {
   }
 }
 
+$slide-dur: 0.5s;
+
 .game-inputs {
   input[type="text"], textarea {
     width: 95%;
@@ -137,6 +139,15 @@ hr {
     &[disabled="disabled"] {
       background-color: white;
     }
+  }
+
+  .button.ng-enter {
+    -webkit-animate: slideInLeft $slidedur;
+    animation: slideInLeft $slide-dur;
+  }
+  .button.ng-leave {
+    -webkit-animate: slideOutLeft $slide-dur;
+    animation: slideOutLeft $slide-dur;
   }
 }
 
