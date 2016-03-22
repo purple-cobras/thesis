@@ -26,6 +26,8 @@ angular.module('app.game', [])
 
   $scope.kicked = false;
 
+  $scope.saveTopic = false;
+
   $scope.Game.remote_id = store.get('remote_id');
 
   $scope.toggleTypingTopic = function (val) {
@@ -75,6 +77,12 @@ angular.module('app.game', [])
   $scope.submitTop = function () {
     if (!responsiveVoice.isPlaying()) {
       responsiveVoice.speak('');
+    }
+    if ($scope.saveTopic) {
+      Game.saveTopic()
+      .then(function () {
+        $scope.saveTopic = false;
+      });
     }
     Game.submitTopic()
     .then(function () {

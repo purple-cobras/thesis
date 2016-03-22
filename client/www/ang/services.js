@@ -224,6 +224,10 @@ angular.module('app.services', [])
       });
     },
 
+    saveTopic: function () {
+
+    },
+
     submitTopic: function () {
       obj.submitting_topic = true;
       var cacheTopic = obj.topic;
