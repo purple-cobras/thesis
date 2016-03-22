@@ -66,7 +66,9 @@ angular.module('app.game', [])
   };
 
   $scope.submitTop = function () {
-    responsiveVoice.speak('');
+    if (responsiveVoice.isPlaying()) {
+      responsiveVoice.speak('');
+    }
     Game.submitTopic()
     .then(function () {
       $ionicScrollDelegate.scrollTop(true);
@@ -74,7 +76,9 @@ angular.module('app.game', [])
   };
 
   $scope.submitRes = function () {
-    responsiveVoice.speak('');
+    if (responsiveVoice.isPlaying()) {
+      responsiveVoice.speak('');
+    }
     Game.submitResponse()
     .then(function () {
       $ionicScrollDelegate.scrollTop(true);
@@ -130,6 +134,15 @@ angular.module('app.game', [])
     });
   });
 
+  $scope.$on('elastic:resize', function (event, element, oldHeight, newHeight) {
+    var scrollPosition = $ionicScrollDelegate.getScrollPosition().top;
+    if (newHeight > oldHeight) {
+      $ionicScrollDelegate.scrollTo(0, $ionicScrollDelegate.getScrollPosition().top + (newHeight - oldHeight), true);
+    }
+  });
+
+
+
   $ionicPlatform.on('resume', function () {
     Game.updateGame();
   });
@@ -137,5 +150,6 @@ angular.module('app.game', [])
   socket.on('scrollTop', function () {
     $ionicScrollDelegate.scrollTop(true);
   });
+
 
 });
