@@ -9833,12 +9833,20 @@ hr {
     background-color: white; }
 
 .game-inputs .button.ng-enter {
-  -webkit-animate: slideInLeft 1s;
-  animation: slideInLeft 1s; }
+  -webkit-animate: slideInLeft 0.5s;
+  animation: slideInLeft 0.5s; }
 
 .game-inputs .button.ng-leave {
-  -webkit-animate: slideOutLeft 1s;
-  animation: slideOutLeft 1s; }
+  -webkit-animate: slideOutLeft 0.5s;
+  animation: slideOutLeft 0.5s; }
+
+.button-container {
+  max-height: 0px;
+  transition: max-height 0.5s linear;
+  -webkit-transition: max-height 0.5s linear; }
+
+.button-container.has-button {
+  max-height: 100px; }
 
 .input-label {
   color: #969696;

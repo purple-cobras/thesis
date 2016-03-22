@@ -142,13 +142,23 @@ $slide-dur: 0.5s;
   }
 
   .button.ng-enter {
-    -webkit-animate: slideInLeft $slidedur;
+    -webkit-animate: slideInLeft $slide-dur;
     animation: slideInLeft $slide-dur;
   }
   .button.ng-leave {
     -webkit-animate: slideOutLeft $slide-dur;
     animation: slideOutLeft $slide-dur;
   }
+}
+
+.button-container {
+  max-height: 0px;
+  transition: max-height $slide-dur linear;
+  -webkit-transition: max-height $slide-dur linear;
+}
+
+.button-container.has-button {
+  max-height: 100px;
 }
 
 .input-label {
