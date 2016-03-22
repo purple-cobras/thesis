@@ -457,7 +457,9 @@ angular.module('app.services', [])
   socket.on('reveal', function (response_id) {
     for (var i = 0; i < obj.game.current_round.responses.length; i++) {
       if (obj.game.current_round.responses[i].id === response_id) {
-        obj.game.current_round.responses[i].revealed = true;
+        $timeout(function () {
+          obj.game.current_round.responses[i].revealed = true;
+        });
         break;
       }
     }
