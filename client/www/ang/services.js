@@ -304,6 +304,19 @@ angular.module('app.services', [])
       return player;
     },
 
+    hasResponded: function () {
+      if (!obj.game.current_round) {
+        return false;
+      }
+      for (var i = 0; i < obj.game.current_round.responses.length; i++) {
+        var response = obj.game.current_round.responses[i];
+        if (response.user_id === store.get('remote_id')) {
+          return true;
+        }
+      }
+      return false;
+    },
+
     revealResponses: function (index) {
       index = index || 0;
       if (index > obj.game.current_round.responses.length - 1) {

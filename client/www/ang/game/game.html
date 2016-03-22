@@ -40,7 +40,7 @@
     </div>
   <hr />
     <div class="list game-inputs">
-      <div ng-if="(!Game.isReader || Game.game.current_round.topic.length) && !Game.game.current_round.ready" class="response-field">
+      <div ng-if="(!Game.isReader || Game.game.current_round.topic.length) && !Game.game.current_round.ready && !Game.hasResponded()" class="response-field">
         <button ng-click="submitRes()" ng-disabled="!Game.response.trim().length || Game.submitting_response" ng-if="typingResponse || Game.response.trim().length" class="button button-block button-balanced">
             Submit!
         </button>
