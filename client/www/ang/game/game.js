@@ -66,7 +66,7 @@ angular.module('app.game', [])
   };
 
   $scope.submitTop = function () {
-    if (responsiveVoice.isPlaying()) {
+    if (!responsiveVoice.isPlaying()) {
       responsiveVoice.speak('');
     }
     Game.submitTopic()
@@ -76,7 +76,7 @@ angular.module('app.game', [])
   };
 
   $scope.submitRes = function () {
-    if (responsiveVoice.isPlaying()) {
+    if (!responsiveVoice.isPlaying()) {
       responsiveVoice.speak('');
     }
     Game.submitResponse()
