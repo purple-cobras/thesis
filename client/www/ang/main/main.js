@@ -1,3 +1,5 @@
+
+
 angular.module('app.main', [])
 
 .controller('mainCtrl', function(
@@ -120,7 +122,7 @@ angular.module('app.main', [])
   };
 
   $scope.goToGame = function () {
-    if (responsiveVoice.isPlaying()) {
+    if (!responsiveVoice.isPlaying()) {
       responsiveVoice.speak('');      
     }
     $state.go('game');

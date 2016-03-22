@@ -8,7 +8,8 @@ angular.module('app.game', [])
   store,
   $ionicPopup,
   $ionicScrollDelegate,
-  $ionicPlatform
+  $ionicPlatform,
+  socket
 ) {
 
   angular.extend($scope, Game);
@@ -72,8 +73,8 @@ angular.module('app.game', [])
   };
 
   $scope.submitTop = function () {
-    if (responsiveVoice.isPlaying()) {
-      responsiveVoice.speak('');      
+    if (!responsiveVoice.isPlaying()) {
+      responsiveVoice.speak('');
     }
     Game.submitTopic()
     .then(function () {
@@ -82,8 +83,8 @@ angular.module('app.game', [])
   };
 
   $scope.submitRes = function () {
-    if (responsiveVoice.isPlaying()) {
-      responsiveVoice.speak('');      
+    if (!responsiveVoice.isPlaying()) {
+      responsiveVoice.speak('');
     }
     Game.submitResponse()
     .then(function () {
@@ -151,6 +152,10 @@ angular.module('app.game', [])
 
   $ionicPlatform.on('resume', function () {
     Game.updateGame();
+  });
+
+  socket.on('scrollTop', function () {
+    $ionicScrollDelegate.scrollTop(true);
   });
 
 

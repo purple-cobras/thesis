@@ -93,6 +93,7 @@ module.exports.init = function(server){
     module.exports.newRound = function (game_id, round) {
       var polishedRound = round.attributes;
       polishedRound.reader_name = round.relations.reader.attributes.full_name;
+      io.sockets.in('game:' + game_id).emit('scrollTop');
       io.sockets.in('game:' + game_id).emit('round', polishedRound);
     };
 
