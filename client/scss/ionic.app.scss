@@ -404,8 +404,17 @@ $rotate: 2.0deg;
 }
 
 #saveTopic {
+  display: inline-block;
   width: 25%;
-  background-color: #1188EE;
+}
+
+.not-saving {
+  background-color: #555555 !important;
+  color: #CCCCCC;
+}
+
+.saving {
+  background-color: #1199EE !important;
 }
 
 #submitTopic {

@@ -224,17 +224,19 @@ angular.module('app.services', [])
       });
     },
 
-    saveTopic: function () {
-
-    },
-
-    submitTopic: function () {
+    submitTopic: function (saveTopic) {
       obj.submitting_topic = true;
       var cacheTopic = obj.topic;
+      var data = {};
+      data.topic = obj.topic;
+      if (saveTopic) {
+        data.saveTopic = true;
+        data.user_id = store.get('remote_id');
+      }
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/topic',
         method: 'post',
-        data: {topic: obj.topic}
+        data: data
       })
       .then(function (response) {
         if (response.data.submitted) {

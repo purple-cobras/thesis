@@ -687,4 +687,16 @@ module.exports.revealResponse = function (game_id, response_id) {
   });
 };
 
+module.exports.saveTopic = function (round_id, user_id) {
+  return new Promise(function (res, rej) {
+    module.exports.findOrCreate(models.UserRound, {user_id: user_id, round_id: round_id})
+    .then( function (userRound) {
+      userRound.save({topic_saved: true})
+      .then( function () {
+        res();
+      });
+    });
+  });
+}
+
 module.exports.eventEmitter = eventEmitter;
