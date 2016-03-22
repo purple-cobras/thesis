@@ -9841,11 +9841,16 @@ img.empty {
 .guessable .icon {
   margin-left: 20px; }
 
-.players .guessing, .responses .guessing {
-  background-color: #beadf3; }
+.players, .responses {
+  margin-top: 0px; }
+  .players .guessing, .responses .guessing {
+    background-color: #beadf3; }
+  .players .activated, .responses .activated {
+    background-color: #e1dafa; }
 
-.players .activated, .responses .activated {
-  background-color: #e1dafa; }
+.list-head {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px; }
 
 .guesser p:empty {
   height: 0px;

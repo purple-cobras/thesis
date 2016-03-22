@@ -160,7 +160,12 @@ img.empty {
   .activated {
     background-color: lighten($royal, 25%);
   }
+  margin-top: 0px;
+}
 
+.list-head {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 }
 
 .guesser {
