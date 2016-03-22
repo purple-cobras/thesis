@@ -1036,7 +1036,6 @@ if (typeof responsiveVoice != 'undefined') {
         self.mapRVs = function() {
 
             for (var i = 0; i < self.responsivevoices.length; i++) {
-                  console.log('got it');
                 var rv = self.responsivevoices[i];
 
                 for (var j = 0; j < rv.voiceIDs.length; j++) {
