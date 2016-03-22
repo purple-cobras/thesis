@@ -90,6 +90,5 @@ module.exports = {
   Round: Round,
   Response: Response,
   UserGame: UserGame,
-  UserRound: UserRound,
-  SavedResponse: SavedResponse
+  UserRound: UserRound
 };
