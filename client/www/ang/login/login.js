@@ -38,7 +38,7 @@ angular.module('app.login', [])
           store.set('created_at', response.data.user.created_at);
           store.set('remote_id', response.data.user.id);
           store.set('current_game_id', response.data.user.current_game_id);
-          getProfilePic();
+          setProfile();
           Game.game.id = response.data.user.current_game_id;
           Game.getGame();
           //SOCKET EMIT login userInfo.fb ,.name
@@ -76,12 +76,14 @@ angular.module('app.login', [])
   };
 
   var setProfile = function () {
-    $scope.profile = {
-      name: store.get('profile').name,
-      picUrl: store.get('pic_url'),
-      gamesPlayed: store.get('games_played'),
-      createdAt: store.get('created_at')
-    };      
+    getProfilePic().then(function() {
+      $scope.profile = {
+        name: store.get('profile').name,
+        picUrl: store.get('pic_url'),
+        gamesPlayed: store.get('games_played'),
+        createdAt: store.get('created_at')
+      };
+    });
   };
 
   // var setProfile = function () {
