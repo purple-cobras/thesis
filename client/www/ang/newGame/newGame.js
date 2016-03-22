@@ -20,7 +20,7 @@ angular.module('app.newGame', [])
     $event.target.focus();
     var count = Object.keys($scope.inviting).length;
     if (!count) {
-      $('.friends-count').text('');
+      $('.friends-count').text('(Invite at least one friend)');
     } else {
       $('.friends-count').text('(' + count + ' invited)');
     }
@@ -69,5 +69,7 @@ angular.module('app.newGame', [])
       $scope.isDisabled = false;
     })
   };
+
+  $('.friends-count').text('(Invite at least one friend)');
 
 });

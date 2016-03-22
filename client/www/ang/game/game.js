@@ -23,6 +23,8 @@ angular.module('app.game', [])
 
   $scope.typingTopic = false;
 
+  $scope.kicked = false;
+
   $scope.Game.remote_id = store.get('remote_id');
 
   $scope.toggleTypingTopic = function (val) {
@@ -39,6 +41,7 @@ angular.module('app.game', [])
   };
 
   $scope.kickoff = function () {
+    $scope.kicked = true;
     Game.startGame();
   };
 

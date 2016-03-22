@@ -43,10 +43,6 @@ $font: "HelveticaNeue-Light";
   font-family: $font;
 }
 
-.inviting {
-  @extend .active;
-}
-
 .friends-list {
   min-height: 30vh;
   max-height: 50vh;
@@ -104,6 +100,10 @@ hr {
     font-size: 0.6em;
     font-style: italic;
   }
+
+  ion-item {
+    background: $balanced;
+  }
 }
 
 .account {
@@ -112,9 +112,43 @@ hr {
   left: 0;
 }
 
+.main-content {
+  padding-top: 35px;
+  .button {
+    margin: 40px 0;
+  }
+}
+
+.accept, .reject {
+  &:active {
+    background: $stabler;
+  }
+}
+
 /** NEW GAME **/
 .friends-list {
   max-height: 40vh;
+  .inviting, .active, .activated {
+    background: $light;
+    color: $stabler;
+  }
+}
+
+.rules, .rules .item .input-label {
+  font-size: 1em;
+  font-weight: normal!important;
+  input {
+    font-size: 1.3em;
+    color: $stabler;
+    text-align: right;
+  }
+}
+
+.error {
+  margin-top: 3px;
+  text-align: center;
+  color: $energized;
+  font-weight: bold;
 }
 
 /** GAME **/
@@ -196,6 +230,10 @@ $slide-dur: 0.5s;
      opacity: 0.5; 
   }
 
+}
+
+.kickoff:enabled {
+  animation: shimmy 2s linear alternate infinite;
 }
 
 .round-count {
