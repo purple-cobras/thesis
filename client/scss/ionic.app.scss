@@ -43,10 +43,6 @@ $font: "HelveticaNeue-Light";
   font-family: $font;
 }
 
-.inviting {
-  @extend .active;
-}
-
 .friends-list {
   min-height: 30vh;
   max-height: 50vh;
@@ -60,6 +56,57 @@ img.empty {
   display: none;
 }
 
+.pane {
+  background: $balanced;
+}
+
+.bar.bar-header {
+  *, .title {
+    color: $lightest;
+  }
+}
+
+.button.button-energized {
+  color: black;
+}
+
+.item {
+  background-color: $balanced;
+  border-color: $stabler;
+  border-width: 1px;
+  color: $lighter;
+}
+
+.item-divider {
+  background: $stable;
+  color: $lightest;
+  font-weight: bold;
+}
+
+.list.card, .game-list {
+  background: $stable;
+  border: 0px solid $lightest!important;
+}
+
+hr {
+  border-color: $stable;
+  color: white;
+  border-top-style: solid;
+}
+
+/** LOGIN **/
+.button.button-stable:active {
+  background: $stabler;
+}
+
+.button.button-energized:hover {
+  color: black;
+}
+
+.login {
+  margin-top: 30px!important;
+}
+
 /** MAIN **/
 
 .invitations-list {
@@ -69,6 +116,10 @@ img.empty {
     font-size: 0.6em;
     font-style: italic;
   }
+
+  ion-item {
+    background: $balanced;
+  }
 }
 
 .account {
@@ -77,9 +128,43 @@ img.empty {
   left: 0;
 }
 
+.main-content {
+  padding-top: 35px;
+  .button {
+    margin: 40px 0;
+  }
+}
+
+.accept, .reject {
+  &:active {
+    background: $stabler;
+  }
+}
+
 /** NEW GAME **/
 .friends-list {
   max-height: 40vh;
+  .inviting, .active, .activated {
+    background: $balanceder;
+    color: black;
+  }
+}
+
+.rules, .rules .item .input-label {
+  font-size: 1em;
+  font-weight: normal!important;
+  input {
+    font-size: 1.3em;
+    color: $stabler;
+    text-align: right;
+  }
+}
+
+.error {
+  margin-top: 3px;
+  text-align: center;
+  color: $energized;
+  font-weight: bold;
 }
 
 /** GAME **/
@@ -90,7 +175,12 @@ img.empty {
   }
 }
 
+$slide-dur: 0.5s;
+
 .game-inputs {
+
+  margin: 0;
+
   input[type="text"], textarea {
     width: 95%;
     padding-left: 5px;
@@ -100,9 +190,69 @@ img.empty {
     line-height: 2em;
 
     &[disabled="disabled"] {
-      background-color: white;
+      /*background-color: white;*/
     }
   }
+
+  .button.ng-enter {
+    -webkit-animate: slideInLeft $slide-dur;
+    animation: slideInLeft $slide-dur;
+  }
+  .button.ng-leave {
+    -webkit-animate: slideOutLeft $slide-dur;
+    animation: slideOutLeft $slide-dur;
+  }
+}
+
+.button-container {
+  max-height: 0px;
+  transition: max-height $slide-dur linear;
+  -webkit-transition: max-height $slide-dur linear;
+}
+
+.button-container.has-button {
+  max-height: 100px;
+}
+
+.input-label {
+  color: $lighter;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.item-input {
+  textarea {
+    background-color: $balanced;
+    color: $lighter;
+  }
+  textarea::placeholder {
+    color: $lighter;
+    opacity: 50%;
+  };
+  textarea::-webkit-input-placeholder {
+   color: $lighter;
+   opacity: 0.5;
+  }
+
+  textarea::-moz-placeholder { /* Firefox 18- */
+     color: $lighter; 
+     opacity: 0.5; 
+  }
+
+  textarea::-moz-placeholder {  /* Firefox 19+ */
+     color: $lighter;  
+     opacity: 0.5;
+  }
+
+  textarea::-ms-input-placeholder {  
+     color: $lighter; 
+     opacity: 0.5; 
+  }
+
+}
+
+.kickoff:enabled {
+  animation: shimmy 2s linear alternate infinite;
 }
 
 .round-count {
@@ -121,18 +271,92 @@ img.empty {
   float: right;
 }
 
+.game-info {
+  padding: 0 10px;
+  background: $stable;
+  .row {
+    margin-top: -10px;
+    margin-bottom: -10px;
+  }
+}
+
 .guesser {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   text-align: center;
-  background-color: $gray;
+  background-color: $stable;
   font-size: 1.5em;
   border-radius: 5px;
   p {
     padding: 8px;
   }
+  margin-top: 2px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 75%;
 }
 
 .me-guessing {
   background-color: $energized;
+}
+.urgent-guessing {
+  animation: flux 1s infinite alternate;
+}
+
+.urgent-reader {
+  animation: shimmy 5s infinite alternate;
+}
+
+$rotate: 2.0deg;
+
+@keyframes shimmy {
+  0% {
+    transform: rotate($rotate);
+  }
+  3% {
+    transform: rotate(-$rotate);
+  }
+  6% {
+    transform: rotate($rotate);
+  }
+  9% {
+    transform: rotate(-$rotate);
+  }
+  12% {
+    transform: rotate($rotate);
+  }
+  15% {
+    transform: rotate(-$rotate);
+  }
+  18% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes flux {
+  100% {
+    -webkit-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+}
+
+@-webkit-keyframes flux {
+  100% {
+    -webkit-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+}
+
+.guess-instructions {
+  padding: 0 10px;
+  text-align: center;
+  color: $stabler;
+  font-weight: light;
 }
 
 .guessed {
@@ -149,11 +373,9 @@ img.empty {
 }
 
 .players, .responses {
-  .guessing {
-    background-color: lighten($royal, 15%);
-  }
-  .activated {
-    background-color: lighten($royal, 25%);
+  .guessing, .activated {
+    background-color: $balanceder;
+    color: $dark;
   }
   margin-top: 0px;
 }
@@ -184,7 +406,7 @@ img.empty {
 /** PROFILE **/
 
 .profile {
-  color: $dark;
+  color: black;
 }
 .name {
   float: top;
@@ -205,7 +427,15 @@ img.empty {
 }
 
 #topic-text {
-  font-size: $font-size-large;;
+  font-size: $font-size-large;
+  color: $lightest;
+}
+
+.topic-container {
+  border-radius: 0px;
+  .item {
+    border-radius: 0px!important;
+  }
 }
 
 /* rubber band animation by Daniel Eden - https://daneden.github.io/animate.css/ */

@@ -5,14 +5,14 @@
     </button>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
-    <button ng-click="kickoff()" ng-disabled="game.players.length < 2" ng-if="!Game.started && Game.isCreator" class="button button-block button-royal">
+    <button ng-click="kickoff()" ng-disabled="game.players.length < 2" ng-if="!Game.started && Game.isCreator" class="button button-block button-energized" ng-class="{kickoff: !kicked}">
       Kick this party off
     </button>
 
     <div ng-if="game.players.length < 2">You need at least one friend to join</div>
 
-    <div class="card">
-      <div class="item reader item-text-wrap ng-class: {alert: Game.isReader}" ng-if="Game.started && !game.current_round.topic.length">
+    <div class="card topic-container" ng-class="{'urgent-reader': Game.isReader && !typingTopic && !Game.game.current_round.topic.length}">
+      <div class="item reader item-text-wrap" ng-class="{'alert': Game.isReader}" ng-if="Game.started && !game.current_round.topic.length">
         {{Game.isReader ? "You\'re the reader! Enter a topic." : "Waiting for a clever topic from reader"}}
        <!--  <ion-spinner></ion-spinner> -->
       </div>
@@ -21,63 +21,71 @@
       </div>
     </div>
 
-    <h4 class="topic" ng-if="!Game.started && !Game.isCreator">Waiting to start the game...</h4>
-    <div class="row">
-      <div class="col">
-        <h4>Reader: <span ng-bind="game.current_round.reader_name"></span></h4>
+    <div class="game-info card">
+      <h4 class="topic" ng-if="!Game.started && !Game.isCreator">Waiting to start the game...</h4>
+      <div class="row">
+        <div ng-if="!Game.game.winner" class="col">
+          <h4>Reader: <span ng-bind="game.current_round.reader_name"></span></h4>
+        </div>
+        <div ng-if="Game.game.winner" class="col">
+          <h4 class="winner">Winner: <span ng-bind="Game.game.winner.full_name"></span></h4>
+        </div>
       </div>
-      <div class="col">
-        <h4 ng-if="Game.game.rounds.length" class="round-count">Round #{{Game.game.rounds.length}}</h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <h4 class="max-score">Game to: <span ng-bind="game.max_score"></span></h4>
-      </div>
-      <div class="col">
-        <h4 ng-if="Game.game.winner" class="winner">Winner: <span ng-bind="Game.game.winner.full_name"></span></h4>
+      <div class="row">
+        <div class="col">
+          <h4 class="max-score">Game to: <span ng-bind="game.max_score"></span></h4>
+        </div>
+        <div class="col">
+          <h4 ng-if="Game.game.rounds.length" class="round-count">Round #{{Game.game.rounds.length}}</h4>
+        </div>
       </div>
     </div>
   <hr />
     <div class="list game-inputs">
       <div ng-if="(!Game.isReader || Game.game.current_round.topic.length) && !Game.game.current_round.ready && !Game.hasResponded()" class="response-field">
-        <button ng-click="submitRes()" ng-disabled="!Game.response.trim().length || Game.submitting_response" ng-if="typingResponse || Game.response.trim().length" class="button button-block button-balanced">
-            Submit!
-        </button>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">Response</span>
-          <textarea msd-elastic ng-model="Game.response" ng-disabled="!Game.game.current_round.topic.length" ng-focus="typingResponse = true" ng-blur="typingResponse = false" type="text" placeholder="{{game.current_round.topic.length ? 'Be creative' : 'No topic yet'}}"></textarea>
-        </label>
+        <div class="button-container" ng-class="{'has-button': typingResponse || Game.response.trim().length}">
+          <button ng-click="submitRes()" ng-disabled="!Game.response.trim().length || Game.submitting_response" ng-if="typingResponse || Game.response.trim().length" class="button button-block button-calm">
+              Submit!
+          </button>
+        </div>
+        <div class="response-section">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Response</span>
+            <textarea msd-elastic ng-model="Game.response" ng-disabled="!Game.game.current_round.topic.length" ng-focus="typingResponse = true" ng-blur="typingResponse = false" type="text" placeholder="{{game.current_round.topic.length ? 'Be creative' : 'No topic yet'}}"></textarea>
+          </label>
+        </div>
       </div>
       <div ng-if="Game.isReader && !Game.game.current_round.topic.length" class="topic-field">
-        <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length || Game.submitting_topic" ng-click="submitTop()" class="button button-block button-balanced">
-          Submit!
-        </button>
+        <div class="button-container" ng-class="{'has-button': typingTopic || Game.topic.trim().length}">
+          <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length || Game.submitting_topic" ng-click="submitTop()" class="button button-block button-calm">
+            Submit!
+          </button>
+        </div>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Topic</span>
-          <textarea msd-elastic ng-model="Game.topic" ng-focus="typingTopic = true" ng-blur="typingTopic = false" type="text" placeholder="Be creative"></textarea>
+          <textarea msd-elastic ng-model="Game.topic" ng-focus="toggleTypingTopic(true)" ng-blur="toggleTypingTopic(false)" type="text" placeholder="Be creative"></textarea>
         </label>
       </div>
     </div>
     <div
       ng-if="!Game.game.completed && Game.game.guesser.id" class="guesser"
-      ng-class="{'me-guessing': Game.amGuesser()}"
+      ng-class="{'me-guessing': Game.amGuesser(), 'urgent-guessing': Game.amGuesser() && (!Game.guess.user || !Game.guess.response)}"
     >
-      <p>Guesser: {{Game.amGuesser() ? "IT\'S YOU. GUESS." : Game.game.guesser.full_name}}</p>
+      <p>Guesser: {{Game.amGuesser() ? "YOU" : Game.game.guesser.full_name}}</p>
     </div>
 
     <div class="guess-space" ng-if="Game.amGuesser()">
-      <p>Select below to match player with a guess, then submit.</p>
-      <button ng-click="submitGuess({guessee_id: Game.guess.user.id, response_id: Game.guess.response.id})"class="button button-block button-balanced" ng-click="submitGuess()" ng-disabled="!Game.guess.user || !Game.guess.response || Game.submitting_guess">
+      <p class="guess-instructions">Select below to match player with a response, then submit.</p>
+      <button ng-click="submitGuess({guessee_id: Game.guess.user.id, response_id: Game.guess.response.id})"class="button button-block button-calm" ng-click="submitGuess()" ng-disabled="!Game.guess.user || !Game.guess.response || Game.submitting_guess">
         Guess
       </button>
     </div>
 
-    <div class="card">
+    <div class="game-list card">
       <div class="item item-divider list-head">
         Players {{game.players.length ? '(' + game.players.length + ')' : ''}}
       </div>
-      <ul class="list players">
+      <ul class="item item-body list players">
         <ion-content>
           <ion-list>
             <li
@@ -95,11 +103,12 @@
       </ul>
     </div>
 
-    <div class="card">
+    <div class="game-list card">
       <div class="item item-divider list-head">
-          Responses {{Game.game.current_round.responses.length ? '(' + Game.game.current_round.responses.length + ')' : ''}}
+          <h3>Responses {{Game.game.current_round.responses.length ? '(' + Game.game.current_round.responses.length + ')' : ''}}
+          </h3>
       </div>
-      <ul class="list responses">
+      <ul class="item item-body list responses">
         <ion-content>
           <ion-list>
             <li

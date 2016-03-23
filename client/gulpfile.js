@@ -9,7 +9,7 @@ var sh = require('shelljs');
 var karma = require('karma').server;
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss', './www/lib/ionic/scss/_variables.scss']
 };
 
 gulp.task('default', ['sass']);

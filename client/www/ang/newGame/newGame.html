@@ -13,12 +13,14 @@
           </ion-content>
         </div>
       </div>
-      <ion-toggle toggle-class="toggle-dark" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
-      <label class="item item-input">
-          <span class="input-label">Play up to</span>
-          <input type="tel" ng-model="rules.maxScore" ng-change="restrictScore()" min="10" max="50">
-      </label>
-      <div ng-bind="error"></div>
-      <button ng-disabled="error || isDisabled || !Utils.keys(inviting).length" ng-click="createGame()" class="button button-royal button-block ">Create!</button>
+      <div class="rules">
+        <ion-toggle toggle-class="toggle-stable" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
+        <label class="item item-input">
+            <span class="input-label score-limit">Play up to</span>
+            <input type="tel" ng-model="rules.maxScore" ng-change="restrictScore()" min="10" max="50">
+        </label>
+      </div>
+      <div class="error" ng-bind="error"></div>
+      <button ng-disabled="error || isDisabled || !Utils.keys(inviting).length" ng-click="createGame()" class="button button-calm button-block ">Create!</button>
     </ion-content>
 </ion-view>

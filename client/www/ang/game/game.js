@@ -24,7 +24,13 @@ angular.module('app.game', [])
 
   $scope.typingTopic = false;
 
+  $scope.kicked = false;
+
   $scope.Game.remote_id = store.get('remote_id');
+
+  $scope.toggleTypingTopic = function (val) {
+    $scope.typingTopic = val;
+  }
 
   $scope.back = function () {
     var history = $ionicHistory.viewHistory();
@@ -36,6 +42,7 @@ angular.module('app.game', [])
   };
 
   $scope.kickoff = function () {
+    $scope.kicked = true;
     Game.startGame();
   };
 

@@ -20,7 +20,8 @@ angular.module('app',
     'angular-storage',
     'facebook',
     'angular-jwt',
-    'ionic-toast'
+    'ionic-toast',
+    'ngAnimate'
   ]
 )
 
