@@ -40,7 +40,7 @@ gulp.task('install', ['git-check'], function() {
 
 gulp.task('test', function(done) {
   karma.start({
-    configFile: __dirname + '/tests/unit-tests.conf.js',
+    configFile: __dirname + '../../karma.conf.js',
     singleRun: true
   }, function() {
     done();
