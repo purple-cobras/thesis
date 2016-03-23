@@ -9999,20 +9999,6 @@ hr {
 .alert {
   background-color: #F4E8C1; }
 
-#saveTopic {
-  display: inline-block;
-  width: 25%; }
-
-.not-saving {
-  background-color: #555555 !important;
-  color: #CCCCCC; }
-
-.saving {
-  background-color: #1199EE !important; }
-
-#submitTopic {
-  width: 73%; }
-
 /** PROFILE **/
 .profile {
   color: black; }
