@@ -14,6 +14,8 @@ angular.module('app.services', [])
 
     started: false,
 
+    revealing: false,
+
     response: '',
 
     topic: '',
@@ -324,9 +326,23 @@ angular.module('app.services', [])
       return false;
     },
 
+    needsRevealing: function () {
+      if (!obj.game.current_round || !obj.game.current_round.ready || !obj.game.current_round.responses.length) {
+        return false;
+      }
+      for (var i = 0; i < obj.game.current_round.responses.length; i++) {
+        var response = obj.game.current_round.responses[i];
+        if (!response.revealed) {
+          return true;
+        }
+      }
+      return false;
+    },
+
     revealResponses: function (index) {
       index = index || 0;
       if (index > obj.game.current_round.responses.length - 1) {
+        obj.revealing = false;
         return;
       }
       var response = obj.game.current_round.responses[index];
@@ -357,6 +373,7 @@ angular.module('app.services', [])
     },
 
     startReadingResponses: function () {
+      obj.revealing = true;
       responsiveVoice.speak('Here are the responses for this round. The topic is ' + obj.game.current_round.topic, $rootScope.voice,
         {
           onend: obj.revealResponses
@@ -479,7 +496,7 @@ angular.module('app.services', [])
       if (obj.game.current_round.responses[i].id === response_id) {
         $timeout(function () {
           obj.game.current_round.responses[i].revealed = true;
-        });
+        }, 20);
         break;
       }
     }
