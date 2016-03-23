@@ -34,7 +34,9 @@ angular.module('app.login', [])
       })
       .then(function (response) {
         if (response.data.user) {
-          store.set('games_played', response.data.games.length);
+          console.log('response.data: ', response.data)
+          store.set('games_won', response.data.games.won);
+          store.set('games_played', response.data.games.played);
           store.set('created_at', response.data.user.created_at);
           store.set('remote_id', response.data.user.id);
           store.set('current_game_id', response.data.user.current_game_id);
@@ -81,6 +83,7 @@ angular.module('app.login', [])
       $scope.profile = {
         name: store.get('profile').name,
         picUrl: store.get('pic_url'),
+        gamesWon: store.get('games_won'),
         gamesPlayed: store.get('games_played'),
         createdAt: store.get('created_at')
       };

@@ -10,8 +10,7 @@
     "jquery": "^2.2.1",
     "ionic-toast": "^0.2.0",
     "angular-elastic": "^2.5.1",
-    "angular-animate": "^1.4.9",
-    "Ionicons": "ionicons#^2.0.1"
+    "angular-animate": "^1.4.9"
   },
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.2.4",

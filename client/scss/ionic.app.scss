@@ -235,18 +235,18 @@ $slide-dur: 0.5s;
   }
 
   textarea::-moz-placeholder { /* Firefox 18- */
-     color: $lighter;
-     opacity: 0.5;
+     color: $lighter; 
+     opacity: 0.5; 
   }
 
   textarea::-moz-placeholder {  /* Firefox 19+ */
-     color: $lighter;
+     color: $lighter;  
      opacity: 0.5;
   }
 
-  textarea::-ms-input-placeholder {
-     color: $lighter;
-     opacity: 0.5;
+  textarea::-ms-input-placeholder {  
+     color: $lighter; 
+     opacity: 0.5; 
   }
 
 }
@@ -411,56 +411,6 @@ $rotate: 2.0deg;
 
 .alert {
   background-color: $energized;
-}
-
-.float-right {
-  display: inline-block;
-  float: right;
-}
-
-.button-center {
-  text-align: center;
-}
-
-.topic-button {
-  width: 46vw;
-  padding: 0 5px;
-  margin-bottom: 1%;
-}
-
-.save-button {
-  width: 23vw;
-  padding: 0 5px;
-  margin-top: 1%;
-}
-
-.topic-submit {
-  width: 70vw !important;
-  margin-top: 1%;
-}
-
-.topic-button:after {
-  content: none;
-}
-
-.not-saving {
-  background-color: #555555 !important;
-  color: #CCCCCC;
-}
-
-.saving {
-  background-color: #1199EE !important;
-}
-
-.modal {
-  width: 90%;
-  right: 5%;
-  left: 5%;
-}
-
-.modal-button {
-  width: 95% !important;
-  margin: auto;
 }
 
 /** PROFILE **/

@@ -73,8 +73,9 @@ var routes = [
         user.set('full_name', req.body.name)
         .set('pic_url', req.body.pic_url).save()
         .then(function (user) {
-          helpers.getGamesProfile(user.id)
+          helpers.getProfile(user.id)
             .then(function (games) {
+              console.log('games: ', games)
               res.json({user: user, games: games});
             })
         })
@@ -143,10 +144,6 @@ var routes = [
   {
     path: '/rounds/:id/topic',
     post: function (req, res) {
-      if (req.body.saveTopic) {
-        console.log(req.body.user_id);
-        helpers.saveTopic(req.params.id, req.body.user_id);
-      }
       helpers.setTopic(req.params.id, req.body.topic)
       .then(function () {
         res.json({submitted: true});

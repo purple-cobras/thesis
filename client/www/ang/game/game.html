@@ -14,7 +14,6 @@
     <div class="card topic-container" ng-class="{'urgent-reader': Game.isReader && !typingTopic && !Game.game.current_round.topic.length}">
       <div class="item reader item-text-wrap" ng-class="{'alert': Game.isReader}" ng-if="Game.started && !game.current_round.topic.length">
         {{Game.isReader ? "You\'re the reader! Enter a topic." : "Waiting for a clever topic from reader"}}
-       <!--  <ion-spinner></ion-spinner> -->
       </div>
       <div class="item reader item-text-wrap" ng-if="Game.started && game.current_round.topic.length">
         <p class="animated rubberBand" id="topic-text"><strong>Topic: </strong>{{game.current_round.topic}}</p>
@@ -56,31 +55,15 @@
         </div>
       </div>
       <div ng-if="Game.isReader && !Game.game.current_round.topic.length" class="topic-field">
-        <div class="button-center">
-          <button ng-disabled="!Game.saved_topics.userTopics.length" ng-if="!Game.saved_topics.is_empty" ng-click="getUsersTopics()" class="button topic-button button-balanced">
-            Load
-          </button>
-          <button ng-if="!Game.saved_topics.is_empty" ng-click="getRandomTopic()" class="button topic-button button-balanced">
-            Random
+        <div class="button-container" ng-class="{'has-button': typingTopic || Game.topic.trim().length}">
+          <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length || Game.submitting_topic" ng-click="submitTop()" class="button button-block button-calm">
+            Submit!
           </button>
         </div>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Topic</span>
           <textarea msd-elastic ng-model="Game.topic" ng-focus="toggleTypingTopic(true)" ng-blur="toggleTypingTopic(false)" type="text" placeholder="Be creative"></textarea>
         </label>
-        <div class="button-container" ng-class="{'has-button': typingTopic || Game.topic.trim().length}">
-          <button ng-disabled="!Game.topic.trim().length" ng-if="saveTopic && (typingTopic || Game.topic.trim().length || Game.submitting_topic)" ng-click="toggleSave()" class="saving save-button button button-balanced">
-            <i class="icon ion-checkmark-round"></i>
-            Save
-          </button>
-          <button ng-disabled="!Game.topic.trim().length" ng-if="!saveTopic && (typingTopic || Game.topic.trim().length || Game.submitting_topic)" ng-click="toggleSave()" class="not-saving save-button button button-balanced">
-            <i class="icon ion-close-round"></i>
-            Save
-          </button>
-          <button ng-disabled="!Game.topic.trim().length" ng-if="typingTopic || Game.topic.trim().length || Game.submitting_topic" ng-click="submitTop()" class="float-right topic-submit button button-block button-calm">
-            Submit!
-          </button>
-        </div>
       </div>
     </div>
     <div
