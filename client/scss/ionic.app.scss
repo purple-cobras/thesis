@@ -303,8 +303,18 @@ $slide-dur: 0.5s;
   animation: flux 1s infinite alternate;
 }
 
+.urgent-guessing.ng-animate {
+  -webkit-animation: none 0s;
+  animation: none 0s;
+}
+
 .urgent-reader {
   animation: shimmy 5s infinite alternate;
+}
+
+.urgent-reader.ng-animate {
+  -webkit-animation: none 0s;
+  animation: none 0s;
 }
 
 $rotate: 2.0deg;

@@ -68,7 +68,7 @@
     </div>
     <div
       ng-if="!Game.game.completed && Game.game.guesser.id" class="guesser"
-      ng-class="{'me-guessing': Game.amGuesser(), 'urgent-guessing': Game.amGuesser() && (!Game.guess.user || !Game.guess.response)}"
+      ng-class="{'me-guessing': Game.amGuesser(), 'urgent-guessing': Game.amGuesser()}"
     >
       <p>Guesser: {{Game.amGuesser() ? "YOU" : Game.game.guesser.full_name}}</p>
     </div>
