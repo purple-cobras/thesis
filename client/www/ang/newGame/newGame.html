@@ -4,10 +4,13 @@
         <div class="item item-divider">
             Friends <span class="friends-count"></span>
         </div>
+        <div class="item">
+          <input ng-model="search.friend" focus-on="searching" class="friend-search" type="text" placeholder="search for a friend">
+        </div>
         <div class="friends-list item item-body">
           <ion-content>
               <ion-list>
-                <ion-item fb-thumbnail ng-repeat="friend in friends | filter:search | orderBy:'name'" ng-click="toggleInvite(friend, $event)" ng-class="{inviting: inviting[friend.id]}" class="item-thumbnail-right">{{friend.name}}
+                <ion-item fb-thumbnail ng-repeat="friend in friends | filter:search.friend | orderBy:'name'" ng-click="toggleInvite(friend, $event)" ng-class="{inviting: inviting[friend.id]}" class="item-thumbnail-right">{{friend.name}}
                 </ion-item>
               </ion-list>
           </ion-content>

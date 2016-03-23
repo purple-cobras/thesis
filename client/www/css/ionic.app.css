@@ -9826,6 +9826,10 @@ hr {
   color: #F4E8C1;
   font-weight: bold; }
 
+.friend-search {
+  background: transparent;
+  color: #F4F2F3 !important; }
+
 /** GAME **/
 .platform-android .buttons + .title.title-left.header-item {
   margin-left: 20px; }
@@ -9865,25 +9869,25 @@ hr {
   background-color: #656256;
   color: white; }
 
-.item-input textarea::placeholder {
+input::placeholder, textarea::placeholder {
   color: white;
   opacity: 50%; }
 
-.item-input textarea::-webkit-input-placeholder {
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   color: white;
   opacity: 0.5; }
 
-.item-input textarea::-moz-placeholder {
+input::-moz-placeholder, textarea::-moz-placeholder {
   /* Firefox 18- */
   color: white;
   opacity: 0.5; }
 
-.item-input textarea::-moz-placeholder {
+input::-moz-placeholder, textarea::-moz-placeholder {
   /* Firefox 19+ */
   color: white;
   opacity: 0.5; }
 
-.item-input textarea::-ms-input-placeholder {
+input::-ms-input-placeholder, textarea::-ms-input-placeholder {
   color: white;
   opacity: 0.5; }
 

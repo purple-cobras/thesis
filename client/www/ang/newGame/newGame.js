@@ -11,6 +11,8 @@ angular.module('app.newGame', [])
   };
   $scope.error = '';
 
+  $scope.search = {friend: ''}
+
   $scope.toggleInvite = function (friend, $event) {
     if($scope.inviting[friend.id]){
       delete $scope.inviting[friend.id];
