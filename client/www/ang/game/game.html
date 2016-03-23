@@ -14,7 +14,6 @@
     <div class="card topic-container" ng-class="{'urgent-reader': Game.isReader && !typingTopic && !Game.game.current_round.topic.length}">
       <div class="item reader item-text-wrap" ng-class="{'alert': Game.isReader}" ng-if="Game.started && !game.current_round.topic.length">
         {{Game.isReader ? "You\'re the reader! Enter a topic." : "Waiting for a clever topic from reader"}}
-       <!--  <ion-spinner></ion-spinner> -->
       </div>
       <div class="item reader item-text-wrap" ng-if="Game.started && game.current_round.topic.length">
         <p class="animated rubberBand" id="topic-text"><strong>Topic: </strong>{{game.current_round.topic}}</p>
