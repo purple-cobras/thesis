@@ -23,7 +23,7 @@ module.exports = function(config) {
       'client/www/js/socket.io.js',
 
       'client/www/lib/angular-socket-io/socket.js',
-
+      'client/www/lib/ionic-toast/dist/ionic-toast.bundle.min.js',
       'client/www/lib/ionic/js/angular-ui/angular-ui-router.js',
       'client/www/lib/angular-animate/angular-animate.js',
       'client/www/lib/angular-sanitize/angular-sanitize.js',
@@ -41,7 +41,11 @@ module.exports = function(config) {
       'test/unit-tests/*.js'
     ],
 
-
+    plugins: [
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-spec-reporter'
+    ],
     // list of files to exclude
     exclude: [
       'karma.conf.js'
@@ -84,7 +88,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
