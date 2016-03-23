@@ -496,7 +496,7 @@ angular.module('app.services', [])
       if (obj.game.current_round.responses[i].id === response_id) {
         $timeout(function () {
           obj.game.current_round.responses[i].revealed = true;
-        });
+        }, 20);
         break;
       }
     }
