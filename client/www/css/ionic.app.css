@@ -9929,8 +9929,16 @@ hr {
 .urgent-guessing {
   animation: flux 1s infinite alternate; }
 
+.urgent-guessing.ng-animate {
+  -webkit-animation: none 0s;
+  animation: none 0s; }
+
 .urgent-reader {
   animation: shimmy 5s infinite alternate; }
+
+.urgent-reader.ng-animate {
+  -webkit-animation: none 0s;
+  animation: none 0s; }
 
 @keyframes shimmy {
   0% {
@@ -9999,9 +10007,29 @@ hr {
 .alert {
   background-color: #F4E8C1; }
 
-#saveTopic {
+.float-right {
   display: inline-block;
-  width: 25%; }
+  float: right; }
+
+.button-center {
+  text-align: center; }
+
+.topic-button {
+  width: 46vw;
+  padding: 0 5px;
+  margin-bottom: 1%; }
+
+.save-button {
+  width: 23vw;
+  padding: 0 5px;
+  margin-top: 1%; }
+
+.topic-submit {
+  width: 70vw !important;
+  margin-top: 1%; }
+
+.topic-button:after {
+  content: none; }
 
 .not-saving {
   background-color: #555555 !important;
@@ -10010,8 +10038,14 @@ hr {
 .saving {
   background-color: #1199EE !important; }
 
-#submitTopic {
-  width: 73%; }
+.modal {
+  width: 90%;
+  right: 5%;
+  left: 5%; }
+
+.modal-button {
+  width: 95% !important;
+  margin: auto; }
 
 /** PROFILE **/
 .profile {
