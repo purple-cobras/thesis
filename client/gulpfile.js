@@ -6,6 +6,7 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var jshint = require('gulp-jshint');
 var karma = require('karma').server;
 
 var paths = {
@@ -46,6 +47,12 @@ gulp.task('test', function(done) {
     done();
   });
 });
+
+gulp.task('lint', function() {
+  return gulp.src('www/ang/**/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+ });
 
 gulp.task('git-check', function(done) {
   if (!sh.which('git')) {
