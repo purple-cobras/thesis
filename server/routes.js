@@ -73,7 +73,6 @@ var routes = [
         user.set('full_name', req.body.name)
         .set('pic_url', req.body.pic_url).save()
         .then(function (user) {
-          //helpers.getGamesWon(user.id).then(function(games) {console.log('games won: ', games)})
           helpers.getProfile(user.id)
             .then(function (games) {
               console.log('games: ', games)
