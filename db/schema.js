@@ -22,7 +22,7 @@ var knex = Knex({
 
 var db = Bookshelf(knex);
 
-// Table creation functions: 
+// Table creation functions:
 
 var createGames = function () {
 	return db.knex.schema.hasTable('games')
@@ -94,7 +94,7 @@ var createRounds = function () {
 			});
 		}
 	});
-	
+
 };
 
 var createResponses = function () {
