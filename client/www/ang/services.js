@@ -494,9 +494,9 @@ angular.module('app.services', [])
   socket.on('reveal', function (response_id) {
     for (var i = 0; i < obj.game.current_round.responses.length; i++) {
       if (obj.game.current_round.responses[i].id === response_id) {
-        $timeout(function () {
+        $rootScope.$apply(function () {
           obj.game.current_round.responses[i].revealed = true;
-        }, 20);
+        });
         break;
       }
     }
