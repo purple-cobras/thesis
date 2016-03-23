@@ -74,10 +74,6 @@ angular.module('app.services', [])
       response: undefined
     },
 
-    saved_topics: {
-      is_empty: true
-    },
-
     checkGame: function () {
       var remote_id = store.get('remote_id');
       if (!remote_id) {
@@ -99,9 +95,6 @@ angular.module('app.services', [])
     },
 
     getGame: function () {
-      if (obj.saved_topics.is_empty) {
-        socket.emit('retrieve saved', store.get('remote_id'));
-      }
       obj.game.id = store.get('current_game_id');
       if (!obj.game.id) {
         obj.resetGame();
@@ -197,14 +190,11 @@ angular.module('app.services', [])
         reader_name: undefined,
         ready: false,
         response: []
-      };
+      }
       obj.guess = {
         user: undefined,
         response: undefined
-      };
-      obj.saved_topics = {
-        is_empty: true
-      };
+      }
     },
 
     updateGame: function  () {
@@ -234,19 +224,13 @@ angular.module('app.services', [])
       });
     },
 
-    submitTopic: function (saveTopic) {
+    submitTopic: function () {
       obj.submitting_topic = true;
       var cacheTopic = obj.topic;
-      var data = {};
-      data.topic = obj.topic;
-      if (saveTopic) {
-        data.saveTopic = true;
-        data.user_id = store.get('remote_id');
-      }
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/topic',
         method: 'post',
-        data: data
+        data: {topic: obj.topic}
       })
       .then(function (response) {
         if (response.data.submitted) {
@@ -498,12 +482,6 @@ angular.module('app.services', [])
         });
         break;
       }
-    }
-  });
-
-  socket.on('topics retrieved', function (saved_topics) {
-    if (!(Object.keys(saved_topics).length === 0 && JSON.stringify(saved_topics) === JSON.stringify({}))) {
-      obj.saved_topics = saved_topics;
     }
   });
 
