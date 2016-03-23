@@ -255,6 +255,11 @@ $slide-dur: 0.5s;
   animation: shimmy 2s linear alternate infinite;
 }
 
+.kickoff.ng-animate {
+  -webkit-animation: none 0s;
+  animation: none 0s;
+}
+
 .round-count {
   text-align: right;
 }
