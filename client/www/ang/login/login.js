@@ -34,7 +34,6 @@ angular.module('app.login', [])
       })
       .then(function (response) {
         if (response.data.user) {
-          console.log('response.data: ', response.data)
           store.set('games_won', response.data.games.won);
           store.set('games_played', response.data.games.played);
           store.set('created_at', response.data.user.created_at);
