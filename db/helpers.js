@@ -6,36 +6,6 @@ var eventEmitter = new events.EventEmitter();
 var path = require('path');
 var socket = require(path.resolve('server/sockets'));
 
-module.exports.getGamesWon = function (user_id) {
-  return new Promise (function (resolve, reject) {
-    db.knex('games')
-      .count()
-      .where({
-        winner_id: user_id
-      })
-      .then(function (count) {
-        // console.log('count: ', count)
-        resolve(count);
-      });
-  });
-};
-
-module.exports.getGamesProfile = function (user_id) {
-  return new Promise (function (resolve, reject) {
-    db.knex.select()
-      .from('users_games')
-      .where({
-        user_id: user_id,
-        invite: 1
-      })
-      .then(function (games) {
-        resolve(games);
-      })
-      .catch(function (error) {
-        reject(error);
-      })
-  });
-};
 
 module.exports.findOrCreate = function (Model, attributes) {
 
@@ -702,3 +672,52 @@ module.exports.revealResponse = function (game_id, response_id) {
 };
 
 module.exports.eventEmitter = eventEmitter;
+
+module.exports.getGamesWon = function (user_id) {
+  return new Promise (function (resolve, reject) {
+    db.knex('games')
+      .count()
+      .where({
+        winner_id: user_id
+      })
+      .then(function (count) {
+        resolve(count);
+      })
+      .catch(function (error) {
+        reject(error);
+      });
+  });
+};
+
+module.exports.getGamesPlayed = function (user_id) {
+  return new Promise (function (resolve, reject) {
+    db.knex('users_games')
+      .count()
+      .where({
+        user_id: user_id,
+        invite: 1
+      })
+      .then(function (games) {
+        resolve(games);
+      })
+      .catch(function (error) {
+        reject(error);
+      });
+  });
+};
+
+module.exports.getProfile = function (user_id) {
+  return new Promise (function (resolve, reject) {
+    module.exports.getGamesPlayed(user_id).then(function (played) {
+      module.exports.getGamesWon(user_id).then(function (won) {
+        resolve({won: won[0].count, played: played[0].count});
+      })
+      .catch(function (error) {
+        reject(error);
+      })
+    })
+    .catch(function (error) {
+      reject(error);
+    })
+  });
+};
