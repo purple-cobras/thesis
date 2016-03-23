@@ -6,7 +6,7 @@ angular.module('app.game', [])
   $http,
   Game,
   store,
-  $ionicPopup,
+  $ionicModal,
   $ionicScrollDelegate,
   $ionicPlatform,
   socket
@@ -165,5 +165,27 @@ angular.module('app.game', [])
     $ionicScrollDelegate.scrollTop(true);
   });
 
+  $scope.getUsersTopics = function () {
+    var template = '<ion-modal-view><ion-header-bar><h1 class="title">Choose Topic</h1></ion-header-bar><ion-content>';
+    for (var i = 0; i < $scope.Game.saved_topics.userTopics.length; i++) {
+      template += '<button ng-click="Game.topic = \'' + Game.saved_topics.userTopics[i] +
+        '\'; modal.hide();" class="button button-balanced modal-button button-block">' +
+        $scope.Game.saved_topics.userTopics[i] + '</button>';
+    }
+    template += '</ion-content></ion-modal-view>';
+
+    $scope.modal = $ionicModal.fromTemplate(template, {
+      scope: $scope
+    });
+
+    $scope.modal.show();
+  }
+
+  $scope.getRandomTopic = function () {
+    console.log($scope.Game.saved_topics)
+    if (!$scope.Game.saved_topics.is_empty) {
+      $scope.Game.topic = $scope.Game.saved_topics.all[Math.floor(Math.random() * $scope.Game.saved_topics.all.length)];
+    }
+  }
 
 });

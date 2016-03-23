@@ -442,8 +442,15 @@ $rotate: 2.0deg;
   background-color: #1199EE !important;
 }
 
-#submitTopic {
-  width: 73%;
+.modal {
+  width: 90%;
+  right: 5%;
+  left: 5%;
+}
+
+.modal-button {
+  width: 95% !important;
+  margin: auto;
 }
 
 /** PROFILE **/
