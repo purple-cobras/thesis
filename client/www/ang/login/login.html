@@ -17,7 +17,7 @@
                             <br>
                             <span class="profile stats">{{appName}} player since {{profile.createdAt | date:'mediumDate'}}</span>
                             <br>
-                            <span class="profile stats">Games played: {{profile.gamesPlayed}}</span>
+                            <span class="profile stats">{{profile.gamesPlayed}} {{profile.gamesPlayed === "1" ? "game" : "games"}} played with {{profile.gamesWon}} {{profile.gamesWon === "1" ? "win" : "wins"}}</span>
                         </div>
                     </div>
                     <a ng-click="logout()" class="button button-stable button-block button-large">Log out</a>
