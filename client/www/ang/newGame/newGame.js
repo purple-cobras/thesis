@@ -52,7 +52,6 @@ angular.module('app.newGame', [])
     })
     .then(function (response){
       if (response.data.game) {
-        //SOCKET EMIT gameCreated gameInfo.friend, .invitedBy
         Game.updateGame()
         .then(function () {
           $state.go('game');

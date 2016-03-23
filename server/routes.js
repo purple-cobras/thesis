@@ -143,6 +143,10 @@ var routes = [
   {
     path: '/rounds/:id/topic',
     post: function (req, res) {
+      if (req.body.saveTopic) {
+        console.log(req.body.user_id);
+        helpers.saveTopic(req.params.id, req.body.user_id);
+      }
       helpers.setTopic(req.params.id, req.body.topic)
       .then(function () {
         res.json({submitted: true});
