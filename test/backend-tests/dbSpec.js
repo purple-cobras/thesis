@@ -1,10 +1,10 @@
 var env = require('node-env-file');
 var path = require('path');
 var expect = require('chai').expect;
-var db = require('../../../db/db.js');
+var db = require('../../db/db.js');
 
 if (process.env.NODE_ENV !== 'production' && !process.env.CIRCLECI) {
-  env(__dirname + '../../../../.env');
+  env(__dirname + '../../../.env');
 }
 
 describe('it should have a connection to the database', function () {

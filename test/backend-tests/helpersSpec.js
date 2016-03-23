@@ -1,16 +1,15 @@
 var path = require('path');
-var db = require('../../../db/db.js');
-var helpers = require('../../../db/helpers.js');
-var models = require('../../../db/models');
+var db = require('../../db/db.js');
+var helpers = require('../../db/helpers.js');
+var models = require('../../db/models');
 var env = require('node-env-file');
-var socket = require('../../../server/sockets');
+var socket = require('../../server/sockets');
 var expect = require('chai').expect;
 
 
 if (process.env.NODE_ENV !== 'production' && !process.env.CIRCLECI) {
-  env(__dirname + '../../../../.env');
+  env(__dirname + '../../../.env');
 }
-
 
 
 describe('Helper Functions', function () {
