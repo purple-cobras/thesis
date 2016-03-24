@@ -53,6 +53,10 @@ module.exports.init = function(server){
       socket.join('game:' + game_id);
     });
 
+    socket.on('endGame', function (game_id) {
+      console.log(game_id)
+    });
+
     var markConnected = function (userInfo) {
       if (!online[userInfo.id]) {
         online[userInfo.id] = [];
