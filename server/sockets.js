@@ -80,15 +80,20 @@ module.exports.init = function(server){
       }
     };
 
-    module.exports.inviteResult = function (players, result) {
-      players.forEach(function (player) {
-        if (!online[player.id]) {
-          return;
-        }
-        for (var i = 0; i < online[player.id].length; i++) {
-          io.to(online[player.id][i].socket_id).emit('invite response');
-        }
-      });
+    module.exports.inviteResult = function (players, result, game) {
+      if (game) {
+        io.sockets.in('game:' + game.get('id')).emit('invite response');
+      } else {
+        players.forEach(function (player) {
+          if (!online[player.id]) {
+            return;
+          }
+          for (var i = 0; i < online[player.id].length; i++) {
+            io.to(online[player.id][i].socket_id).emit('invite response');
+          }
+        });
+      }
+      
     };
 
     module.exports.gameStarted = function (game_id) {
