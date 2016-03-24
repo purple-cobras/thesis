@@ -1,13 +1,14 @@
 angular.module('app.services', [])
 
-.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', '$rootScope', function(
+.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', '$rootScope', '$state', function(
   $q,
   $http,
   store,
   socket,
   $timeout,
   ionicToast,
-  $rootScope){
+  $rootScope,
+  $state){
 
   var obj = {
     submitting: false,
@@ -500,6 +501,11 @@ angular.module('app.services', [])
         break;
       }
     }
+  });
+
+  socket.on('endGame', function () {
+    ionicToast.show('Creator has ended the game, goodbye!', 'top', false, 4000);
+    $state.go('main');
   });
 
   return obj;
