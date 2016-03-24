@@ -55,7 +55,7 @@ module.exports.init = function(server){
 
     socket.on('endGame', function (game_id) {
       helpers.endGame(game_id);
-      socket.broadcast.to('game:' + game_id).emit('endGame');
+      io.sockets.in('game:' + game_id).emit('endGame');
     });
 
     var markConnected = function (userInfo) {

@@ -42,9 +42,8 @@ angular.module('app.directives', [])
     template: '<button ng-disabled="!Game.started" ng-if="Game.isCreator" class="button button-block button-assertive">End Game</button>',
     link: function (scope, element, attrs) {
       element.on('click', function () {
-        if (scope.Game) {
+        if (scope.Game.started) {
           socket.emit('endGame', scope.Game.game.id);
-          $state.go('main');
         }
       });
     }
