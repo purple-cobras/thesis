@@ -5,6 +5,7 @@ var events = require('events');
 var eventEmitter = new events.EventEmitter();
 var path = require('path');
 var socket = require(path.resolve('server/sockets'));
+var alchemy = require(path.resolve('server/alchemy'));
 
 
 module.exports.findOrCreate = function (Model, attributes) {
@@ -406,6 +407,7 @@ module.exports.saveResponse = function (round_id, response, user_id) {
               } else {
                 res(response);
               }
+              module.exports.alchemizeResponse(response);
             })
           })
         })
@@ -724,6 +726,60 @@ module.exports.getProfile = function (user_id) {
       reject(error);
     })
   });
+};
+
+module.exports.alchemizeResponse = function (response) {
+  return new Promise(function (res, rej) {
+    alchemy(response.get('text'), {
+      success: function (apiResponse, body) {
+        if (body["status"] !== "OK") {
+          rej({error: body.status});
+        } else {
+          alchemyToCols(response, body).save()
+          .then(function (response) {
+            res(response);
+          })
+          .catch(function (error) {
+            rej(error);
+          });
+        }
+      },
+      error: function (error) {
+        rej(error);
+      }
+    });
+  })
+};
+
+var alchemyToCols = function (response, body) {
+  var responseCats = ['docSentiment', 'taxonomy', 'docEmotions'];
+  responseCats.forEach(function (category) {
+    if (category === 'docSentiment') {
+      var score = body[category].score || 0;
+      response.set('sentiment', Number(score));
+    }
+    if (category === 'taxonomy') {
+      var tracker = {};
+      body[category].forEach(function (tax) {
+        var label = tax.label.split('/')[1];
+        label = label.split(',').join('');
+        label = label.split(' ').join('_');
+        if (tracker[label]) {
+          return;
+        }
+        tracker[label] = true;
+        response.set(label, Number(tax.score));
+      });
+    } 
+    if (category === 'docEmotions') {
+      for (var emotion in body[category]) {
+        var score = body[category][emotion];
+        response.set(emotion, Number(score));
+      }
+    }
+  });
+
+  return response;
 };
 
 module.exports.endGame = function (game_id) {
