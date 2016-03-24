@@ -36,7 +36,7 @@ angular.module('app.directives', [])
   };
 }])
 
-.directive('endGame', function (socket) {
+.directive('endGame', function (socket, $state) {
   return {
     restrict: 'E',
     template: '<button ng-disabled="!Game.started" ng-if="Game.isCreator" class="button button-block button-assertive">End Game</button>',
@@ -44,6 +44,7 @@ angular.module('app.directives', [])
       element.on('click', function () {
         if (scope.Game) {
           socket.emit('endGame', scope.Game.game.id);
+          $state.go('main');
         }
       });
     }
