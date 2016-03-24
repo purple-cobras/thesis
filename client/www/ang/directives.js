@@ -34,5 +34,18 @@ angular.module('app.directives', [])
       });
     }
   };
-}]);
+}])
 
+.directive('endGame', function (socket) {
+  return {
+    restrict: 'E',
+    template: '<button ng-disabled="!Game.started" ng-if="Game.isCreator" class="button button-block button-assertive">End Game</button>',
+    link: function (scope, element, attrs) {
+      element.on('click', function () {
+        if (scope.Game) {
+          socket.emit('endGame', scope.Game.game.id);
+        }
+      });
+    }
+  }
+});

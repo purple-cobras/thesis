@@ -138,8 +138,6 @@ angular.module('app.game', [])
     }
   });
 
-
-
   $ionicPlatform.on('resume', function () {
     Game.updateGame();
   });
