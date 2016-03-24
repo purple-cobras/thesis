@@ -504,7 +504,9 @@ angular.module('app.services', [])
   });
 
   socket.on('endGame', function () {
-    ionicToast.show('Creator has ended the game, goodbye!', 'top', false, 4000);
+    if (!obj.isCreator) {
+      ionicToast.show('Creator has ended the game, goodbye!', 'top', false, 4000);
+    }
     $state.go('main');
   });
 
