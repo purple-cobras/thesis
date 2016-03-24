@@ -721,3 +721,9 @@ module.exports.getProfile = function (user_id) {
     })
   });
 };
+
+module.exports.endGame = function (game_id) {
+  models.Game.forge({id: game_id})
+  .fetch()
+  .then(module.exports.winGame);
+};
