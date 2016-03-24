@@ -117,7 +117,19 @@ module.exports.inviteFriends = function (game, friends, my_id) {
       .then(function (userGame) {
         socket.inviteFriend(friend.id);
         if (++inviteCount === friends.length) {
-          res(game);
+          //AI Player
+          if (game.get('ai')) {
+            module.exports.AI()
+            .then(function (ai) {
+              module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: ai.get('id'), invite: 1})
+              .then(function () {
+                socket.inviteResult(null, true, game);
+                res(game);
+              })
+            })
+          } else {
+            res(game);
+          }
         }
       })
       .catch(function (error) {
