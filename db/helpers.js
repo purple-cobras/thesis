@@ -102,7 +102,7 @@ module.exports.createGame = function (data, my_fb_id) {
 };
 
 module.exports.AI = function () {
-  return module.exports.findOrCreate(models.User, {ai: true});
+  return module.exports.findOrCreate(models.User, {ai: true, full_name: 'MambaBot'});
 };
 
 module.exports.inviteFriends = function (game, friends, my_id) {
