@@ -782,6 +782,39 @@ var alchemyToCols = function (response, body) {
   return response;
 };
 
+module.exports.makeAIGuess = function (game, round) {
+  var dataCount = 0;
+  return modules.exports.AI()
+  .then(function (ai) {
+    models.UserRound.query({
+      where: {
+        round_id: round.get('id'),
+        guessed: false
+      }
+    })
+    .fetchAll({withRelated: ['users']})
+    .then(function (users_rounds) {
+      models.Response.query({
+        where: {
+          round_id: round.get('id'),
+          guessed: false
+        }
+      })
+      .then(function (responses) {
+        module.exports.resolveGuess(round.get('id'), {
+          guesser_id: ai.get('id'),
+          guessee_id: users_rounds.relations.users.models[0].attributes.id,
+          response_id: responses.models[0].attributes.id
+        });
+      });
+    });
+  });
+};
+
+var trainNetwork = function (users) {
+
+};
+
 module.exports.endGame = function (game_id) {
   models.Game.forge({id: game_id})
   .fetch()
