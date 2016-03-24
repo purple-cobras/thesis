@@ -9812,6 +9812,10 @@ hr {
     background: #959182;
     color: black; }
 
+.invited-filter {
+  display: inline;
+  float: right; }
+
 .rules, .rules .item .input-label {
   font-size: 1em;
   font-weight: normal !important; }
@@ -9827,8 +9831,11 @@ hr {
   font-weight: bold; }
 
 .friend-search {
-  background: transparent;
-  color: #F4F2F3 !important; }
+  background: transparent !important;
+  color: #F4F2F3 !important;
+  margin: 0px; }
+  .friend-search input {
+    width: 100%; }
 
 /** GAME **/
 .platform-android .buttons + .title.title-left.header-item {

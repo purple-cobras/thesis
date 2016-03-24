@@ -11,6 +11,8 @@ angular.module('app.newGame', [])
   };
   $scope.error = '';
 
+  $scope.invitedOnly = false;
+
   $scope.search = {friend: ''}
 
   $scope.toggleInvite = function (friend, $event) {
@@ -19,13 +21,13 @@ angular.module('app.newGame', [])
     } else {
       $scope.inviting[friend.id] = true;
     }
-    $event.target.focus();
     var count = Object.keys($scope.inviting).length;
     if (!count) {
       $('.friends-count').text('(Invite at least one friend)');
     } else {
       $('.friends-count').text('(' + count + ' invited)');
     }
+    $scope.search.friend = '';
   };
   $scope.restrictScore = function () {
 
@@ -39,6 +41,18 @@ angular.module('app.newGame', [])
       }
     }
     $scope.error = '';
+  };
+
+  $scope.toggleInvitedFilter = function () {
+    $scope.invitedOnly = !$scope.invitedOnly;
+  };
+
+  $scope.invited = function (friend) {
+    console.log($scope.invitedOnly);
+    if (!$scope.invitedOnly) {
+      return true;
+    }
+    return $scope.inviting[friend.id];
   };
 
   $scope.createGame = function () {
@@ -72,6 +86,13 @@ angular.module('app.newGame', [])
     })
   };
 
+  $scope.searchBlur = function () {
+    $timeout(function () {
+      $scope.searching = false;
+    }, 500);
+  };
+
   $('.friends-count').text('(Invite at least one friend)');
+
 
 });

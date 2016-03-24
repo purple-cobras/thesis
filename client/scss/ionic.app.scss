@@ -150,6 +150,11 @@ hr {
   }
 }
 
+.invited-filter {
+  display: inline;
+  float: right;
+}
+
 .rules, .rules .item .input-label {
   font-size: 1em;
   font-weight: normal!important;
@@ -168,8 +173,12 @@ hr {
 }
 
 .friend-search {
-  background: rgba(0, 0, 0, 0);
+  background: rgba(0, 0, 0, 0)!important;
   color: $light!important;
+  input {
+    width: 100%;
+  }
+  margin: 0px;
 }
 
 /** GAME **/
