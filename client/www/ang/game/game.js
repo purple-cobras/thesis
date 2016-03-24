@@ -9,7 +9,9 @@ angular.module('app.game', [])
   $ionicPopup,
   $ionicScrollDelegate,
   $ionicPlatform,
-  socket
+  socket,
+  $timeout,
+  ionicToast
 ) {
 
   angular.extend($scope, Game);
@@ -146,5 +148,18 @@ angular.module('app.game', [])
     $ionicScrollDelegate.scrollTop(true);
   });
 
+  $scope.$watch('Game.response', function() {
+    if (Game.response.length > 255) {
+      Game.response = Game.response.substring(0, 255);
+      ionicToast.show('Max response length', 'top', false, 2500);
+    }
+  });
+
+  $scope.$watch('Game.topic', function() {
+    if (Game.topic.length > 255) {
+      Game.topic = Game.topic.substring(0, 255);
+      ionicToast.show('Max response length', 'top', false, 2500);
+    }
+  });
 
 });
