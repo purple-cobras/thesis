@@ -75,7 +75,6 @@ var routes = [
         .then(function (user) {
           helpers.getProfile(user.id)
             .then(function (games) {
-              console.log('games: ', games)
               res.json({user: user, games: games});
             })
         })
