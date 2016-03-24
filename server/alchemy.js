@@ -29,7 +29,7 @@ var alchemy = function (text, options) {
       }
     } else {
       if (options.success) {
-        options.success(response, body);
+        options.success(response, JSON.parse(body));
       }
     }
   })
