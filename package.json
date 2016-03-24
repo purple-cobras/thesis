@@ -37,6 +37,7 @@
     "morgan": "^1.7.0",
     "node-env-file": "^0.1.8",
     "pg": "^4.5.1",
+    "request": "^2.69.0",
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
