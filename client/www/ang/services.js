@@ -131,9 +131,10 @@ angular.module('app.services', [])
           obj.isReader = false;
         }
         obj.game.current_round = lastRound;
-        if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
+        if (obj.game.current_round && ((obj.game.current_round.responses.length === obj.game.players.length) || (obj.game.ai && obj.game.current_round.responses.length === obj.game.players.length - 1))) {
           var randomizedResponses = [];
-          for (var i = 0; i < obj.game.players.length; i++) {
+          var numResponses = obj.game.current_round.responses.length;
+          for (var i = 0; i < numResponses; i++) {
             randomizedResponses.push(obj.game.current_round.responses.splice(Math.floor(Math.random() * obj.game.current_round.responses.length), 1)[0]);
           }
           obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
@@ -434,9 +435,10 @@ angular.module('app.services', [])
       obj.game.current_round.responses.push(response);
     }
 
-    if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
+    if (obj.game.current_round && ((obj.game.current_round.responses.length === obj.game.players.length) || (obj.game.ai && obj.game.current_round.responses.length === obj.game.players.length - 1)))  {
       var randomizedResponses = [];
-      for (var i = 0; i < obj.game.players.length; i++) {
+      var numResponses = obj.game.current_round.responses.length;
+      for (var i = 0; i < numResponses; i++) {
         randomizedResponses.push(obj.game.current_round.responses.splice(Math.floor(Math.random() * obj.game.current_round.responses.length), 1)[0]);
       }
       obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
