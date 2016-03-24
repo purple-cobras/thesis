@@ -150,6 +150,11 @@ hr {
   }
 }
 
+.invited-filter {
+  display: inline;
+  float: right;
+}
+
 .rules, .rules .item .input-label {
   font-size: 1em;
   font-weight: normal!important;
@@ -165,6 +170,15 @@ hr {
   text-align: center;
   color: $energized;
   font-weight: bold;
+}
+
+.friend-search {
+  background: rgba(0, 0, 0, 0)!important;
+  color: $light!important;
+  input {
+    width: 100%;
+  }
+  margin: 0px;
 }
 
 /** GAME **/
@@ -225,30 +239,30 @@ $slide-dur: 0.5s;
     background-color: $balanced;
     color: $lighter;
   }
-  textarea::placeholder {
+}
+
+input::placeholder, textarea::placeholder {
     color: $lighter;
     opacity: 50%;
-  };
-  textarea::-webkit-input-placeholder {
-   color: $lighter;
+}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+ color: $lighter;
+ opacity: 0.5;
+}
+
+input::-moz-placeholder, textarea::-moz-placeholder { /* Firefox 18- */
+   color: $lighter; 
+   opacity: 0.5; 
+}
+
+input::-moz-placeholder, textarea::-moz-placeholder {  /* Firefox 19+ */
+   color: $lighter;  
    opacity: 0.5;
-  }
+}
 
-  textarea::-moz-placeholder { /* Firefox 18- */
-     color: $lighter; 
-     opacity: 0.5; 
-  }
-
-  textarea::-moz-placeholder {  /* Firefox 19+ */
-     color: $lighter;  
-     opacity: 0.5;
-  }
-
-  textarea::-ms-input-placeholder {  
-     color: $lighter; 
-     opacity: 0.5; 
-  }
-
+input::-ms-input-placeholder, textarea::-ms-input-placeholder {  
+   color: $lighter; 
+   opacity: 0.5; 
 }
 
 .kickoff:enabled {

@@ -2,12 +2,23 @@
     <ion-content padding="true" class="has-header">
       <div class="list-card">
         <div class="item item-divider">
-            Friends <span class="friends-count"></span>
+            Friends 
+            <span class="friends-count">
+              
+            </span>
+        </div>
+        <div class="item item-input-inset">
+          <label class="item-input-wrapper friend-search">
+            <input constant-focus ng-model="search.friend" ng-focus="searching = true" ng-blur="searching = false" type="text" placeholder="search for a friend">
+          </label>
+          <button ng-click="toggleInvitedFilter()" class="button button-small button-energized invited-filter">
+            {{!invitedOnly ? 'Show Invited Only' : 'Show All Friends' }}
+          </button>
         </div>
         <div class="friends-list item item-body">
           <ion-content>
               <ion-list>
-                <ion-item fb-thumbnail ng-repeat="friend in friends | filter:search | orderBy:'name'" ng-click="toggleInvite(friend, $event)" ng-class="{inviting: inviting[friend.id]}" class="item-thumbnail-right">{{friend.name}}
+                <ion-item fb-thumbnail ng-repeat="friend in friends | filter:search.friend | filter:invited | orderBy:'name'" ng-click="toggleInvite(friend, $event)" ng-class="{inviting: inviting[friend.id]}" class="item-thumbnail-right">{{friend.name}}
                 </ion-item>
               </ion-list>
           </ion-content>
