@@ -20,9 +20,9 @@
               </button>
             </div>
           </ion-item>
+          <ion-item ng-if="!invitations.length">None</ion-item>
         </ion-list>
         </ion-scroll>
-        <ion-item ng-if="!invitations.length">None</ion-item>
       </div>
     </div>
     <button ng-if="game.id" ng-click="goToGame()" class="current-game button button-calm button-block">
