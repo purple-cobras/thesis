@@ -54,7 +54,8 @@ angular.module('app.game', [])
   $scope.processPlayerSelection = function (player, $event) {
     if (!Game.amGuesser() ||
         (Game.game.current_round.guesses && Game.game.current_round.guesses[player.id]) ||
-        player.id === store.get('remote_id')) {
+        player.id === store.get('remote_id') ||
+        player.ai) {
       return;
     } else {
       if (Game.guess.user === player) {
