@@ -251,18 +251,18 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 }
 
 input::-moz-placeholder, textarea::-moz-placeholder { /* Firefox 18- */
-   color: $lighter; 
-   opacity: 0.5; 
-}
-
-input::-moz-placeholder, textarea::-moz-placeholder {  /* Firefox 19+ */
-   color: $lighter;  
+   color: $lighter;
    opacity: 0.5;
 }
 
-input::-ms-input-placeholder, textarea::-ms-input-placeholder {  
-   color: $lighter; 
-   opacity: 0.5; 
+input::-moz-placeholder, textarea::-moz-placeholder {  /* Firefox 19+ */
+   color: $lighter;
+   opacity: 0.5;
+}
+
+input::-ms-input-placeholder, textarea::-ms-input-placeholder {
+   color: $lighter;
+   opacity: 0.5;
 }
 
 .kickoff:enabled {
@@ -430,6 +430,19 @@ $rotate: 2.0deg;
 
 .alert {
   background-color: $energized;
+}
+
+.popup {
+  width: 90% !important;
+}
+
+#topicOptions {
+  display: inline-block;
+}
+
+#topicModal {
+  width: 90vw;
+  margin: 0 5vw;
 }
 
 /** PROFILE **/
