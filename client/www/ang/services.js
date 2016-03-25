@@ -166,6 +166,7 @@ angular.module('app.services', [])
     },
 
     resetGame: function () {
+      obj.ai = false;
       obj.isReader = false;
       obj.started = false;
       obj.isCreator = false;
