@@ -205,6 +205,29 @@ module.exports.resolveInvite = function (user_fb, invitation, accepted) {
         invite: invite
       })
       .then( function (result) {
+        if (result = 1) {
+          db.knex('users_games')
+          .where({game_id: invitation.id})
+          .then(function (invites) {
+            models.Game.forge({id: invitation.id}).fetch()
+            .then(function (game) {
+              var declineCount = game.attributes.ai ? 1 : 0;
+              for (var i = 0; i < invites.length; i++) {
+                if (invites[i].invite === 2) {
+                  declineCount++;
+                }
+              }
+              if (declineCount === invites.length - 1) {
+                game.set('completed', true).save();
+                models.User.forge({id: game.attributes.creator_id}).fetch()
+                .then(function (creator) {
+                  creator.set('current_game_id', null).save();
+                  socket.nobodyLikesYou(creator.attributes.id);
+                })
+              }
+            })
+          });
+        }
         module.exports.getPlayers(invitation.id)
         .then(function (players) {
           socket.inviteResult(players, result);
