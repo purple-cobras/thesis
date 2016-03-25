@@ -9738,8 +9738,8 @@ a.button {
   min-height: 30vh;
   max-height: 50vh; }
 
-.invitations-list {
-  max-height: 50vh; }
+.invitations-list, .invitations-container {
+  max-height: 30vh; }
 
 img.empty {
   display: none; }
