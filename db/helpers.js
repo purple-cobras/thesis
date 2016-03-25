@@ -643,6 +643,10 @@ module.exports.resolveGuess = function (round_id, guess) {
                               });
                             } else {
                               res(correct);
+                              models.Round.forge({id: round_id}).fetch()
+                              .then(function (round) {
+                                module.exports.makeAIGuess(game, round);                                
+                              });
                             }
                           }
                         });
