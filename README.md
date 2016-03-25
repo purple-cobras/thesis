@@ -1,6 +1,9 @@
 # Black Mamba
 A hilarious multiplayer guessing game. Built with Ionic for iOS and Android.
 
+For an overview of how this game is played, please see [the rules](rules.md).
+
+
 ## Team
 
   - __Product Owner__: Benjamin Baum
@@ -17,7 +20,6 @@ A hilarious multiplayer guessing game. Built with Ionic for iOS and Android.
 1. [Contributing](#contributing)
 
 
-See [rules.md](rules.md) for game rules.
 
 ## Requirements
 
