@@ -7,7 +7,6 @@ angular.module('app.newGame', [])
   $scope.inviting = {};
   $scope.rules = {
     maxScore: 15,
-    ai: true,
     skipIfGuessed: true,
     voice: true
   };
@@ -50,6 +49,7 @@ angular.module('app.newGame', [])
   };
 
   $scope.invited = function (friend) {
+    console.log($scope.invitedOnly);
     if (!$scope.invitedOnly) {
       return true;
     }
@@ -57,6 +57,7 @@ angular.module('app.newGame', [])
   };
 
   $scope.createGame = function () {
+    console.log($scope.rules)
     $scope.isDisabled = true;
     $http({
       url: Config.api + '/games',
