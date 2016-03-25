@@ -626,7 +626,7 @@ module.exports.resolveGuess = function (round_id, guess) {
                           if (game.get('max_score') <= newScore) {
                             module.exports.winGame(game, guess.guesser_id)
                             .then(function () {
-                              socket.newGuess(round, {result: correct, details: guess, won: true});
+                              socket.newGuess(round, {result: correct, details: guess, newRound: newRound, won: true});
                               res(correct);
                             })
                           } else {
@@ -647,7 +647,7 @@ module.exports.resolveGuess = function (round_id, guess) {
                               models.Round.forge({id: round_id}).fetch()
                               .then(function (round) {
                                 if (guess.guesser_id === ai.get('id')) {
-                                  module.exports.makeAIGuess(game, round);                                                                  
+                                  module.exports.makeAIGuess(game, round);
                                 }
                               });
                             }
