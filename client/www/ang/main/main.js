@@ -68,10 +68,6 @@ angular.module('app.main', [])
       .then(function () {
         $state.go('game');
       });
-      // socket.emit(acceptInvite, {
-      //   invitation: invitation,
-      //   name: store.get('profile').name
-      // });
     })
     .catch(function (error) {
       console.error(error);
@@ -91,10 +87,6 @@ angular.module('app.main', [])
       if (response.status === 200) {
         $scope.removeInvitation(invitation);
       }
-      // socket.emit(declineInvite, {
-      //   invitation: invitation,
-      //   name: store.get('profile').name
-      // });
     })
     .catch(function (error) {
       console.error(error);
@@ -123,7 +115,7 @@ angular.module('app.main', [])
 
   $scope.goToGame = function () {
     if (!responsiveVoice.isPlaying()) {
-      responsiveVoice.speak('');      
+      responsiveVoice.speak('');
     }
     $state.go('game');
   };
