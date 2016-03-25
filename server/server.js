@@ -3,7 +3,8 @@ var path = require('path');
 var db = require(path.resolve('db/db'));
 var cors = require('cors');
 var app = express();
-var server= require('http').Server(app);
+var server = require('http').Server(app);
+var push = require(path.resolve('server/push'));
 
 var routes = require('./routes.js');
 

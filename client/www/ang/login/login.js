@@ -30,7 +30,7 @@ angular.module('app.login', [])
       $http({
         method: 'post',
         url: Config.api + '/signin',
-        data: {name: profile.name, pic_url: profile.picture}
+        data: {name: profile.name, pic_url: profile.picture, device_token: store.get('device_token')}
       })
       .then(function (response) {
         if (response.data.user) {

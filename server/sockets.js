@@ -1,6 +1,8 @@
+var path = require('path');
 var helpers = require('../db/helpers');
 var models = require('../db/models');
-
+var apn = require('apn');
+var push = require(path.resolve('server/push'));
 var online = {};
 var index = {};
 
@@ -84,6 +86,20 @@ module.exports.init = function(server){
       for (var i = 0; i < online[user_id].length; i++) {
         io.to(online[user_id][i].socket_id).emit('invited');
       }
+      // models.UserDevice.query(function (qb) {
+      //   qb.where('user_id', user_id);
+      // })
+      // .fetchAll()
+      // .then(function (devices) {
+      //   devices.models.forEach(function (device) {
+      //     var apnDevice = new apn.Device(device.get('device_token'));
+      //     var invite = new apn.Notification();
+      //     invite.expiry = Math.floor(Date.now() / 1000) + 3600;
+      //     invite.sound = 'default';
+      //     invite.alert = 'New Invitation';
+      //     push.pushNotification(invite, apnDevice);
+      //   });
+      // })
     };
 
     module.exports.inviteResult = function (players, result, game) {
