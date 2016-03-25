@@ -83,7 +83,9 @@ angular.module('app.services', [])
     },
 
     saved_topics: {
-      is_empty: true
+      is_empty: true,
+      all: [],
+      userTopics: []
     },
 
     checkGame: function () {
@@ -107,9 +109,7 @@ angular.module('app.services', [])
     },
 
     getGame: function () {
-      if (obj.saved_topics.is_empty) {
-        socket.emit('retrieve saved', store.get('remote_id'));
-      }
+      socket.emit('retrieve saved', store.get('remote_id'));
       obj.game.id = store.get('current_game_id');
       if (!obj.game.id) {
         obj.resetGame();
@@ -216,7 +216,9 @@ angular.module('app.services', [])
         response: undefined
       };
       obj.saved_topics = {
-        is_empty: true
+        is_empty: true,
+        all: [],
+        userTopics: []
       };
     },
 
@@ -576,9 +578,7 @@ angular.module('app.services', [])
   });
 
   socket.on('topics retrieved', function (saved_topics) {
-    if (saved_topics.all.length) {
-      obj.saved_topics = saved_topics;
-    }
+    obj.saved_topics = saved_topics;
   });
 
   return obj;

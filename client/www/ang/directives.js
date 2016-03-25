@@ -95,7 +95,6 @@ angular.module('app.directives', [])
     template: '<button option-display class="button button-block button-calm " id="topicOptions">Options</button>',
     link: function (scope, elem, attrs) {
       elem.on('click', function () {
-        console.log(scope.saveTopic)
         $ionicPopup.show({
           title: "Topic Options",
           scope: scope,
@@ -104,18 +103,18 @@ angular.module('app.directives', [])
               text: 'Random Topic',
               type: 'button button-block button-calm',
               onTap: function (e) {
-                if (scope.Game.saved_topics.is_empty) {
-                  ionicToast.show("Be the first to save a topic!", 'top', false, 2500);
+                if (!scope.saved_topics.all.length) {
+                  ionicToast.show("No topics to choose from...", 'top', false, 2500);
                 } else {
                   scope.getRandomTopic();
                 }
               }
             },
             {
-              text: 'Display Your Saved',
+              text: 'Saved Topics',
               type: 'button button-block button-calm',
               onTap: function (e) {
-                if (scope.Game.saved_topics.is_empty || !scope.Game.saved_topics.userTopics.length) {
+                if (!scope.Game.saved_topics.userTopics.length) {
                   ionicToast.show("You have not saved any Topics", 'top', false, 2500);
                 } else {
                   scope.getUsersTopics();

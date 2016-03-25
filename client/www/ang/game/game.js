@@ -174,12 +174,24 @@ angular.module('app.game', [])
   }
 
   $scope.getUsersTopics = function () {
-    var template = '<ion-modal-view id="topicModal" ng-click="modal.hide()"><ion-header-bar><h1 class="title">Choose Topic</h1></ion-header-bar><ion-content>';
+    var template = 
+    '<ion-modal-view id="topicModal">' +
+      '<ion-header-bar>' +
+        '<h1 class="title">Saved Topics</h1>' +
+        '<div class="buttons">' +
+          '<button class="button" ng-click="modal.hide()">' +
+            'Cancel' +
+          '</button>'+
+        '</div>' +
+      '</ion-header-bar>' +
+    '<ion-content>' +
+    '<ul class="list">';
     for (var i = 0; i < $scope.Game.saved_topics.userTopics.length; i++) {
-      template += '<button ng-click="Game.topic = \'' + Game.saved_topics.userTopics[i] +
-        '\'; modal.hide();" class="button button-balanced modal-button button-block">' +
-        $scope.Game.saved_topics.userTopics[i] + '</button>';
+      template += '<li ng-click="Game.topic = \'' + Game.saved_topics.userTopics[i].topic +
+        '\'; modal.hide();" class="item item-text-wrap">' +
+        $scope.Game.saved_topics.userTopics[i].topic + '</li>';
     }
+    template += '</ul>';
     template += '</ion-content></ion-modal-view>';
 
     $scope.modal = $ionicModal.fromTemplate(template, {
@@ -191,7 +203,7 @@ angular.module('app.game', [])
 
   $scope.getRandomTopic = function () {
     if (!$scope.Game.saved_topics.is_empty) {
-      $scope.Game.topic = $scope.Game.saved_topics.all[Math.floor(Math.random() * $scope.Game.saved_topics.all.length)];
+      $scope.Game.topic = $scope.Game.saved_topics.all[Math.floor(Math.random() * $scope.Game.saved_topics.all.length)].topic;
     }
   }
 

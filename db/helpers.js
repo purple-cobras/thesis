@@ -377,11 +377,11 @@ module.exports.startRound = function (game_id, reader_id) {
   });
 };
 
-module.exports.setTopic = function (round_id, topic) {
+module.exports.setTopic = function (round_id, topic, save) {
   return new Promise(function (res, rej) {
     module.exports.findOrCreate(models.Round, {id: round_id})
     .then(function (round) {
-      round.save({topic: topic})
+      round.save({topic: topic, topic_saved: save})
       .then(function () {
         socket.newTopic(round, topic);
         res();
@@ -874,41 +874,29 @@ module.exports.endGame = function (game_id) {
   });
 };
 
-
-module.exports.saveTopic = function (round_id, user_id) {
-  return new Promise(function (res, rej) {
-    module.exports.findOrCreate(models.UserRound, {user_id: user_id, round_id: round_id})
-    .then( function (userRound) {
-      userRound.save({topic_saved: true})
-      .then( function () {
-        res();
-      })
-      .catch( function(error) {
-        rej(error);
-      });
-    });
-  });
-};
-
 module.exports.getSaved = function (user_id) {
   return new Promise(function (res, rej) {
-    db.knex('users_rounds')
-    .where('topic_saved', true)
-    .innerJoin('rounds', 'users_rounds.round_id', 'rounds.id')
-    .then( function (results) {
-      var response = {
-        all: [],
-        userTopics: []
-      };
-      for (var i = 0; i < results.length; i++) {
-        if (results[i].user_id === user_id) {
-          response.userTopics.push(results[i].topic);
-        }
-        response.all.push(results[i].topic);
-      }
-      res(response);
+    models.Round.query(function (qb) {
+      qb.where('topic_saved', true)
+      .where('reader_id', user_id)
+      .limit(50)
+      .orderBy('id', 'desc')
+    }).fetchAll()
+    .then(function (mine) {
+      models.Round.query(function (qb) {
+        qb.where('topic_saved', true)
+        .whereNot('reader_id', user_id)
+        .orderBy('id', 'desc')
+        .limit(100);
+      }).fetchAll()
+      .then(function (theirs) {
+        res({
+          all: theirs.models,
+          userTopics: mine.models
+        });
+      });
     })
-    .catch( function(error) {
+    .catch(function (error) {
       rej(error);
     });
   });
