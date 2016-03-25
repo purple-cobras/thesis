@@ -22,7 +22,7 @@ angular.module('app',
     'angular-jwt',
     'ionic-toast',
     'ngAnimate'
-  ]
+]
 )
 
 .run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $state) {
@@ -40,6 +40,24 @@ angular.module('app',
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    var iosConfig = {
+      'sound': true,
+      'alert': true
+    };
+    var push = PushNotification.init({
+      android: {
+        senderID: "190328515272"
+      },
+      ios: {
+        alert: "true",
+        sound: "true"
+      }
+    });
+
+    push.on('registration', function (data) {
+      store.set('device_token', String(data.registrationId));
+    });
+
   });
 
   auth.hookEvents();
