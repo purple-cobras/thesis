@@ -187,9 +187,9 @@ angular.module('app.game', [])
     '<ion-content>' +
     '<ul class="list">';
     for (var i = 0; i < $scope.Game.saved_topics.userTopics.length; i++) {
-      template += '<li ng-click="Game.topic = \'' + Game.saved_topics.userTopics[i] +
+      template += '<li ng-click="Game.topic = \'' + Game.saved_topics.userTopics[i].topic +
         '\'; modal.hide();" class="item item-text-wrap">' +
-        $scope.Game.saved_topics.userTopics[i] + '</li>';
+        $scope.Game.saved_topics.userTopics[i].topic + '</li>';
     }
     template += '</ul>';
     template += '</ion-content></ion-modal-view>';
@@ -203,7 +203,7 @@ angular.module('app.game', [])
 
   $scope.getRandomTopic = function () {
     if (!$scope.Game.saved_topics.is_empty) {
-      $scope.Game.topic = $scope.Game.saved_topics.all[Math.floor(Math.random() * $scope.Game.saved_topics.all.length)];
+      $scope.Game.topic = $scope.Game.saved_topics.all[Math.floor(Math.random() * $scope.Game.saved_topics.all.length)].topic;
     }
   }
 
