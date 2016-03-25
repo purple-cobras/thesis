@@ -48,8 +48,8 @@ $font: "HelveticaNeue-Light";
   max-height: 50vh;
 }
 
-.invitations-list {
-  max-height: 50vh;
+.invitations-list, .invitations-container {
+  max-height: 30vh;
 }
 
 img.empty {
