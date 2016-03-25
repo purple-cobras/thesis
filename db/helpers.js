@@ -499,7 +499,13 @@ module.exports.setGuesser = function (game_id, players, round) {
           game.save('guesser_id', newGuesser.id)
           .then(function (game) {
             socket.newGuesser(game_id, newGuesser);
-            res();
+            module.exports.AI()
+            .then(function (ai) {
+              if (ai.get('id') === newGuesser.id) {
+                module.exports.makeAIGuess(game, round);
+              }
+              res();
+            });
           })
         })
         .catch(function (error) {
