@@ -49,7 +49,6 @@ angular.module('app.newGame', [])
   };
 
   $scope.invited = function (friend) {
-    console.log($scope.invitedOnly);
     if (!$scope.invitedOnly) {
       return true;
     }
