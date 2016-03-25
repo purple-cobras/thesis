@@ -79,12 +79,13 @@ angular.module('app.directives', [])
     template: '<button option-display class="button button-block button-calm " id="topicOptions">Options</button>',
     link: function (scope, elem, attrs) {
       elem.on('click', function () {
+        console.log(scope.saveTopic)
         $ionicPopup.show({
           title: "Topic Options",
           scope: scope,
           buttons: [
             {
-              text: 'Rand',
+              text: 'Random Topic',
               type: 'button button-block button-calm',
               onTap: function (e) {
                 if (scope.Game.saved_topics.is_empty) {
@@ -95,14 +96,7 @@ angular.module('app.directives', [])
               }
             },
             {
-              text: 'Save',
-              type: 'button button-block button-calm',
-              onTap: function (e) {
-                ionicToast.show("Will " + scope.toggleSave() + "save round's Topic on Submit", 'top', false, 2500);
-              }
-            },
-            {
-              text: 'Load',
+              text: 'Display Your Saved',
               type: 'button button-block button-calm',
               onTap: function (e) {
                 if (scope.Game.saved_topics.is_empty || !scope.Game.saved_topics.userTopics.length) {

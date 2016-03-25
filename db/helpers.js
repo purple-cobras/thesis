@@ -77,7 +77,8 @@ module.exports.createGame = function (data, my_fb_id) {
       new models.Game({
         creator_id: data.creator_id,
         max_score: data.rules.maxScore,
-        skip_if_guessed: data.rules.skipIfGuessed
+        skip_if_guessed: data.rules.skipIfGuessed,
+        voice: data.rules.voice
       }).save()
       .then(function (game) {
         module.exports.inviteFriends(game, result.friends, result.my_id)
