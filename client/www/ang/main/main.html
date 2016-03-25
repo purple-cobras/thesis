@@ -1,6 +1,6 @@
 <ion-view title="{{appName}}" hide-back-button="true">
   <ion-content overflow-scroll="true" padding="true" class="has-header main-content" >
-    <button class="button button-energized button-block" ng-disabled="isDisabled" ng-click="newGame()">Create Game!</button>
+    <button class="create-game button button-energized button-block" ng-disabled="isDisabled" ng-click="newGame()">Create Game!</button>
     <div class="list card invitations-container">
       <div class="item item-divider">Invitations</div>
       <div class="item item-body">
@@ -25,7 +25,7 @@
         <ion-item ng-if="!invitations.length">None</ion-item>
       </div>
     </div>
-    <button ng-if="game.id" ng-click="goToGame()" class="curent-game button button-calm button-block">
+    <button ng-if="game.id" ng-click="goToGame()" class="current-game button button-calm button-block">
       Resume Game!
     </button>
     <button ng-click="account()" class="account button button-dark button-block ">
