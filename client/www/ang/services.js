@@ -485,7 +485,7 @@ angular.module('app.services', [])
       }
     }
     if (guess.result) {
-      if (guess.newRound) {
+      if (guess.newRound && !guesser.ai) {
         guesser.score = guesser.score + 2;
       } else {
         guesser.score = guesser.score + 1;
