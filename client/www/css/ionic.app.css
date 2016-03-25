@@ -9738,9 +9738,6 @@ a.button {
   min-height: 30vh;
   max-height: 50vh; }
 
-.invitations-list, .invitations-container {
-  max-height: 30vh; }
-
 img.empty {
   display: none; }
 
@@ -9784,19 +9781,29 @@ hr {
   margin-top: 30px !important; }
 
 /** MAIN **/
+.invitations-list .timestamp {
+  font-size: 0.6em;
+  font-style: italic; }
+
+.invitations-list ion-item {
+  background: #656256; }
+
 .invitations-list {
-  max-height: 40vh; }
-  .invitations-list .timestamp {
-    font-size: 0.6em;
-    font-style: italic; }
-  .invitations-list ion-item {
-    background: #656256; }
+  height: 30vh; }
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  .invitations-list {
+    height: 20vh; }
+  button.current-game.button {
+    margin-top: 3px; }
+  button.create-game.button {
+    margin-bottom: 5px; } }
 
 .account {
   position: absolute;
   bottom: 0;
   left: 0;
-  margin-bottom: 3px !important; }
+  margin-bottom: 0px !important; }
 
 .main-content {
   padding-top: 35px; }
