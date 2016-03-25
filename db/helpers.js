@@ -78,8 +78,7 @@ module.exports.createGame = function (data, my_fb_id) {
         creator_id: data.creator_id,
         max_score: data.rules.maxScore,
         skip_if_guessed: data.rules.skipIfGuessed,
-        ai: data.rules.ai
-        skip_if_guessed: data.rules.skipIfGuessed,
+        ai: data.rules.ai,
         voice: data.rules.voice
       }).save()
       .then(function (game) {
