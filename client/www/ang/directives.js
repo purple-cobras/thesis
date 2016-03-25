@@ -36,14 +36,30 @@ angular.module('app.directives', [])
   };
 }])
 
-.directive('endGame', function (socket, $state) {
+.directive('endGame', function (socket, $state, $ionicPopup) {
   return {
     restrict: 'E',
     template: '<button ng-disabled="!Game.started" ng-if="Game.isCreator" class="button button-block button-assertive">End Game</button>',
     link: function (scope, element, attrs) {
       element.on('click', function () {
         if (scope.Game.started) {
-          socket.emit('endGame', scope.Game.game.id);
+          $ionicPopup.show({
+            title: "Are you sure?",
+            buttons: [
+              {
+                text: '<b>Yes</b>',
+                type: 'button button-block button-calm',
+                onTap: function () {
+                  socket.emit('endGame', scope.Game.game.id);
+                }
+              },
+
+              {
+                text: '<b>No</b>',
+                type: 'button button-block button-calm'
+              }
+            ]
+          })
         }
       });
     }
