@@ -60,6 +60,7 @@ angular.module('app.login', [])
   };
 
   $scope.logout = function () {
+    Game.resetGame();
     clearProfile();
     Auth.logout();
   };

@@ -10022,6 +10022,16 @@ input::-ms-input-placeholder, textarea::-ms-input-placeholder {
 .alert {
   background-color: #F4E8C1; }
 
+.popup {
+  width: 90% !important; }
+
+#topicOptions {
+  display: inline-block; }
+
+#topicModal {
+  width: 90vw;
+  margin: 0 5vw; }
+
 /** PROFILE **/
 .profile {
   color: black; }
@@ -10049,6 +10059,16 @@ input::-ms-input-placeholder, textarea::-ms-input-placeholder {
   border-radius: 0px; }
   .topic-container .item {
     border-radius: 0px !important; }
+
+.popup-buttons {
+  display: block; }
+
+#topicModal {
+  opacity: 0.94;
+  width: 100%;
+  margin-left: 0px; }
+  #topicModal h1.title {
+    color: #656256; }
 
 /* rubber band animation by Daniel Eden - https://daneden.github.io/animate.css/ */
 .animated {

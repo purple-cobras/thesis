@@ -112,7 +112,7 @@ angular.module('app.directives', [])
               }
             },
             {
-              text: 'Display Your Saved',
+              text: 'Saved Topics',
               type: 'button button-block button-calm',
               onTap: function (e) {
                 if (scope.Game.saved_topics.is_empty || !scope.Game.saved_topics.userTopics.length) {

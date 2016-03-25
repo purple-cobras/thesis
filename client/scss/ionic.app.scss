@@ -484,6 +484,16 @@ $rotate: 2.0deg;
   display: block;
 }
 
+#topicModal {
+  opacity: 0.94;
+  width: 100%;
+  margin-left: 0px;
+  h1.title {
+    color: $balanced;
+  }
+}
+
+
 /* rubber band animation by Daniel Eden - https://daneden.github.io/animate.css/ */
 
 .animated {
