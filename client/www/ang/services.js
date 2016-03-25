@@ -11,9 +11,6 @@ angular.module('app.services', [])
   $state){
 
   var obj = {
-
-    ai: false,
-
     submitting: false,
 
     started: false,
@@ -124,7 +121,6 @@ angular.module('app.services', [])
         obj.game.players = results.players;
         obj.game.guesser = results.game.guesser;
         obj.game.winner = results.game.winner;
-        obj.game.ai = results.game.ai;
         var my_id = store.get('remote_id');
         for (var i = 0; i < obj.game.players.length; i++) {
           if (obj.game.players[i].id === my_id) {
@@ -140,10 +136,9 @@ angular.module('app.services', [])
           obj.isReader = false;
         }
         obj.game.current_round = lastRound;
-        if (obj.game.current_round && ((obj.game.current_round.responses.length === obj.game.players.length) || (obj.game.ai && obj.game.current_round.responses.length === obj.game.players.length - 1))) {
+        if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
           var randomizedResponses = [];
-          var numResponses = obj.game.current_round.responses.length;
-          for (var i = 0; i < numResponses; i++) {
+          for (var i = 0; i < obj.game.players.length; i++) {
             randomizedResponses.push(obj.game.current_round.responses.splice(Math.floor(Math.random() * obj.game.current_round.responses.length), 1)[0]);
           }
           obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
@@ -166,7 +161,6 @@ angular.module('app.services', [])
     },
 
     resetGame: function () {
-      obj.ai = false;
       obj.isReader = false;
       obj.started = false;
       obj.isCreator = false;
@@ -368,9 +362,6 @@ angular.module('app.services', [])
 
     revealResponses: function (index) {
       index = index || 0;
-      if (!obj.game.current_round.responses) {
-        return;
-      }
       if (index > obj.game.current_round.responses.length - 1) {
         obj.revealing = false;
         return;
@@ -482,10 +473,9 @@ angular.module('app.services', [])
       obj.game.current_round.responses.push(response);
     }
 
-    if (obj.game.current_round && ((obj.game.current_round.responses.length === obj.game.players.length) || (obj.game.ai && obj.game.current_round.responses.length === obj.game.players.length - 1)))  {
+    if (obj.game.current_round && obj.game.current_round.responses.length === obj.game.players.length) {
       var randomizedResponses = [];
-      var numResponses = obj.game.current_round.responses.length;
-      for (var i = 0; i < numResponses; i++) {
+      for (var i = 0; i < obj.game.players.length; i++) {
         randomizedResponses.push(obj.game.current_round.responses.splice(Math.floor(Math.random() * obj.game.current_round.responses.length), 1)[0]);
       }
       obj.game.current_round.responses = JSON.parse(JSON.stringify(randomizedResponses));
@@ -536,7 +526,7 @@ angular.module('app.services', [])
       }
     }
     if (guess.result) {
-      if (guess.newRound && !guesser.ai) {
+      if (guess.newRound) {
         guesser.score = guesser.score + 2;
       } else {
         guesser.score = guesser.score + 1;
