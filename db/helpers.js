@@ -542,12 +542,22 @@ module.exports.setReader = function (game_id, current_round_id, players) {
         }
       }
       var newReader = players[newReaderIndex];
-      round.save('reader_id', newReader.id)
-      .then(function (round) {
-        res(newReader);
-      })
-      .catch(function (error) {
-        rej(error);
+      module.exports.AI()
+      .then(function (ai) {
+        if (newReader.id === ai.get('id')) {
+          newReaderIndex++;
+          if (newReader > players.length - 1) {
+            newReaderIndex = 0;
+          }
+        }
+        newReader = players[newReaderIndex];
+        round.save('reader_id', newReader.id)
+        .then(function (round) {
+          res(newReader);
+        })
+        .catch(function (error) {
+          rej(error);
+        });
       });
     });
   });
