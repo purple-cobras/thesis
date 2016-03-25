@@ -4,18 +4,17 @@
 
 1. Fork the repo
 1. Cut a namespaced feature branch from master
-  - bug/...
+  - fix/...
   - feat/...
   - test/...
-  - doc/...
+  - style/...
   - refactor/...
 1. Make commits to your feature branch. Prefix each commit like so:
   - (feat) Added a new feature
   - (fix) Fixed inconsistent tests [Fixes #0]
   - (refactor) ...
-  - (cleanup) ...
   - (test) ...
-  - (doc) ...
+  - (style) ...
 1. When you've finished with your fix or feature, Rebase upstream changes into your branch. submit a [pull request][]
    directly to master. Include a description of your changes.
 1. Your pull request will be reviewed by another maintainer. The point of code
@@ -141,13 +140,13 @@ Thanks for contributing!
 ### Guidelines
 
 1. Uphold the current code standard:
-    - Keep your code [DRY][].
-    - Apply the [boy scout rule][].
+    - Keep your code [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
+    - Apply the [boy scout rule](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule).
     - Follow [STYLE-GUIDE.md](STYLE-GUIDE.md)
-1. Run the [tests][] before submitting a pull request.
+1. Run the tests before submitting a pull request (`$ npm test`).
 1. Tests are very, very important. Submit tests if your pull request contains
    new, testable behavior.
-1. Your pull request is comprised of a single ([squashed][]) commit.
+1. Your pull request is comprised of a single squashed commit.
 
 ## Checklist:
 
