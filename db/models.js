@@ -13,13 +13,16 @@ var User = db.Model.extend({
   },
   currentGame: function () {
     return this.belongsTo(Game, 'current_game_id');
+  },
+  usersRounds: function () {
+    return this.belongsTo(UserRound, 'user_id');
   }
 });
 
 var Game = db.Model.extend({
   tableName: 'games',
   users: function () {
-    return this.hasMany(User).through(UserGame);  
+    return this.hasMany(User, 'current_game_id');  
   },
   rounds: function () {
     return this.hasMany(Round, 'game_id');
