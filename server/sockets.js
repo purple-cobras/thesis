@@ -99,7 +99,7 @@ module.exports.init = function(server){
           }
         });
       }
-      
+
     };
 
     module.exports.gameStarted = function (game_id) {
@@ -160,6 +160,14 @@ module.exports.init = function(server){
 
     module.exports.endGame = function (game_id) {
       io.sockets.in('game:' + game_id).emit('endGame');
+    };
+
+    module.exports.nobodyLikesYou = function (friendless_id) {
+      if (online[friendless_id]) {
+        online[friendless_id].forEach( function (instance) {
+          io.to(instance.socket_id).emit('nobodyLikesYou');
+        });
+      }
     };
 
   });

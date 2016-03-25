@@ -581,6 +581,11 @@ angular.module('app.services', [])
     obj.saved_topics = saved_topics;
   });
 
+  socket.on('nobodyLikesYou', function() {
+    ionicToast.show('All invites were declined, goodbye!', 'top', false, 4000);
+    $state.go('main');
+  });
+
   return obj;
 
 }])
