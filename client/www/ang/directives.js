@@ -71,20 +71,18 @@ angular.module('app.directives', [])
     restrict: 'A',
     link: function (scope, elem, attrs) {
       $(elem).hide();
+
       scope.$watch('Game.game.current_round', function() {
-        if (scope.Game.game.current_round && scope.Game.game.current_round.reader_id === scope.Game.remote_id ) {
-          scope.$watch('Game.game.current_round.reader_id', function () {
-            if (!scope.Game.game.completed && !scope.Game.game.current_round.topic.length) {
-              $(elem).show();
-            }
-          });
-          scope.$watch('Game.game.current_round.topic', function () {
-            if (scope.Game.game.current_round.topic.length) {
-              $(elem).hide();
-            }
-          });
+        if (scope.Game.isReader) {
+          $(elem).show();
         }
-      })
+      });
+
+      scope.$watch('Game.game.current_round.topic', function () {
+        if (scope.Game.game.current_round.topic.length) {
+          $(elem).hide();
+        }
+      });
     }
   }
 })
