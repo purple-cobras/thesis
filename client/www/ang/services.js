@@ -347,6 +347,9 @@ angular.module('app.services', [])
 
     revealResponses: function (index) {
       index = index || 0;
+      if (!obj.game.current_round.responses) {
+        return;
+      }
       if (index > obj.game.current_round.responses.length - 1) {
         obj.revealing = false;
         return;
