@@ -85,8 +85,7 @@ module.exports.createGame = function (data, my_fb_id) {
         .then(function (game) {
           models.User.forge({id: game.attributes.creator_id}).fetch()
           .then(function (user) {
-            user.set('current_game_id', game.attributes.id)
-            .save()
+            user.save({current_game_id: game.attributes.id})
             .then(function (game) {
               res(game);
             })
