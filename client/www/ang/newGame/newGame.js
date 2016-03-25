@@ -7,7 +7,7 @@ angular.module('app.newGame', [])
   $scope.inviting = {};
   $scope.rules = {
     maxScore: 15,
-    ai: true
+    ai: true,
     skipIfGuessed: true,
     voice: true
   };
