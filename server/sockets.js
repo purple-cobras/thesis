@@ -58,6 +58,13 @@ module.exports.init = function(server){
       io.sockets.in('game:' + game_id).emit('endGame');
     });
 
+    socket.on('retrieve saved', function (user_id) {
+      helpers.getSaved(user_id)
+      .then(function (saved_topics) {
+        socket.emit('topics retrieved', saved_topics);
+      });
+    });
+
     var markConnected = function (userInfo) {
       if (!online[userInfo.id]) {
         online[userInfo.id] = [];
