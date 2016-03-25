@@ -7,7 +7,8 @@ angular.module('app.newGame', [])
   $scope.inviting = {};
   $scope.rules = {
     maxScore: 15,
-    skipIfGuessed: true
+    skipIfGuessed: true,
+    voice: true
   };
   $scope.error = '';
 
@@ -56,6 +57,7 @@ angular.module('app.newGame', [])
   };
 
   $scope.createGame = function () {
+    console.log($scope.rules)
     $scope.isDisabled = true;
     $http({
       url: Config.api + '/games',
