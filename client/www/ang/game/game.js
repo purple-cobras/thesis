@@ -78,8 +78,10 @@ angular.module('app.game', [])
   };
 
   $scope.submitTop = function () {
-    if (!responsiveVoice.isPlaying()) {
-      responsiveVoice.speak('');
+    if ($scope.Game.game.voice) {
+      if (!responsiveVoice.isPlaying()) {
+        responsiveVoice.speak('');
+      }
     }
     Game.submitTopic($scope.saveTopic)
     .then(function () {
@@ -88,8 +90,10 @@ angular.module('app.game', [])
   };
 
   $scope.submitRes = function () {
-    if (!responsiveVoice.isPlaying()) {
-      responsiveVoice.speak('');
+    if ($scope.Game.game.voice) {
+      if (!responsiveVoice.isPlaying()) {
+        responsiveVoice.speak('');
+      }
     }
     Game.submitResponse()
     .then(function () {

@@ -43,6 +43,8 @@ angular.module('app.services', [])
 
       skip_if_guessed: undefined,
 
+      voice: undefined,
+
       guesser: undefined,
 
       //Array of objects, with id, name, guessed, and score
@@ -150,6 +152,7 @@ angular.module('app.services', [])
         obj.game.id = response.data.results.game.id;
         obj.game.max_score = response.data.results.game.max_score;
         obj.game.skip_if_guessed = response.data.results.game.skip_if_guessed;
+        obj.game.voice = response.data.results.game.voice;
         socket.emit('room', obj.game.id);
       })
       .catch(function (error) {
@@ -173,6 +176,7 @@ angular.module('app.services', [])
       obj.game.winner = undefined;
       obj.game.completed = false;
       obj.submitting = false;
+      obj.game.voice = undefined;
       obj.game.currentRound  = {
 
         reader_name: undefined,
@@ -366,36 +370,59 @@ angular.module('app.services', [])
       if (response.revealed) {
         obj.revealResponses(++index);
       } else {
-        responsiveVoice.speak(response.text, $rootScope.voice, {
-          onend: function () {
-            $http({
-              'url': Config.api + '/responses/reveal',
-              method: 'post',
-              data: {
-                game_id: obj.game.id,
-                response_id: response.id
-              }
-            })
-            .then(function (response) {
-              if (response.status === 200) {
-                $timeout(obj.revealResponses.bind(null, ++index), 675);
-              }
-            })
-            .catch(function (error) {
-              console.log('reveal error: ', error);
-            });
-          }
-        })
+        if (obj.game.voice) {
+          responsiveVoice.speak(response.text, $rootScope.voice, {
+            onend: function () {
+              $http({
+                'url': Config.api + '/responses/reveal',
+                method: 'post',
+                data: {
+                  game_id: obj.game.id,
+                  response_id: response.id
+                }
+              })
+              .then(function (response) {
+                if (response.status === 200) {
+                  $timeout(obj.revealResponses.bind(null, ++index), 675);
+                }
+              })
+              .catch(function (error) {
+                console.log('reveal error: ', error);
+              });
+            }
+          });
+        } else {
+          $http({
+            'url': Config.api + '/responses/reveal',
+            method: 'post',
+            data: {
+              game_id: obj.game.id,
+              response_id: response.id
+            }
+          })
+          .then(function (response) {
+            if (response.status === 200) {
+              obj.revealResponses(++index);
+            }
+          })
+          .catch(function (error) {
+            console.log('reveal error: ', error);
+          });
+        }
       }
     },
 
     startReadingResponses: function () {
       obj.revealing = true;
-      responsiveVoice.speak('Here are the responses for this round. The topic is ' + obj.game.current_round.topic, $rootScope.voice,
-        {
-          onend: obj.revealResponses
-        }
-      );
+      if (obj.game.voice) {
+        responsiveVoice.speak('Here are the responses for this round. The topic is ' + obj.game.current_round.topic, $rootScope.voice,
+          {
+            onend: obj.revealResponses
+          }
+        );
+      } else {
+        obj.revealResponses();
+      }
     },
 
     amGuesser: function () {
