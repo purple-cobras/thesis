@@ -1,6 +1,6 @@
 angular.module('app.newGame', [])
 
-.controller('newGameCtrl', function ($scope, $http, $state, store, Game) {
+.controller('newGameCtrl', function ($scope, $http, $state, store, Game, $ionicScrollDelegate) {
 
   $scope.search = '';
   $scope.isDisabled = false;
@@ -47,6 +47,7 @@ angular.module('app.newGame', [])
 
   $scope.toggleInvitedFilter = function () {
     $scope.invitedOnly = !$scope.invitedOnly;
+    $ionicScrollDelegate.scrollTop(true);
   };
 
   $scope.invited = function (friend) {
