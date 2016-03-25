@@ -770,7 +770,7 @@ var alchemyToCols = function (response, body) {
         tracker[label] = true;
         response.set(label, Number(tax.score));
       });
-    } 
+    }
     if (category === 'docEmotions') {
       for (var emotion in body[category]) {
         var score = body[category][emotion];
@@ -785,7 +785,10 @@ var alchemyToCols = function (response, body) {
 module.exports.endGame = function (game_id) {
   models.Game.forge({id: game_id})
   .fetch()
-  .then(module.exports.winGame);
+  .then(module.exports.winGame)
+  .then(function () {
+    socket.endGame(game_id);
+  });
 };
 
 
