@@ -9,6 +9,8 @@ angular.module('app.newGame', [])
     maxScore: 15,
     skipIfGuessed: true,
     ai: true
+    skipIfGuessed: true,
+    voice: true
   };
   $scope.error = '';
 

@@ -11,7 +11,8 @@ angular.module('app.game', [])
   $ionicPlatform,
   socket,
   $timeout,
-  ionicToast
+  ionicToast,
+  $ionicModal
 ) {
 
   angular.extend($scope, Game);
@@ -27,6 +28,8 @@ angular.module('app.game', [])
   $scope.typingTopic = false;
 
   $scope.kicked = false;
+
+  $scope.saveTopic = false;
 
   $scope.Game.remote_id = store.get('remote_id');
 
@@ -76,18 +79,22 @@ angular.module('app.game', [])
   };
 
   $scope.submitTop = function () {
-    if (!responsiveVoice.isPlaying()) {
-      responsiveVoice.speak('');
+    if ($scope.Game.game.voice) {
+      if (!responsiveVoice.isPlaying()) {
+        responsiveVoice.speak('');
+      }
     }
-    Game.submitTopic()
+    Game.submitTopic($scope.saveTopic)
     .then(function () {
       $ionicScrollDelegate.scrollTop(true);
     });
   };
 
   $scope.submitRes = function () {
-    if (!responsiveVoice.isPlaying()) {
-      responsiveVoice.speak('');
+    if ($scope.Game.game.voice) {
+      if (!responsiveVoice.isPlaying()) {
+        responsiveVoice.speak('');
+      }
     }
     Game.submitResponse()
     .then(function () {
@@ -160,5 +167,32 @@ angular.module('app.game', [])
       ionicToast.show('Max response length', 'top', false, 2500);
     }
   });
+
+  $scope.toggleSave = function () {
+    $scope.saveTopic = !$scope.saveTopic;
+    return $scope.saveTopic ? "" : "not ";
+  }
+
+  $scope.getUsersTopics = function () {
+    var template = '<ion-modal-view id="topicModal" ng-click="modal.hide()"><ion-header-bar><h1 class="title">Choose Topic</h1></ion-header-bar><ion-content>';
+    for (var i = 0; i < $scope.Game.saved_topics.userTopics.length; i++) {
+      template += '<button ng-click="Game.topic = \'' + Game.saved_topics.userTopics[i] +
+        '\'; modal.hide();" class="button button-balanced modal-button button-block">' +
+        $scope.Game.saved_topics.userTopics[i] + '</button>';
+    }
+    template += '</ion-content></ion-modal-view>';
+
+    $scope.modal = $ionicModal.fromTemplate(template, {
+      scope: $scope
+    });
+
+    $scope.modal.show();
+  }
+
+  $scope.getRandomTopic = function () {
+    if (!$scope.Game.saved_topics.is_empty) {
+      $scope.Game.topic = $scope.Game.saved_topics.all[Math.floor(Math.random() * $scope.Game.saved_topics.all.length)];
+    }
+  }
 
 });

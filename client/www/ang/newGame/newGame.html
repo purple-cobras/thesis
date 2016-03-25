@@ -2,9 +2,9 @@
     <ion-content padding="true" class="has-header">
       <div class="list-card">
         <div class="item item-divider">
-            Friends 
+            Friends
             <span class="friends-count">
-              
+
             </span>
         </div>
         <div class="item item-input-inset">
@@ -27,6 +27,7 @@
       <div class="rules">
         <ion-toggle toggle-class="toggle-stable" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
         <ion-toggle toggle-class="toggle-stable" ng-model="rules.ai">AI Guesser</ion-toggle>
+        <ion-toggle toggle-class="toggle-stable" ng-model="rules.voice">Automated voice reader</ion-toggle>
         <label class="item item-input">
             <span class="input-label score-limit">Play up to</span>
             <input select-on-click type="tel" ng-model="rules.maxScore" ng-change="restrictScore()" min="10" max="50">

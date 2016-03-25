@@ -251,18 +251,18 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 }
 
 input::-moz-placeholder, textarea::-moz-placeholder { /* Firefox 18- */
-   color: $lighter; 
-   opacity: 0.5; 
-}
-
-input::-moz-placeholder, textarea::-moz-placeholder {  /* Firefox 19+ */
-   color: $lighter;  
+   color: $lighter;
    opacity: 0.5;
 }
 
-input::-ms-input-placeholder, textarea::-ms-input-placeholder {  
-   color: $lighter; 
-   opacity: 0.5; 
+input::-moz-placeholder, textarea::-moz-placeholder {  /* Firefox 19+ */
+   color: $lighter;
+   opacity: 0.5;
+}
+
+input::-ms-input-placeholder, textarea::-ms-input-placeholder {
+   color: $lighter;
+   opacity: 0.5;
 }
 
 .kickoff:enabled {
@@ -432,6 +432,19 @@ $rotate: 2.0deg;
   background-color: $energized;
 }
 
+.popup {
+  width: 90% !important;
+}
+
+#topicOptions {
+  display: inline-block;
+}
+
+#topicModal {
+  width: 90vw;
+  margin: 0 5vw;
+}
+
 /** PROFILE **/
 
 .profile {
@@ -465,6 +478,10 @@ $rotate: 2.0deg;
   .item {
     border-radius: 0px!important;
   }
+}
+
+.popup-buttons {
+  display: block;
 }
 
 /* rubber band animation by Daniel Eden - https://daneden.github.io/animate.css/ */

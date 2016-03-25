@@ -30,6 +30,7 @@
         <div ng-if="!Game.game.winner" class="col">
           <h4>Reader: <span ng-bind="game.current_round.reader_name"></span></h4>
         </div>
+        <topic-options></topic-options>
         <div ng-if="Game.game.winner" class="col">
           <h4 class="winner">Winner: <span ng-bind="Game.game.winner.full_name"></span></h4>
         </div>
@@ -68,6 +69,7 @@
           <span class="input-label">Topic</span>
           <textarea msd-elastic ng-model="Game.topic" ng-focus="toggleTypingTopic(true)" ng-blur="toggleTypingTopic(false)" type="text" placeholder="Be creative"></textarea>
         </label>
+        <ion-toggle toggle-class="toggle-stable" ng-click="toggleSave()">Save Topic</ion-toggle>
       </div>
     </div>
     <div

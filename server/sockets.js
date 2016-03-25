@@ -55,7 +55,13 @@ module.exports.init = function(server){
 
     socket.on('endGame', function (game_id) {
       helpers.endGame(game_id);
-      io.sockets.in('game:' + game_id).emit('endGame');
+    });
+
+    socket.on('retrieve saved', function (user_id) {
+      helpers.getSaved(user_id)
+      .then(function (saved_topics) {
+        socket.emit('topics retrieved', saved_topics);
+      });
     });
 
     var markConnected = function (userInfo) {
@@ -150,6 +156,10 @@ module.exports.init = function(server){
 
     module.exports.revealResponse = function (game_id, response_id) {
       io.sockets.in('game:' + game_id).emit('reveal', response_id);
+    };
+
+    module.exports.endGame = function (game_id) {
+      io.sockets.in('game:' + game_id).emit('endGame');
     };
 
   });

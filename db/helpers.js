@@ -79,6 +79,8 @@ module.exports.createGame = function (data, my_fb_id) {
         max_score: data.rules.maxScore,
         skip_if_guessed: data.rules.skipIfGuessed,
         ai: data.rules.ai
+        skip_if_guessed: data.rules.skipIfGuessed,
+        voice: data.rules.voice
       }).save()
       .then(function (game) {
         module.exports.inviteFriends(game, result.friends, result.my_id)
@@ -808,7 +810,7 @@ var alchemyToCols = function (response, body) {
         tracker[label] = true;
         response.set(label, Number(tax.score));
       });
-    } 
+    }
     if (category === 'docEmotions') {
       for (var emotion in body[category]) {
         var score = body[category][emotion];
@@ -867,5 +869,48 @@ var trainNetwork = function (users) {
 module.exports.endGame = function (game_id) {
   models.Game.forge({id: game_id})
   .fetch()
-  .then(module.exports.winGame);
+  .then(module.exports.winGame)
+  .then(function () {
+    socket.endGame(game_id);
+  });
+};
+
+
+module.exports.saveTopic = function (round_id, user_id) {
+  return new Promise(function (res, rej) {
+    module.exports.findOrCreate(models.UserRound, {user_id: user_id, round_id: round_id})
+    .then( function (userRound) {
+      userRound.save({topic_saved: true})
+      .then( function () {
+        res();
+      })
+      .catch( function(error) {
+        rej(error);
+      });
+    });
+  });
+};
+
+module.exports.getSaved = function (user_id) {
+  return new Promise(function (res, rej) {
+    db.knex('users_rounds')
+    .where('topic_saved', true)
+    .innerJoin('rounds', 'users_rounds.round_id', 'rounds.id')
+    .then( function (results) {
+      var response = {
+        all: [],
+        userTopics: []
+      };
+      for (var i = 0; i < results.length; i++) {
+        if (results[i].user_id === user_id) {
+          response.userTopics.push(results[i].topic);
+        }
+        response.all.push(results[i].topic);
+      }
+      res(response);
+    })
+    .catch( function(error) {
+      rej(error);
+    });
+  });
 };

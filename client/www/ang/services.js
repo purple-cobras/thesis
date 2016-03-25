@@ -46,6 +46,8 @@ angular.module('app.services', [])
 
       skip_if_guessed: undefined,
 
+      voice: undefined,
+
       guesser: undefined,
 
       //Array of objects, with id, name, guessed, and score
@@ -80,6 +82,10 @@ angular.module('app.services', [])
       response: undefined
     },
 
+    saved_topics: {
+      is_empty: true
+    },
+
     checkGame: function () {
       var remote_id = store.get('remote_id');
       if (!remote_id) {
@@ -101,6 +107,9 @@ angular.module('app.services', [])
     },
 
     getGame: function () {
+      if (obj.saved_topics.is_empty) {
+        socket.emit('retrieve saved', store.get('remote_id'));
+      }
       obj.game.id = store.get('current_game_id');
       if (!obj.game.id) {
         obj.resetGame();
@@ -148,6 +157,7 @@ angular.module('app.services', [])
         obj.game.id = response.data.results.game.id;
         obj.game.max_score = response.data.results.game.max_score;
         obj.game.skip_if_guessed = response.data.results.game.skip_if_guessed;
+        obj.game.voice = response.data.results.game.voice;
         socket.emit('room', obj.game.id);
       })
       .catch(function (error) {
@@ -171,6 +181,7 @@ angular.module('app.services', [])
       obj.game.winner = undefined;
       obj.game.completed = false;
       obj.submitting = false;
+      obj.game.voice = undefined;
       obj.game.currentRound  = {
 
         reader_name: undefined,
@@ -198,11 +209,14 @@ angular.module('app.services', [])
         reader_name: undefined,
         ready: false,
         response: []
-      }
+      };
       obj.guess = {
         user: undefined,
         response: undefined
-      }
+      };
+      obj.saved_topics = {
+        is_empty: true
+      };
     },
 
     updateGame: function  () {
@@ -232,13 +246,19 @@ angular.module('app.services', [])
       });
     },
 
-    submitTopic: function () {
+    submitTopic: function (saveTopic) {
       obj.submitting_topic = true;
       var cacheTopic = obj.topic;
+      var data = {};
+      data.topic = obj.topic;
+      if (saveTopic) {
+        data.saveTopic = true;
+        data.user_id = store.get('remote_id');
+      }
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/topic',
         method: 'post',
-        data: {topic: obj.topic}
+        data: data
       })
       .then(function (response) {
         if (response.data.submitted) {
@@ -358,42 +378,65 @@ angular.module('app.services', [])
       if (response.revealed) {
         obj.revealResponses(++index);
       } else {
-        responsiveVoice.speak(response.text, $rootScope.voice, {
-          onend: function () {
-            $http({
-              'url': Config.api + '/responses/reveal',
-              method: 'post',
-              data: {
-                game_id: obj.game.id,
-                response_id: response.id
-              }
-            })
-            .then(function (response) {
-              if (response.status === 200) {
-                $timeout(obj.revealResponses.bind(null, ++index), 675);
-              }
-            })
-            .catch(function (error) {
-              console.log('reveal error: ', error);
-            });
-          }
-        })
+        if (obj.game.voice) {
+          responsiveVoice.speak(response.text, $rootScope.voice, {
+            onend: function () {
+              $http({
+                'url': Config.api + '/responses/reveal',
+                method: 'post',
+                data: {
+                  game_id: obj.game.id,
+                  response_id: response.id
+                }
+              })
+              .then(function (response) {
+                if (response.status === 200) {
+                  $timeout(obj.revealResponses.bind(null, ++index), 675);
+                }
+              })
+              .catch(function (error) {
+                console.log('reveal error: ', error);
+              });
+            }
+          });
+        } else {
+          $http({
+            'url': Config.api + '/responses/reveal',
+            method: 'post',
+            data: {
+              game_id: obj.game.id,
+              response_id: response.id
+            }
+          })
+          .then(function (response) {
+            if (response.status === 200) {
+              obj.revealResponses(++index);
+            }
+          })
+          .catch(function (error) {
+            console.log('reveal error: ', error);
+          });
+        }
       }
     },
 
     startReadingResponses: function () {
       obj.revealing = true;
-      responsiveVoice.speak('Here are the responses for this round. The topic is ' + obj.game.current_round.topic, $rootScope.voice,
-        {
-          onend: obj.revealResponses
-        }
-      );
+      if (obj.game.voice) {
+        responsiveVoice.speak('Here are the responses for this round. The topic is ' + obj.game.current_round.topic, $rootScope.voice,
+          {
+            onend: obj.revealResponses
+          }
+        );
+      } else {
+        obj.revealResponses();
+      }
     },
 
     amGuesser: function () {
       return obj.game.guesser && obj.game.guesser.id === store.get('remote_id');
     }
-  }
+  };
 
   socket.on('invite response', function () {
     obj.getGame();
@@ -457,6 +500,13 @@ angular.module('app.services', [])
     obj.game.guesser = guesser;
   });
 
+  var correctSound = document.createElement('AUDIO');
+  correctSound.src = '../audio/correct.ogg';
+  correctSound.volume = 0.5;
+  var incorrectSound = document.createElement('AUDIO');
+  incorrectSound.src = '../audio/incorrect.mp3';
+  incorrectSound.volume = 0.3;
+
   socket.on('guess', function (guess) {
     var guessedResponse;
     var guessee;
@@ -499,6 +549,11 @@ angular.module('app.services', [])
     }
     var guess_message = guesser.full_name + ' guessed "' + guessedResponse.text + '" was written by ' + guessee.full_name + '. ' + result;
     ionicToast.show(guess_message, 'top', false, 2500);
+
+    if (guesser) {
+      result === 'Correct!' ? correctSound.play() : incorrectSound.play();
+    }
+
   });
 
   socket.on('reveal', function (response_id) {
@@ -517,6 +572,12 @@ angular.module('app.services', [])
       ionicToast.show('Creator has ended the game, goodbye!', 'top', false, 4000);
     }
     $state.go('main');
+  });
+
+  socket.on('topics retrieved', function (saved_topics) {
+    if (saved_topics.all.length) {
+      obj.saved_topics = saved_topics;
+    }
   });
 
   return obj;
