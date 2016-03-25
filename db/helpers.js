@@ -277,13 +277,14 @@ module.exports.getGame = function (game_id) {
 
 module.exports.getPlayers = function (game_id) {
   return new Promise(function (res, rej) {
-    db.knex.select('users.id', 'users.pic_url', 'users.full_name', 'users_games.score')
+    db.knex.select('users.id', 'users.ai', 'users.pic_url', 'users.full_name', 'users_games.score')
     .from('users_games')
     .where('users_games.game_id', game_id)
     .innerJoin('games', 'users_games.game_id', 'games.id')
     .innerJoin('users', 'users_games.user_id', 'users.id')
     .groupBy('users.full_name')
     .groupBy('users.id')
+    .groupBy('users.ai')
     .groupBy('users.pic_url')
     .groupBy('users_games.score')
     .orderBy('users.id', 'desc')
