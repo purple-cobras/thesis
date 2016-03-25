@@ -645,9 +645,9 @@ module.exports.resolveGuess = function (round_id, guess) {
                               res(correct);
                               models.Round.forge({id: round_id}).fetch()
                               .then(function (round) {
-                                if (guess.guesser_id === ai.get('id') {
+                                if (guess.guesser_id === ai.get('id')) {
                                   module.exports.makeAIGuess(game, round);                                                                  
-                                })
+                                }
                               });
                             }
                           }
