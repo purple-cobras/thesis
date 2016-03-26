@@ -890,9 +890,26 @@ module.exports.makeAIGuess = function (game, round) {
   });
 };
 
-var initiateNn = function (players) {
-  var size = 20;
-  var attributes = {};
+var getPlayerResponses = function (player) {
+  return new Promise(function (res, rej) {
+    return db.knex
+    .select()
+    .from('responses')
+    .where('user_id', player.id)
+    .orderBy('id', 'desc')
+    .then(function (responses) {
+      res(responses);
+    })
+    .catch(function (error) {
+      console.log('getPlayerResponses error:', error);
+    })
+  });
+};
+
+var createTrainingData = function (players, sampleSize) {
+  var sampleSize = sampleSize || 20;
+  // Sentiment omitted from alchemyAttributes array
+  // Sentiment is added explicitly during each response/attr iteration
   var alchemyAttributes = [
     'anger',
     'disgust',
@@ -923,51 +940,59 @@ var initiateNn = function (players) {
     'technology_and_computing',
     'travel' ];
 
-  players.forEach(function (player) {
+    return new Promise(function (res, rej) {
+      var allResponses = [];
+      var attributes = {};
 
-    if (!player.ai) {
-      getPlayerResponses(player)
-      // Format each data point for Nn training
-      .then(function (responses) {
-        attributes[player.id] = attributes[player.id] || [];
-
-        for (var i = 0; i < size && responses.length; i++) {
-          var response = responses[i];
-          var trainingData = []; 
-          var adjustedSentiment = (response.sentiment + 1) / 2;
-
-          trainingData.push(adjustedSentiment);
-          alchemyAttributes.forEach(function (attr) {
-            trainingData.push(response[attr]);
-          });
-
-          attributes[player.id].push(trainingData);
+      players.forEach(function (player) {
+        if (!player.ai) {
+          attributes[player.id] = [];
+          allResponses.push(getPlayerResponses(player));
         }
+      });
+      Promise.all(allResponses)
+      .then(function (allResponses) {
+        allResponses.forEach(function (playerResponses) {
+          for (var i = 0; i < sampleSize && playerResponses.length; i++) {
+            var response = playerResponses[i];
+            var trainingData = []; 
+            var adjustedSentiment = ((1 + Number(response.sentiment)) / 2).toFixed(2);
+
+            if (i === 1) {
+              console.log('response.sentiment:', response.sentiment, ' adjustedSentiment: ', adjustedSentiment)
+            }
+            trainingData.push(Number(adjustedSentiment)); // TODO: wtf?
+            alchemyAttributes.forEach(function (attr) {
+              // TODO: Optimize, why is attr a string and not a number?
+              trainingData.push(Number(response[attr]));
+            });
+
+            attributes[response.user_id].push(trainingData);
+          }
+        });
+        
+        res(attributes);
       })
       .catch(function (error) {
-        console.log('initiateNn error:', error);
+        console.log('createTrainingData Promise.all error:', error)
       });
-    }
-  });
-
+    });
 };
 
-var getPlayerResponses = function (player) {
-  // TODO: optimize query to return only x (20?) most recent entries.
-  return new Promise(function (res, rej) {
-    return db.knex
-    .select()
-    .from('responses')
-    .where('user_id', player.id)
-    .orderBy('id', 'desc')
-    .then(function (responses) {
-      res(responses);
-    })
-    .catch(function (error) {
-      console.log('getPlayerResponses error:', error);
-    })
+var initiateNn = function (players) {
+  createTrainingData(players, 20)
+  .then(function (attributes) {
+    console.log('attributes:', attributes[1][1])
+    console.log('attributes:', attributes[2][1])
+    // var neuralNetworks = new Networks(players, attributes);
+
+  })
+  .catch(function (error) {
+    console.log('initiateNn error:', error);
   });
 };
+
+
 
 var getNnGuess = function (users, responses) {
   var greatest;
