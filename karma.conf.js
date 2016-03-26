@@ -34,7 +34,7 @@ module.exports = function(config) {
       'client/www/lib/angular-socket-io/socket.js',
       'client/www/lib/angular-facebook/lib/angular-facebook.js',
       'client/www/lib/jquery/dist/jquery.min.js',
-
+      'client/www/lib/angular-cookies/angular-cookies.js',
       'client/www/ang/*.js',
       'client/www/ang/**/*.js',
 
