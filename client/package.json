@@ -24,7 +24,13 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-whitelist",
-    "ionic-plugin-keyboard@1.0.8"
+    "ionic-plugin-keyboard@1.0.8",
+    {
+      "variables": {
+        "SENDER_ID": "190328515272"
+      },
+      "locator": "phonegap-plugin-push"
+    }
   ],
   "cordovaPlatforms": [
     "ios",
