@@ -90,7 +90,7 @@ angular.module('app.directives', [])
 .directive('topicOptions', function ($ionicPopup, ionicToast) {
   return {
     restrict: 'E',
-    template: '<button option-display class="button button-block button-calm " id="topicOptions">Options</button>',
+    template: '<button class="button button-block button-calm " id="topicOptions">Options</button>',
     link: function (scope, elem, attrs) {
       elem.on('click', function () {
         $ionicPopup.show({
