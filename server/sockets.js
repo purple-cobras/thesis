@@ -7,11 +7,12 @@ var online = {};
 var index = {};
 
 module.exports.init = function(server){
-  //TODO:1 - ON DC AND RECONNECTION ADD TO ONLINE FROM MAIN CLIENT PAGE
+
   var io = require('socket.io')(server);
 
   io.on('connection', function (socket) {
-    //TODO:1 - socket emit checkAuth to add a user that goes straight to main page
+
+    //TODO: send push notification when YOU are the guesser
 
     socket.on('login', function (userInfo) {
       markConnected(userInfo);
@@ -80,12 +81,12 @@ module.exports.init = function(server){
 
     /** Invitations **/
     module.exports.inviteFriend = function (user_id) {
-      if (!online[user_id]) {
-        return;
+      if (online[user_id]) {
+        for (var i = 0; i < online[user_id].length; i++) {
+          io.to(online[user_id][i].socket_id).emit('invited');
+        }
       }
-      for (var i = 0; i < online[user_id].length; i++) {
-        io.to(online[user_id][i].socket_id).emit('invited');
-      }
+      push.user(user_id, 'You have been invited to a game.');
     };
 
     module.exports.inviteResult = function (players, result, game) {
@@ -106,6 +107,7 @@ module.exports.init = function(server){
 
     module.exports.gameStarted = function (game_id) {
       io.sockets.in('game:' + game_id).emit('start');
+      push.game(game_id, 'The game has started.');
     };
 
     module.exports.newRound = function (game_id, round) {
@@ -113,12 +115,19 @@ module.exports.init = function(server){
       polishedRound.reader_name = round.relations.reader.attributes.full_name;
       io.sockets.in('game:' + game_id).emit('scrollTop');
       io.sockets.in('game:' + game_id).emit('round', polishedRound);
+      models.Game.forge({id: game_id}).fetch({withRelated: ['rounds']})
+      .then(function (game) {
+        if (game.relations.rounds.length > 1) {
+          push.game(game_id, 'The next round is beginning!');          
+        }
+      });
     };
 
     module.exports.newTopic = function (round, topic) {
       models.Game.forge({id: round.attributes.game_id}).fetch()
       .then(function (game) {
         io.sockets.in('game:' + game.attributes.id).emit('topic', topic);
+        push.game(game.get('id'), 'The topic has been set!');
       })
       .catch(function (error) {
         console.log('new topic error:', error);
@@ -170,8 +179,7 @@ module.exports.init = function(server){
           io.to(instance.socket_id).emit('nobodyLikesYou');
         });
       }
+      push.user(friendless_id, 'No one wanted to play with you.');
     };
-
   });
-
 };
