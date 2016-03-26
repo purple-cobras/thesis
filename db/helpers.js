@@ -9,7 +9,6 @@ var alchemy = require(path.resolve('server/alchemy'));
 
 
 module.exports.findOrCreate = function (Model, attributes) {
-
   return new Promise (function (resolve, reject) {
     Model.forge(attributes).fetch()
     .then(function (model) {
@@ -443,6 +442,12 @@ module.exports.saveResponse = function (round_id, response, user_id) {
               }
               module.exports.alchemizeResponse(response);
             })
+            .catch(function(error) {
+              rej(error);
+            })
+          })
+          .catch(function(error) {
+            rej(error);
           })
         })
         .catch(function(error) {
@@ -792,7 +797,7 @@ module.exports.alchemizeResponse = function (response) {
     alchemy(response.get('text'), {
       success: function (apiResponse, body) {
         if (body["status"] !== "OK") {
-          rej({error: body.status});
+          rej({error: body});
         } else {
           alchemyToCols(response, body).save()
           .then(function (response) {

@@ -143,6 +143,7 @@ var routes = [
       })
       .catch(function (error) {
         res.status(500);
+        console.log('Error in "/rounds/:id/response" path')
         res.json({error: error});
       })
     }
