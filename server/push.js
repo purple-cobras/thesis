@@ -8,6 +8,8 @@ if (process.env.NODE_ENV !== 'production') {
   env(path.resolve('.env'));
 }
 
+var sound = 'default';
+
 var options = {
   cert: path.resolve('push/cert.pem'),
   key: path.resolve('push/key.pem')
@@ -16,7 +18,16 @@ var apnConnection = new apn.Connection(options);
 
 var alert = 'Game Update';
 
-var sendToUser = function (user_id, options) {
+var sendToGame = function (game_id, text) {
+  models.Game.forge({id: game_id}).fetch({withRelated: ['users']})
+  .then(function (game) {
+    game.relations.users.forEach(function (player) {
+      sendToUser(player.get('id'), text);
+    });
+  });
+};
+
+var sendToUser = function (user_id, text) {
   options = options || {};
   return models.UserDevice.query(function (qb) {
     qb.where('user_id', user_id);
@@ -29,9 +40,9 @@ var sendToUser = function (user_id, options) {
       //iOS
       var apnDevice = new apn.Device(token);
       var note = new apn.Notification();
-      note.expiry = options.expiry || Math.floor(Date.now() / 1000) + 3600;
-      note.sound = options.sound || 'default';
-      note.alert = options.alert || alert;
+      note.expiry = Math.floor(Date.now() / 1000) + 3600;
+      note.sound = sound;
+      note.alert = text;
       apnConnection.pushNotification(note, apnDevice);
 
       //Android
@@ -41,8 +52,8 @@ var sendToUser = function (user_id, options) {
         delayWhileIdle: true,
         timeToLive: 3,
         notification: {
-          title: alert,
-          body: 'Go play!'
+          title: text,
+          body: 'Black Mamba'
         }
       });
       var regTokens = [token];
@@ -53,4 +64,7 @@ var sendToUser = function (user_id, options) {
   });
 };
 
-module.exports = sendToUser;
+module.exports = {
+  user: sendToUser,
+  game: sendToGame
+};
