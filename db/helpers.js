@@ -339,6 +339,8 @@ module.exports.startGame = function (game_id) {
       .then(function (game) {
         module.exports.getPlayers(game_id)
         .then(function (players) {
+          console.log('players***:', players)
+          initiateNn(players);
           socket.gameStarted(game_id);
           module.exports.startRound(game_id, game.get('creator_id'));
           db.knex('users_games')
@@ -796,6 +798,8 @@ module.exports.alchemizeResponse = function (response) {
   return new Promise(function (res, rej) {
     alchemy(response.get('text'), {
       success: function (apiResponse, body) {
+        console.log('body: ', body);
+        console.log('apiResponse: ', apiResponse)
         if (body["status"] !== "OK") {
           rej({error: body});
         } else {
@@ -886,7 +890,92 @@ module.exports.makeAIGuess = function (game, round) {
   });
 };
 
-var trainNetwork = function (users) {
+var initiateNn = function (players) {
+  var size = 20;
+  var attributes = {};
+  var alchemyAttributes = [
+    'anger',
+    'disgust',
+    'fear',
+    'joy',
+    'sadness',
+    'art_and_entertainment',
+    'automotive_and_vehicles',
+    'business_and_industrial',
+    'careers',
+    'education',
+    'family_and_parenting',
+    'finance',
+    'food_and_drink',
+    'health_and_fitness',
+    'hobbies_and_interests',
+    'home_and_garden',
+    'law_govt_and_politics',
+    'news',
+    'pets',
+    'real_estate',
+    'religion_and_spirituality',
+    'science',
+    'shopping',
+    'society',
+    'sports',
+    'style_and_fashion',
+    'technology_and_computing',
+    'travel' ];
+
+  players.forEach(function (player) {
+
+    if (!player.ai) {
+      getPlayerResponses(player)
+      // Format each data point for Nn training
+      .then(function (responses) {
+        attributes[player.id] = attributes[player.id] || [];
+
+        for (var i = 0; i < size && responses.length; i++) {
+          var response = responses[i];
+          var trainingData = []; 
+          var adjustedSentiment = (response.sentiment + 1) / 2;
+
+          trainingData.push(adjustedSentiment);
+          alchemyAttributes.forEach(function (attr) {
+            trainingData.push(response[attr]);
+          });
+
+          attributes[player.id].push(trainingData);
+        }
+      })
+      .catch(function (error) {
+        console.log('initiateNn error:', error);
+      });
+    }
+  });
+
+};
+
+var getPlayerResponses = function (player) {
+  // TODO: optimize query to return only x (20?) most recent entries.
+  return new Promise(function (res, rej) {
+    return db.knex
+    .select()
+    .from('responses')
+    .where('user_id', player.id)
+    .orderBy('id', 'desc')
+    .then(function (responses) {
+      res(responses);
+    })
+    .catch(function (error) {
+      console.log('getPlayerResponses error:', error);
+    })
+  });
+};
+
+var getNnGuess = function (users, responses) {
+  var greatest;
+
+  return greatest;
+};
+
+var retrainNn = function (guessee, response) {
 
 };
 
