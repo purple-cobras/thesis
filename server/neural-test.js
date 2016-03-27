@@ -134,6 +134,7 @@ console.log('data points:', biggerSet.length)
 
 var response = [0.22,0.12,0.48,0.11,0.17,0.09]; // Not Tom
 var tomNn = new UserNn();
+console.log('tomNn',tomNn)
 for (var j = 0; j < 12; j++) { 
 	tomNn.train(biggerSet);
 }
