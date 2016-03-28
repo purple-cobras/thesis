@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', '$rootScope', '$state', function(
+.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', '$rootScope', '$state', '$cordovaNativeAudio', function(
   $q,
   $http,
   store,
@@ -8,7 +8,9 @@ angular.module('app.services', [])
   $timeout,
   ionicToast,
   $rootScope,
-  $state){
+  $state,
+  $cordovaNativeAudio
+){
 
   var obj = {
 
@@ -511,13 +513,6 @@ angular.module('app.services', [])
     obj.game.guesser = guesser;
   });
 
-  var correctSound = document.createElement('AUDIO');
-  correctSound.src = '../audio/correct.ogg';
-  correctSound.volume = 0.5;
-  var incorrectSound = document.createElement('AUDIO');
-  incorrectSound.src = '../audio/incorrect.mp3';
-  incorrectSound.volume = 0.3;
-
   socket.on('guess', function (guess) {
     var guessedResponse;
     var guessee;
@@ -561,8 +556,13 @@ angular.module('app.services', [])
     var guess_message = guesser.full_name + ' guessed "' + guessedResponse.text + '" was written by ' + guessee.full_name + '. ' + result;
     ionicToast.show(guess_message, 'top', false, 2500);
 
-    if (guesser) {
-      result === 'Correct!' ? correctSound.play() : incorrectSound.play();
+
+    if ((guesser.id === store.get('remote_id') || (obj.isReader && guesser.ai)) && !$rootScope.mute) {
+      if (guess.result) {
+        $cordovaNativeAudio.play('correct');
+      } else {
+        $cordovaNativeAudio.play('incorrect');
+      }
     }
 
   });

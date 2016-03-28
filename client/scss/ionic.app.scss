@@ -110,6 +110,10 @@ hr {
 
 /** MAIN **/
 
+button.button.settings-button.activated {
+  background: rgba(0, 0, 0, 0);
+}
+
 .invitations-list {
 
   .timestamp {

@@ -21,15 +21,17 @@ angular.module('app',
     'facebook',
     'angular-jwt',
     'ionic-toast',
+    'ngCordova',
     'ngAnimate'
 ]
 )
 
-.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $state) {
+.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $state, $cordovaNativeAudio) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs
     $rootScope.friends = [];
+    $rootScope.mute = store.get('mute');
 
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -57,6 +59,9 @@ angular.module('app',
     push.on('registration', function (data) {
       store.set('device_token', String(data.registrationId));
     });
+
+    $cordovaNativeAudio.preloadSimple('correct', 'audio/correct.mp3');
+    $cordovaNativeAudio.preloadSimple('incorrect', 'audio/incorrect.mp3');
 
   });
 
