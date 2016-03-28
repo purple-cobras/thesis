@@ -33,6 +33,8 @@ angular.module('app.game', [])
 
   $scope.Game.remote_id = store.get('remote_id');
 
+  $scope.min_players = $scope.Game.game.ai ? Config.min_players ? Config.min_players + 1 : 3 : Config.min_players || 2;
+
   $scope.toggleTypingTopic = function (val) {
     $scope.typingTopic = val;
   }
