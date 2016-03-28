@@ -255,8 +255,16 @@ angular.module('app.services', [])
       var data = {};
       data.topic = obj.topic;
       if (saveTopic) {
-        data.saveTopic = true;
-        data.user_id = store.get('remote_id');
+        var duplicate = false;
+        for (var i = 0; i < obj.saved_topics.userTopics.length; i++) {
+          if (obj.topic === obj.saved_topics.userTopics[i].topic) {
+            duplicate = true;
+          }
+        }
+        if (!duplicate) {
+          data.saveTopic = true;
+          data.user_id = store.get('remote_id');
+        }
       }
       return $http({
         url: Config.api + '/rounds/' + obj.game.current_round.id + '/topic',
@@ -615,9 +623,5 @@ angular.module('app.services', [])
   return {
     logout: logout
   };
-
-}])
-
-.service('BlankService', [function(){
 
 }]);
