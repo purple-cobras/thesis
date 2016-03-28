@@ -448,6 +448,13 @@ angular.module('app.services', [])
 
     amGuesser: function () {
       return obj.game.guesser && obj.game.guesser.id === store.get('remote_id');
+    },
+
+    getNumber: function (int) {
+      int = int > 10 ? 10 : int - 1;
+      var numbers =
+      ["one", 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'ten-plus'];
+      return numbers[int];
     }
   };
 

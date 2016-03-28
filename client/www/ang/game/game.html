@@ -5,7 +5,7 @@
     </button>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
-    <button ng-click="kickoff()" ng-disabled="game.players.length < 2" ng-if="!Game.started && Game.isCreator" class="button button-block button-energized" ng-class="{kickoff: !kicked}">
+    <button ng-click="kickoff()" ng-disabled="game.players.length < min_players" ng-if="!Game.started && Game.isCreator" class="button button-block button-energized" ng-class="{kickoff: !kicked}">
       Kick this party off
     </button>
 

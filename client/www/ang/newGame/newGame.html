@@ -34,6 +34,6 @@
         </label>
       </div>
       <div class="error" ng-bind="error"></div>
-      <button ng-disabled="error || isDisabled || !Utils.keys(inviting).length" ng-click="createGame()" class="button button-calm button-block ">Create!</button>
+      <button ng-disabled="error || isDisabled || Utils.keys(inviting).length < min_players - 1" ng-click="createGame()" class="button button-calm button-block ">Create!</button>
     </ion-content>
 </ion-view>
