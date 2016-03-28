@@ -9731,8 +9731,11 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-*, *:after, *:before {
-  font-family: "HelveticaNeue-Light"; }
+:not(.icon), :not(.icon):after, :not(.icon):before, :not(.icon) {
+  font-family: "HelveticaNeue-Light" !important; }
+
+.button-block, .accept, .reject {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
 
 .friends-list {
   min-height: 30vh;
@@ -9804,6 +9807,7 @@ button.button.settings-button.activated {
 
 .account {
   position: absolute;
+  border-radius: 0px;
   bottom: 0;
   left: 0;
   margin-bottom: 0px !important; }
@@ -10037,7 +10041,8 @@ input::-ms-input-placeholder, textarea::-ms-input-placeholder {
   width: 90% !important; }
 
 #topicOptions {
-  display: inline-block; }
+  display: inline-block;
+  box-shadow: none; }
 
 #topicModal {
   width: 90vw;
