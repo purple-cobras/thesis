@@ -1,4 +1,9 @@
 <ion-view title="{{appName}}" hide-back-button="true">
+  <ion-nav-buttons side="right">
+      <button ng-click="displaySettings()" class="settings-button button buttons header-item">
+          <i class="icon ion-gear-b"></i>
+      </button>
+  </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="true" class="has-header main-content" >
     <button class="create-game button button-energized button-block" ng-disabled="isDisabled" ng-click="newGame()">Create Game!</button>
     <div class="list card invitations-container">

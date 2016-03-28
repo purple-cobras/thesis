@@ -120,6 +120,36 @@ angular.module('app.main', [])
     $state.go('game');
   };
 
+  $scope.soundSettingText = function () {
+    return $rootScope.mute ? 'Enable sound effects' : 'Disable sound effects';
+  };
+
+  $scope.displaySettings = function () {
+    var soundText = $scope.soundSettingText();
+    $ionicPopup.show({
+      title: "Settings",
+      scope: $scope,
+      buttons: [
+        {
+          text: soundText,
+          type: 'button button-block button-calm sound-setting',
+          onTap: function (e) {
+            $rootScope.mute = !$rootScope.mute;
+            store.set('mute', $rootScope.mute);
+            $(e.target).text($scope.soundSettingText());
+            e.preventDefault();
+          }
+        },
+        {
+          text: 'Done',
+          type: 'button button-block button-calm',
+          onTap: function (e) {
+          }
+        },
+      ]
+    });
+  };
+
   $scope.$on('$ionicView.beforeEnter', function () {
     $scope.getFriends();
     $scope.getInvitations();

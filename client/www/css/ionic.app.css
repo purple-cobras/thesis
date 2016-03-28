@@ -9781,6 +9781,9 @@ hr {
   margin-top: 30px !important; }
 
 /** MAIN **/
+button.button.settings-button.activated {
+  background: transparent; }
+
 .invitations-list .timestamp {
   font-size: 0.6em;
   font-style: italic; }
