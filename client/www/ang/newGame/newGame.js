@@ -2,6 +2,7 @@ angular.module('app.newGame', [])
 
 .controller('newGameCtrl', function ($scope, $http, $state, store, Game, $ionicScrollDelegate) {
 
+  $scope.min_players = Config.min_players || 2;
   $scope.search = '';
   $scope.isDisabled = false;
   $scope.inviting = {};
@@ -25,7 +26,9 @@ angular.module('app.newGame', [])
     }
     var count = Object.keys($scope.inviting).length;
     if (!count) {
-      $('.friends-count').text('(Invite at least one friend)');
+      $('.friends-count').text('(Invite at least ' + Game.getNumber($scope.min_players - 1 - $scope.Utils.keys($scope.inviting).length) + ')');
+    } else if (count < $scope.min_players - 1){
+      $('.friends-count').text('(Invite at least ' + Game.getNumber($scope.min_players - 1 - $scope.Utils.keys($scope.inviting).length) + ' more)');
     } else {
       $('.friends-count').text('(' + count + ' invited)');
     }
@@ -94,7 +97,7 @@ angular.module('app.newGame', [])
     }, 500);
   };
 
-  $('.friends-count').text('(Invite at least one friend)');
+  $('.friends-count').text('(Invite at least ' + Game.getNumber($scope.min_players - 1 - $scope.Utils.keys($scope.inviting).length) + ')');
 
 
 });

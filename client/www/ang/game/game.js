@@ -176,7 +176,7 @@ angular.module('app.game', [])
   }
 
   $scope.getUsersTopics = function () {
-    var template = 
+    var template =
     '<ion-modal-view id="topicModal">' +
       '<ion-header-bar>' +
         '<h1 class="title">Saved Topics</h1>' +
