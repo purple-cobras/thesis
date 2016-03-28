@@ -13,7 +13,7 @@
       Read off Responses!
     </button>
 
-    <div class="error" ng-if="game.players.length < 2">You need more friends to join</div>
+    <div class="error" ng-if="game.players.length < min_players">You need more to join</div>
 
     <div class="card topic-container" ng-class="{'urgent-reader': Game.isReader && !typingTopic && !Game.game.current_round.topic.length}">
       <div class="item reader item-text-wrap" ng-class="{'alert': Game.isReader}" ng-if="Game.started && !game.current_round.topic.length">
