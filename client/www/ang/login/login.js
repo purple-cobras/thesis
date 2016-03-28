@@ -1,16 +1,16 @@
 angular.module('app.login', [])
 
 .controller('loginCtrl', function(
-  $rootScope, 
-  $scope, 
-  store, 
-  $state, 
-  auth, 
-  $ionicHistory, 
-  $http, 
-  Game, 
-  Auth, 
-  socket, 
+  $rootScope,
+  $scope,
+  store,
+  $state,
+  auth,
+  $ionicHistory,
+  $http,
+  Game,
+  Auth,
+  socket,
   Facebook
 ) {
 
@@ -42,7 +42,6 @@ angular.module('app.login', [])
           setProfile();
           Game.game.id = response.data.user.current_game_id;
           Game.getGame();
-          //SOCKET EMIT login userInfo.fb ,.name
           socket.emit('login', {
             id: response.data.user.id
           });
@@ -72,7 +71,7 @@ angular.module('app.login', [])
         if (response.error) {
           console.log('Facebook API error: ', response.error);
           return;
-        } 
+        }
         store.set('pic_url', response.data.url);
       }
     )

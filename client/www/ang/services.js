@@ -616,8 +616,4 @@ angular.module('app.services', [])
     logout: logout
   };
 
-}])
-
-.service('BlankService', [function(){
-
 }]);
