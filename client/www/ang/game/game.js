@@ -35,6 +35,8 @@ angular.module('app.game', [])
 
   $scope.min_players = Config.min_players || 2;
 
+  $scope.loaded = false;
+
   $scope.adjust_min_players = function () {
     $scope.min_players = $scope.Game.game.ai ? $scope.min_players + 1 : $scope.min_players;
   }
@@ -142,6 +144,7 @@ angular.module('app.game', [])
   $scope.$on('$ionicView.enter', function () {
     Game.getGame()
     .then(function () {
+      $scope.loaded = true;
       $scope.adjust_min_players();
     });
   });
