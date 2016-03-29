@@ -17,7 +17,7 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return db.knex.schema.hasTable('users_rounds')
+  return db.knex.schema.hasTable('users_devices')
   .then(function (exists) {
     if (exists) {
       return db.knex.schema.dropTable('users_devices')
