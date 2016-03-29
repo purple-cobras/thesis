@@ -88,12 +88,9 @@ module.exports.createGame = function (data, my_fb_id) {
           .then(function (user) {
             user.save({current_game_id: game.get('id')})
             .then(function (game) {
-              models.User.forge({id: user.get('id')}).fetch()
-              .then(function (sameUser) {
-                res(game);
-              })
-            })
-          })
+              res(game);
+            });
+          });
         });
       })
       .catch(function (error) {
@@ -124,7 +121,7 @@ module.exports.inviteFriends = function (game, friends, my_id) {
           if (game.get('ai')) {
             module.exports.AI()
             .then(function (ai) {
-              module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: 9, invite: 1})
+              module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: ai.get('id'), invite: 1})
               .then(function (model) {
                 socket.inviteResult(null, true, game);
               });
