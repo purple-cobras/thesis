@@ -906,8 +906,8 @@ var getPlayerResponses = function (player) {
   });
 };
 
-// Queries db for recent responses from all players in game
-// Creates attributes object, for each player, player id
+// Takes a 'sampleSize' number of most recent responses from all players in game.
+// Creates attributes object. For each player, player id
 // is a key and the value is an array of all alchemy attributes.
 var createTrainingData = function (players, sampleSize) {
   sampleSize = sampleSize || 10;
@@ -923,7 +923,7 @@ var createTrainingData = function (players, sampleSize) {
     Promise.all(allResponses)
     .then(function (allResponses) {
       allResponses.forEach(function (playerResponses) {
-        for (var i = 0; i < sampleSize && playerResponses.length; i++) {
+        for (var i = 0; i < sampleSize && i < playerResponses.length; i++) {
           var response = playerResponses[i];
           attributes[response.user_id].push(formatAttributes(response));
         }
