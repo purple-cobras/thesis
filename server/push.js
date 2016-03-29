@@ -37,28 +37,34 @@ var sendToUser = function (user_id, text) {
     devices.models.forEach(function (device) {
       var token = device.get('device_token');
 
-      //iOS
-      var apnDevice = new apn.Device(token);
-      var note = new apn.Notification();
-      note.expiry = Math.floor(Date.now() / 1000) + 3600;
-      note.sound = sound;
-      note.alert = text;
-      apnConnection.pushNotification(note, apnDevice);
+      try {
+        //iOS
+        var apnDevice = new apn.Device(token);
+        var note = new apn.Notification();
+        note.expiry = Math.floor(Date.now() / 1000) + 3600;
+        note.sound = sound;
+        note.alert = text;
+        apnConnection.pushNotification(note, apnDevice);
 
-      //Android
-      var message = new gcm.Message({
-        priority: 'high',
-        contentAvailable: true,
-        delayWhileIdle: true,
-        timeToLive: 3,
-        notification: {
-          title: text,
-          body: 'Black Mamba'
-        }
-      });
-      var regTokens = [token];
-      var sender = new gcm.Sender(process.env.GCM_API_KEY);
-      sender.send(message, {registrationTokens: regTokens});
+        //Android
+        var message = new gcm.Message({
+          priority: 'high',
+          contentAvailable: true,
+          delayWhileIdle: true,
+          timeToLive: 3,
+          notification: {
+            title: text,
+            body: 'Black Mamba'
+          }
+        });
+        var regTokens = [token];
+        var sender = new gcm.Sender(process.env.GCM_API_KEY);
+        sender.send(message, {registrationTokens: regTokens});
+      }
+      // okay to fail silently here. this just means we passed in an Android device token to the apn library
+      catch (error) {
+        
+      }
 
     });
   });
