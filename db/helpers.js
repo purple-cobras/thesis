@@ -84,11 +84,14 @@ module.exports.createGame = function (data, my_fb_id) {
       .then(function (game) {
         module.exports.inviteFriends(game, result.friends, result.my_id)
         .then(function (game) {
-          models.User.forge({id: game.attributes.creator_id}).fetch()
+          models.User.forge({id: game.get('creator_id')}).fetch()
           .then(function (user) {
-            user.save({current_game_id: game.attributes.id})
+            user.save({current_game_id: game.get('id')})
             .then(function (game) {
-              res(game);
+              models.User.forge({id: user.get('id')}).fetch()
+              .then(function (sameUser) {
+                res(game);
+              })
             })
           })
         });
@@ -117,19 +120,16 @@ module.exports.inviteFriends = function (game, friends, my_id) {
       .then(function (userGame) {
         socket.inviteFriend(friend.id);
         if (++inviteCount === friends.length) {
-          //AI Player
+          res(game);
           if (game.get('ai')) {
             module.exports.AI()
             .then(function (ai) {
-              module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: ai.get('id'), invite: 1})
-              .then(function () {
+              module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: 9, invite: 1})
+              .then(function (model) {
                 socket.inviteResult(null, true, game);
-                res(game);
-              })
-            })
-          } else {
-            res(game);
-          }
+              });
+            });
+          } 
         }
       })
       .catch(function (error) {
