@@ -33,7 +33,9 @@ angular.module('app.game', [])
 
   $scope.Game.remote_id = store.get('remote_id');
 
-  $scope.min_players = $scope.Game.game.ai ? Config.min_players ? Config.min_players + 1 : 3 : Config.min_players || 2;
+  $scope.set_min_players = function () {
+    $scope.min_players = $scope.Game.game.ai ? Config.min_players ? Config.min_players + 1 : 3 : Config.min_players || 2;
+  }
 
   $scope.toggleTypingTopic = function (val) {
     $scope.typingTopic = val;
@@ -138,6 +140,7 @@ angular.module('app.game', [])
   $scope.$on('$ionicView.enter', function () {
     Game.getGame()
     .then(function () {
+      $scope.set_min_players();
     });
   });
 
