@@ -909,7 +909,7 @@ var getPlayerResponses = function (player) {
 // Creates attributes object. For each player, player id
 // is a key and the value is an array of all alchemy attributes.
 var createTrainingData = function (players, sampleSize) {
-  sampleSize = sampleSize || 10;
+  sampleSize = sampleSize || 4;
   return new Promise(function (res, rej) {
     var allResponses = [];
     var attributes = {};
