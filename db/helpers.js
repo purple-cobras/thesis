@@ -622,7 +622,6 @@ module.exports.resolveGuess = function (round_id, guess) {
         rej({error: 'not your turn'});
         return;
       }
-      // console.log('616 guess:', guess);
       var correct = round.relations.responses._byId[guess.response_id].attributes.user_id === guess.guessee_id;
       if (correct) {
         module.exports.findOrCreate(models.UserRound, {user_id: guess.guessee_id, round_id: round_id})
@@ -798,8 +797,6 @@ module.exports.alchemizeResponse = function (response) {
   return new Promise(function (res, rej) {
     alchemy(response.get('text'), {
       success: function (apiResponse, body) {
-        // console.log('body: ', body);
-        // console.log('apiResponse: ', apiResponse)
         if (body["status"] !== "OK") {
           rej({error: body});
         } else {
@@ -852,7 +849,6 @@ var alchemyToCols = function (response, body) {
 
 module.exports.makeAIGuess = function (game, round) {
   var dataCount = 0;
-
   //Get all players
   var playerCount = 0;
   models.Game.forge({id: game.get('id')}).fetch({withRelated: ['users']})
@@ -867,6 +863,7 @@ module.exports.makeAIGuess = function (game, round) {
         }
         playerCount++;
         if (playerCount === players.length) {
+          console.log('remainingPlayers:', remainingPlayers.length)
           module.exports.AI()
           .then(function (ai) {
             models.Response.query({
@@ -877,7 +874,7 @@ module.exports.makeAIGuess = function (game, round) {
             })
             .fetchAll()
             .then(function (responses) {
-              getNnGuess(players, responses).then(function (guess) {
+              getNnGuess(remainingPlayers, responses).then(function (guess) {
                 module.exports.resolveGuess(round.get('id'), {
                   guesser_id: ai.get('id'),
                   guessee_id: guess.player,
@@ -892,6 +889,7 @@ module.exports.makeAIGuess = function (game, round) {
   });
 };
 
+// Queries db for all response from a player
 var getPlayerResponses = function (player) {
   return new Promise(function (res, rej) {
     return db.knex
@@ -908,130 +906,64 @@ var getPlayerResponses = function (player) {
   });
 };
 
+// Queries db for recent responses from all players in game
+// Creates attributes object, for each player, player id
+// is a key and the value is an array of all alchemy attributes.
 var createTrainingData = function (players, sampleSize) {
-  var sampleSize = sampleSize || 10;
-  // Sentiment omitted from alchemyAttributes array
-  // Sentiment is added explicitly during each response/attr iteration
-  var alchemyAttributes = [
-    'anger',
-    'disgust',
-    'fear',
-    'joy',
-    'sadness',
-    'art_and_entertainment',
-    'automotive_and_vehicles',
-    'business_and_industrial',
-    'careers',
-    'education',
-    'family_and_parenting',
-    'finance',
-    'food_and_drink',
-    'health_and_fitness',
-    'hobbies_and_interests',
-    'home_and_garden',
-    'law_govt_and_politics',
-    'news',
-    'pets',
-    'real_estate',
-    'religion_and_spirituality',
-    'science',
-    'shopping',
-    'society',
-    'sports',
-    'style_and_fashion',
-    'technology_and_computing',
-    'travel' ];
-
-    return new Promise(function (res, rej) {
-      var allResponses = [];
-      var attributes = {};
-
-      players.forEach(function (player) {
-        if (!player.ai) {
-          attributes[player.id] = [];
-          allResponses.push(getPlayerResponses(player));
+  sampleSize = sampleSize || 10;
+  return new Promise(function (res, rej) {
+    var allResponses = [];
+    var attributes = {};
+    players.forEach(function (player) {
+      if (!player.ai) {
+        attributes[player.id] = [];
+        allResponses.push(getPlayerResponses(player));
+      }
+    });
+    Promise.all(allResponses)
+    .then(function (allResponses) {
+      allResponses.forEach(function (playerResponses) {
+        for (var i = 0; i < sampleSize && playerResponses.length; i++) {
+          var response = playerResponses[i];
+          attributes[response.user_id].push(formatAttributes(response));
         }
       });
-      Promise.all(allResponses)
-      .then(function (allResponses) {
-        allResponses.forEach(function (playerResponses) {
-          for (var i = 0; i < sampleSize && playerResponses.length; i++) {
-            var response = playerResponses[i];
-            var trainingData = []; 
-            var adjustedSentiment = ((1 + Number(response.sentiment)) / 2).toFixed(2);
-
-            if (i === 1) {
-              console.log('response.sentiment:', response.sentiment, ' adjustedSentiment: ', adjustedSentiment)
-            }
-            trainingData.push(Number(adjustedSentiment)); // TODO: wtf?
-            alchemyAttributes.forEach(function (attr) {
-              // TODO: Optimize, why is attr a string and not a number?
-              trainingData.push(Number(response[attr]));
-            });
-
-            attributes[response.user_id].push(trainingData);
-          }
-        });
-        
-        res(attributes);
-      })
-      .catch(function (error) {
-        console.log('createTrainingData error:', error)
-      });
+      res(attributes);
+    })
+    .catch(function (error) {
+      console.log('createTrainingData error:', error)
     });
+  });
 };
 
-// TODO: Refactor to use in createTrainingData, DRY
+// Takes a response an returns an array of only alchemy attributes,
+// formated for neural network training.
 var formatAttributes = function (response) {
   var attributes = [];
   var alchemyAttributes = [
-    'anger',
-    'disgust',
-    'fear',
-    'joy',
-    'sadness',
-    'art_and_entertainment',
-    'automotive_and_vehicles',
-    'business_and_industrial',
-    'careers',
-    'education',
-    'family_and_parenting',
-    'finance',
-    'food_and_drink',
-    'health_and_fitness',
-    'hobbies_and_interests',
-    'home_and_garden',
-    'law_govt_and_politics',
-    'news',
-    'pets',
-    'real_estate',
-    'religion_and_spirituality',
-    'science',
-    'shopping',
-    'society',
-    'sports',
-    'style_and_fashion',
-    'technology_and_computing',
-    'travel' ];
-
+    'anger', 'disgust', 'fear', 'joy', 'sadness', 'art_and_entertainment',
+    'automotive_and_vehicles', 'business_and_industrial', 'careers', 'education',
+    'family_and_parenting', 'finance', 'food_and_drink', 'health_and_fitness',
+    'hobbies_and_interests', 'home_and_garden', 'law_govt_and_politics', 'news',
+    'pets', 'real_estate', 'religion_and_spirituality', 'science', 'shopping',
+    'society', 'sports', 'style_and_fashion', 'technology_and_computing', 'travel' 
+    ];
   var adjustedSentiment = ((1 + Number(response.sentiment)) / 2).toFixed(2);
 
   attributes.push(Number(adjustedSentiment)); 
   alchemyAttributes.forEach(function (attr) {
-    // TODO: Optimize, why is attr a string and not a number?
     attributes.push(Number(response[attr]));
   });
 
   return attributes;
-}
+};
 
+// Instantiates a collection of neural networks
 var initiateNn = function (players) {
   return new Promise(function (res, rej) {
-    createTrainingData(players, 5)
+    createTrainingData(players)
     .then(function (attributes) {
-      var nn = new Networks(players, attributes);
-      // console.log('inside initiateNn:', nn)
-      res(nn);
+      res(new Networks(players, attributes));
     })
     .catch(function (error) {
       console.log('initiateNn error:', error);
@@ -1039,10 +971,12 @@ var initiateNn = function (players) {
   });
 };
 
+// Returns player/response guess with highest probability
 var getNnGuess = function (players, responses) {
   return new Promise(function (res, rej) {
     initiateNn(players)
     .then(function (neuralNetworks) {
+
       // console.log('!neuralNetworks', neuralNetworks)
       var bestGuess = {
         probability: -1,
@@ -1050,14 +984,7 @@ var getNnGuess = function (players, responses) {
         response: null
       };
       players.forEach(function (player) {
-        // console.log('player:', player)
-        // var x = 0;
         responses.forEach(function (response) {
-          // if (x === 0) {
-          //   console.log('response:', response)
-          //   x++;
-          // }
-          // do i have player.id?
           var attributes = formatAttributes(response.attributes);
           var probability = neuralNetworks[player.id].network.activate(attributes)[0];
           var guess = {
@@ -1065,7 +992,8 @@ var getNnGuess = function (players, responses) {
             player: player.attributes.id,
             response: response.attributes.id
           };
-          console.log('possibility:', guess, ' text: ', response.attributes.text);
+
+          console.log('possible guess:', guess, ' text: ', response.attributes.text);
           if (guess.probability > bestGuess.probability) {
             bestGuess = guess;
           }
@@ -1079,17 +1007,7 @@ var getNnGuess = function (players, responses) {
     })
     
   });
-
-  ini
-
-
-  
-
   return greatest;
-};
-
-var retrainNn = function (guessee, response) {
-
 };
 
 module.exports.endGame = function (game_id) {

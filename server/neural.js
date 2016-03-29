@@ -21,7 +21,7 @@ var PlayerNn = function (player) {
 
 PlayerNn.prototype.train = function (trainingSet) {
 	this.trainer.train(trainingSet);
-	console.log('returning trained network')
+	console.log('Returning trained NN for player #', this.player);
 	return this.network;
 };
 
@@ -32,7 +32,7 @@ var Networks = function (players, attributes) {
 		if (!player.ai) {
 			var trainingSet = [];
 			for (var key in attributes) {
-				var output = (~~key === player.id) ? [1] : [0];
+				var output = (Number(key) === player.id) ? [1] : [0];
 
 				attributes[key].forEach(function (attribute) {
 					var dataPoint = {};
@@ -43,7 +43,7 @@ var Networks = function (players, attributes) {
 				});
 			}
 			// console.log('trainingSet:', trainingSet)
-			console.log('starting to create NN for:', player.id)
+			// console.log('starting to create NN for:', player.id)
 			this[player.id] = new PlayerNn(player.id);
 			this[player.id].train(trainingSet);
 			// console.log('inside Networks constructor forEach:', this[player.id].player, ' was created')
