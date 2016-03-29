@@ -627,7 +627,7 @@ angular.module('app.services', ['ionic'])
 })
 
 .factory('Voice', function ($ionicPlatform) {
-  if ($ionicPlatform.is('ios') || !window.cordova) {
+  if (!window.cordova) {
     return {
       speak: function (text, voice, onend) {
         responsiveVoice.speak(text, voice, {
@@ -636,11 +636,16 @@ angular.module('app.services', ['ionic'])
       }
     }
   } else {
+    var rate = 1.0;
+    if ($ionicPlatform.is('ios')) {
+      rate = 1.60;
+    }
     return {
       speak: function (text, voice, onend) {
         TTS.speak({
             text: text,
             locale: 'en-GB',
+            rate: rate
           }, function () {
             onend();
           }
