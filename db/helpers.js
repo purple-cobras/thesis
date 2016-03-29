@@ -340,9 +340,6 @@ module.exports.startGame = function (game_id) {
       .then(function (game) {
         module.exports.getPlayers(game_id)
         .then(function (players) {
-          // console.log('players***:', players[0]);
-          
-          // console.log('post initiateNn()')
           socket.gameStarted(game_id);
           module.exports.startRound(game_id, game.get('creator_id'));
           db.knex('users_games')
@@ -361,15 +358,7 @@ module.exports.startGame = function (game_id) {
               }
             });
             socket.refreshInvites(playersRejected);
-            initiateNn(players)
-            .then(function(nn) {
-              console.log('startGame nn:', nn); 
-              res();
-            })
-            .catch(function (error) {
-              console.log('startGame error: ', error)
-            });
-            // res();
+            res();
           });
         });
       });
@@ -633,6 +622,7 @@ module.exports.resolveGuess = function (round_id, guess) {
         rej({error: 'not your turn'});
         return;
       }
+      // console.log('616 guess:', guess);
       var correct = round.relations.responses._byId[guess.response_id].attributes.user_id === guess.guessee_id;
       if (correct) {
         module.exports.findOrCreate(models.UserRound, {user_id: guess.guessee_id, round_id: round_id})
@@ -808,8 +798,8 @@ module.exports.alchemizeResponse = function (response) {
   return new Promise(function (res, rej) {
     alchemy(response.get('text'), {
       success: function (apiResponse, body) {
-        console.log('body: ', body);
-        console.log('apiResponse: ', apiResponse)
+        // console.log('body: ', body);
+        // console.log('apiResponse: ', apiResponse)
         if (body["status"] !== "OK") {
           rej({error: body});
         } else {
@@ -887,20 +877,13 @@ module.exports.makeAIGuess = function (game, round) {
             })
             .fetchAll()
             .then(function (responses) {
-
-              var guess = getNnGuess(users, responses);
-
-              module.exports.resolveGuess(round.get('id'), {
-                guesser_id: ai.get('id'),
-                guessee_id: guess.player,
-                response_id: guess.response
+              getNnGuess(players, responses).then(function (guess) {
+                module.exports.resolveGuess(round.get('id'), {
+                  guesser_id: ai.get('id'),
+                  guessee_id: guess.player,
+                  response_id: guess.response
+                });
               });
-
-              // module.exports.resolveGuess(round.get('id'), {
-              //   guesser_id: ai.get('id'),
-              //   guessee_id: remainingPlayers[0].attributes.id,
-              //   response_id: responses.models[0].attributes.id
-              // });
             });
           });
         }
@@ -998,12 +981,56 @@ var createTrainingData = function (players, sampleSize) {
     });
 };
 
+// TODO: Refactor to use in createTrainingData, DRY
+var formatAttributes = function (response) {
+  var attributes = [];
+  var alchemyAttributes = [
+    'anger',
+    'disgust',
+    'fear',
+    'joy',
+    'sadness',
+    'art_and_entertainment',
+    'automotive_and_vehicles',
+    'business_and_industrial',
+    'careers',
+    'education',
+    'family_and_parenting',
+    'finance',
+    'food_and_drink',
+    'health_and_fitness',
+    'hobbies_and_interests',
+    'home_and_garden',
+    'law_govt_and_politics',
+    'news',
+    'pets',
+    'real_estate',
+    'religion_and_spirituality',
+    'science',
+    'shopping',
+    'society',
+    'sports',
+    'style_and_fashion',
+    'technology_and_computing',
+    'travel' ];
+
+  var adjustedSentiment = ((1 + Number(response.sentiment)) / 2).toFixed(2);
+
+  attributes.push(Number(adjustedSentiment)); 
+  alchemyAttributes.forEach(function (attr) {
+    // TODO: Optimize, why is attr a string and not a number?
+    attributes.push(Number(response[attr]));
+  });
+
+  return attributes;
+}
+
 var initiateNn = function (players) {
   return new Promise(function (res, rej) {
     createTrainingData(players, 5)
     .then(function (attributes) {
       var nn = new Networks(players, attributes);
-      console.log('inside initiateNn:', nn)
+      // console.log('inside initiateNn:', nn)
       res(nn);
     })
     .catch(function (error) {
@@ -1014,25 +1041,38 @@ var initiateNn = function (players) {
 
 var getNnGuess = function (players, responses) {
   return new Promise(function (res, rej) {
-    var guess = {
-      probability: null,
-      player: null,
-      response: null
-    };
     initiateNn(players)
     .then(function (neuralNetworks) {
+      // console.log('!neuralNetworks', neuralNetworks)
+      var bestGuess = {
+        probability: -1,
+        player: null,
+        response: null
+      };
       players.forEach(function (player) {
+        // console.log('player:', player)
+        // var x = 0;
         responses.forEach(function (response) {
+          // if (x === 0) {
+          //   console.log('response:', response)
+          //   x++;
+          // }
           // do i have player.id?
-          var probability = neuralNetworks[player.id].network.activate(/*res-attr*/);
-          if (probability > guess.probability) {
-            guess.probability = probability;
-            guess.player = player.id;
-            guess.response = response;
+          var attributes = formatAttributes(response.attributes);
+          var probability = neuralNetworks[player.id].network.activate(attributes)[0];
+          var guess = {
+            probability: probability,
+            player: player.attributes.id,
+            response: response.attributes.id
+          };
+          console.log('possibility:', guess, ' text: ', response.attributes.text);
+          if (guess.probability > bestGuess.probability) {
+            bestGuess = guess;
           }
         });
       });
-      res(guess);
+      console.log('bestGuess:', bestGuess);
+      res(bestGuess);
     })
     .catch(function (error) {
       console.log('getNnGuess error:', error);

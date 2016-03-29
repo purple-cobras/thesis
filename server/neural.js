@@ -46,8 +46,8 @@ var Networks = function (players, attributes) {
 			console.log('starting to create NN for:', player.id)
 			this[player.id] = new PlayerNn(player.id);
 			this[player.id].train(trainingSet);
-			console.log('inside Networks constructor forEach:', this[player.id].player, ' was created')
-			console.log('this:', this)
+			// console.log('inside Networks constructor forEach:', this[player.id].player, ' was created')
+			// console.log('this:', this)
 		}
 	}.bind(this));
 	
