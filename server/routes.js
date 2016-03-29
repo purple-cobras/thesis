@@ -32,12 +32,6 @@ var authRoutes = [
 
 var routes = [
   {
-    path: '/',
-    get: function (req, res) {
-      res.sendFile(public + '/index.html');
-    }
-  },
-  {
     path: '/users',
     post: function (req, res) {
       // Store new user data in db.
@@ -210,17 +204,10 @@ var routes = [
         res.json({error: error});
       })
     }
-  },
-  {
-    path: '*',
-    get: function (req, res) {
-      res.redirect('/');
-    }
   }
 ];
 
 module.exports = function (app, express) {
-  app.use(express.static(public));
 
   // require authorization for each route in authRoutes
   authRoutes.forEach(function (route){
