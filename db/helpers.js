@@ -6,10 +6,10 @@ var eventEmitter = new events.EventEmitter();
 var path = require('path');
 var socket = require(path.resolve('server/sockets'));
 var alchemy = require(path.resolve('server/alchemy'));
+var Networks = require(path.resolve('server/neural'));
 
 
 module.exports.findOrCreate = function (Model, attributes) {
-
   return new Promise (function (resolve, reject) {
     Model.forge(attributes).fetch()
     .then(function (model) {
@@ -443,6 +443,12 @@ module.exports.saveResponse = function (round_id, response, user_id) {
               }
               module.exports.alchemizeResponse(response);
             })
+            .catch(function(error) {
+              rej(error);
+            })
+          })
+          .catch(function(error) {
+            rej(error);
           })
         })
         .catch(function(error) {
@@ -792,7 +798,7 @@ module.exports.alchemizeResponse = function (response) {
     alchemy(response.get('text'), {
       success: function (apiResponse, body) {
         if (body["status"] !== "OK") {
-          rej({error: body.status});
+          rej({error: body});
         } else {
           alchemyToCols(response, body).save()
           .then(function (response) {
@@ -843,7 +849,6 @@ var alchemyToCols = function (response, body) {
 
 module.exports.makeAIGuess = function (game, round) {
   var dataCount = 0;
-
   //Get all players
   var playerCount = 0;
   models.Game.forge({id: game.get('id')}).fetch({withRelated: ['users']})
@@ -858,6 +863,7 @@ module.exports.makeAIGuess = function (game, round) {
         }
         playerCount++;
         if (playerCount === players.length) {
+          console.log('remainingPlayers:', remainingPlayers.length)
           module.exports.AI()
           .then(function (ai) {
             models.Response.query({
@@ -868,10 +874,12 @@ module.exports.makeAIGuess = function (game, round) {
             })
             .fetchAll()
             .then(function (responses) {
-              module.exports.resolveGuess(round.get('id'), {
-                guesser_id: ai.get('id'),
-                guessee_id: remainingPlayers[0].attributes.id,
-                response_id: responses.models[0].attributes.id
+              getNnGuess(remainingPlayers, responses).then(function (guess) {
+                module.exports.resolveGuess(round.get('id'), {
+                  guesser_id: ai.get('id'),
+                  guessee_id: guess.player,
+                  response_id: guess.response
+                });
               });
             });
           });
@@ -881,8 +889,124 @@ module.exports.makeAIGuess = function (game, round) {
   });
 };
 
-var trainNetwork = function (users) {
+// Queries db for all response from a player
+var getPlayerResponses = function (player) {
+  return new Promise(function (res, rej) {
+    return db.knex
+    .select()
+    .from('responses')
+    .where('user_id', player.id)
+    .orderBy('id', 'desc')
+    .then(function (responses) {
+      res(responses);
+    })
+    .catch(function (error) {
+      console.log('getPlayerResponses error:', error);
+    })
+  });
+};
 
+// Queries db for recent responses from all players in game
+// Creates attributes object, for each player, player id
+// is a key and the value is an array of all alchemy attributes.
+var createTrainingData = function (players, sampleSize) {
+  sampleSize = sampleSize || 10;
+  return new Promise(function (res, rej) {
+    var allResponses = [];
+    var attributes = {};
+    players.forEach(function (player) {
+      if (!player.ai) {
+        attributes[player.id] = [];
+        allResponses.push(getPlayerResponses(player));
+      }
+    });
+    Promise.all(allResponses)
+    .then(function (allResponses) {
+      allResponses.forEach(function (playerResponses) {
+        for (var i = 0; i < sampleSize && playerResponses.length; i++) {
+          var response = playerResponses[i];
+          attributes[response.user_id].push(formatAttributes(response));
+        }
+      });
+      res(attributes);
+    })
+    .catch(function (error) {
+      console.log('createTrainingData error:', error)
+    });
+  });
+};
+
+// Takes a response an returns an array of only alchemy attributes,
+// formated for neural network training.
+var formatAttributes = function (response) {
+  var attributes = [];
+  var alchemyAttributes = [
+    'anger', 'disgust', 'fear', 'joy', 'sadness', 'art_and_entertainment',
+    'automotive_and_vehicles', 'business_and_industrial', 'careers', 'education',
+    'family_and_parenting', 'finance', 'food_and_drink', 'health_and_fitness',
+    'hobbies_and_interests', 'home_and_garden', 'law_govt_and_politics', 'news',
+    'pets', 'real_estate', 'religion_and_spirituality', 'science', 'shopping',
+    'society', 'sports', 'style_and_fashion', 'technology_and_computing', 'travel' 
+    ];
+  var adjustedSentiment = ((1 + Number(response.sentiment)) / 2).toFixed(2);
+
+  attributes.push(Number(adjustedSentiment)); 
+  alchemyAttributes.forEach(function (attr) {
+    attributes.push(Number(response[attr]));
+  });
+
+  return attributes;
+};
+
+// Instantiates a collection of neural networks
+var initiateNn = function (players) {
+  return new Promise(function (res, rej) {
+    createTrainingData(players)
+    .then(function (attributes) {
+      res(new Networks(players, attributes));
+    })
+    .catch(function (error) {
+      console.log('initiateNn error:', error);
+    });
+  });
+};
+
+// Returns player/response guess with highest probability
+var getNnGuess = function (players, responses) {
+  return new Promise(function (res, rej) {
+    initiateNn(players)
+    .then(function (neuralNetworks) {
+      var bestGuess = {
+        probability: -1,
+        player: null,
+        response: null
+      };
+      
+      players.forEach(function (player) {
+        responses.forEach(function (response) {
+          var attributes = formatAttributes(response.attributes);
+          var probability = neuralNetworks[player.id].network.activate(attributes)[0];
+          var guess = {
+            probability: probability,
+            player: player.attributes.id,
+            response: response.attributes.id
+          };
+
+          console.log('possible guess:', guess, ' text: ', response.attributes.text);
+          if (guess.probability > bestGuess.probability) {
+            bestGuess = guess;
+          }
+        });
+      });
+      console.log('bestGuess:', bestGuess);
+      res(bestGuess);
+    })
+    .catch(function (error) {
+      console.log('getNnGuess error:', error);
+    })
+    
+  });
+  return greatest;
 };
 
 module.exports.endGame = function (game_id) {
