@@ -1,4 +1,4 @@
-angular.module('app.services', [])
+angular.module('app.services', ['ionic'])
 
 .factory('Game', 
   ['$q', 
@@ -403,7 +403,7 @@ angular.module('app.services', [])
       if (response.revealed) {
         obj.revealResponses(++index);
       } else {
-        if (obj.game.voice) {
+        if (obj.game.voice && Voice.ok) {
           Voice.speak(response.text, $rootScope.voice, function () {
             $http({
               'url': Config.api + '/responses/reveal',
@@ -445,7 +445,7 @@ angular.module('app.services', [])
 
     startReadingResponses: function () {
       obj.revealing = true;
-      if (obj.game.voice) {
+      if (obj.game.voice && Voice.ok) {
         Voice.speak(
           'Here are the responses for this round. The topic is ' + obj.game.current_round.topic, 
           $rootScope.voice, 
@@ -585,6 +585,9 @@ angular.module('app.services', [])
   });
 
   socket.on('reveal', function (response_id) {
+    if (!obj.game.current_round.responses) {
+      return;
+    }
     for (var i = 0; i < obj.game.current_round.responses.length; i++) {
       if (obj.game.current_round.responses[i].id === response_id) {
         $rootScope.$apply(function () {
@@ -624,14 +627,18 @@ angular.module('app.services', [])
 })
 
 .factory('Voice', function () {
+  
   return {
     speak: function (text, voice, onend) {
-      responsiveVoice.speak(text, voice, 
-        {
-          onend: onend
+      TTS.speak({
+          text: text,
+          locale: 'en-GB',
+        }, function () {
+          onend();
         }
       );
-    }
+    },
+    ok: Object.keys(ionic.Platform.device()).length
   }
 })
 
