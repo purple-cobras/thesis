@@ -12,10 +12,12 @@
             <div ng-if="auth.isAuthenticated">
                     <div class="list card">
                         <div class="item-thumbnail-left account-info">
-                            <img ng-src={{profile.picUrl}}>
+                            <img class="profile-pic" ng-src={{profile.picUrl}}>
                             <span class="profile name">{{profile.name}}</span>
                             <br>
-                            <span class="profile stats">{{appName}} player since {{profile.createdAt | date:'mediumDate'}}</span>
+                            <span class="profile stats">{{appName}} player since </span>
+                            <br>
+                            <span>{{profile.createdAt | date:'mediumDate'}}</span>
                             <br>
                             <span class="profile stats">{{profile.gamesPlayed}} {{profile.gamesPlayed === "1" ? "game" : "games"}} played with {{profile.gamesWon}} {{profile.gamesWon === "1" ? "win" : "wins"}}</span>
                         </div>
