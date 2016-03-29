@@ -976,13 +976,12 @@ var getNnGuess = function (players, responses) {
   return new Promise(function (res, rej) {
     initiateNn(players)
     .then(function (neuralNetworks) {
-
-      // console.log('!neuralNetworks', neuralNetworks)
       var bestGuess = {
         probability: -1,
         player: null,
         response: null
       };
+      
       players.forEach(function (player) {
         responses.forEach(function (response) {
           var attributes = formatAttributes(response.attributes);
