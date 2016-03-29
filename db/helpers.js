@@ -636,7 +636,7 @@ module.exports.resolveGuess = function (round_id, guess) {
                 .then(function (responses) {
                   models.UserGame.forge({user_id: guess.guesser_id, game_id: round.get('game_id')}).fetch()
                   .then(function (user_game) {
-                    var newRound = responses.models.length === 0 || (responses.models.length === 1 && responses.models[0].get('user_id') === guess.guesser_id);
+                    var newRound = responses.models.length === 0 || (responses.models.length === 1 && ((responses.models[0].get('user_id') === guess.guesser_id) || guess.ai));
                     module.exports.AI()
                     .then(function (ai) {
                       if (newRound && guess.guesser_id !== ai.get('id')) {
@@ -878,7 +878,8 @@ module.exports.makeAIGuess = function (game, round) {
                 module.exports.resolveGuess(round.get('id'), {
                   guesser_id: ai.get('id'),
                   guessee_id: guess.player,
-                  response_id: guess.response
+                  response_id: guess.response,
+                  ai: true
                 });
               });
             });
