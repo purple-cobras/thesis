@@ -1,6 +1,17 @@
-angular.module('app.services', [])
+angular.module('app.services', ['ionic'])
 
-.factory('Game', ['$q', '$http', 'store', 'socket', '$timeout', 'ionicToast', '$rootScope', '$state', '$cordovaNativeAudio', function(
+.factory('Game', 
+  ['$q', 
+  '$http', 
+  'store', 
+  'socket', 
+  '$timeout', 
+  'ionicToast', 
+  '$rootScope', 
+  '$state', 
+  '$cordovaNativeAudio', 
+  'Voice',
+  function(
   $q,
   $http,
   store,
@@ -9,7 +20,8 @@ angular.module('app.services', [])
   ionicToast,
   $rootScope,
   $state,
-  $cordovaNativeAudio
+  $cordovaNativeAudio,
+  Voice
 ){
 
   var obj = {
@@ -392,25 +404,23 @@ angular.module('app.services', [])
         obj.revealResponses(++index);
       } else {
         if (obj.game.voice) {
-          responsiveVoice.speak(response.text, $rootScope.voice, {
-            onend: function () {
-              $http({
-                'url': Config.api + '/responses/reveal',
-                method: 'post',
-                data: {
-                  game_id: obj.game.id,
-                  response_id: response.id
-                }
-              })
-              .then(function (response) {
-                if (response.status === 200) {
-                  $timeout(obj.revealResponses.bind(null, ++index), 675);
-                }
-              })
-              .catch(function (error) {
-                console.log('reveal error: ', error);
-              });
-            }
+          Voice.speak(response.text, $rootScope.voice, function () {
+            $http({
+              'url': Config.api + '/responses/reveal',
+              method: 'post',
+              data: {
+                game_id: obj.game.id,
+                response_id: response.id
+              }
+            })
+            .then(function (response) {
+              if (response.status === 200) {
+                $timeout(obj.revealResponses.bind(null, ++index), 675);
+              }
+            })
+            .catch(function (error) {
+              console.log('reveal error: ', error);
+            });
           });
         } else {
           $http({
@@ -436,11 +446,11 @@ angular.module('app.services', [])
     startReadingResponses: function () {
       obj.revealing = true;
       if (obj.game.voice) {
-        responsiveVoice.speak('Here are the responses for this round. The topic is ' + obj.game.current_round.topic, $rootScope.voice,
-          {
-            onend: obj.revealResponses
-          }
-        );
+        Voice.speak(
+          'Here are the responses for this round. The topic is ' + obj.game.current_round.topic, 
+          $rootScope.voice, 
+          obj.revealResponses
+        );      
       } else {
         obj.revealResponses();
       }
@@ -575,6 +585,9 @@ angular.module('app.services', [])
   });
 
   socket.on('reveal', function (response_id) {
+    if (!obj.game.current_round.responses) {
+      return;
+    }
     for (var i = 0; i < obj.game.current_round.responses.length; i++) {
       if (obj.game.current_round.responses[i].id === response_id) {
         $rootScope.$apply(function () {
@@ -611,6 +624,31 @@ angular.module('app.services', [])
     ioSocket: io_socket
   });
   return socket;
+})
+
+.factory('Voice', function ($ionicPlatform) {
+  if ($ionicPlatform.is('ios') || !window.cordova) {
+    return {
+      speak: function (text, voice, onend) {
+        responsiveVoice.speak(text, voice, {
+          onend: onend
+        })
+      }
+    }
+  } else {
+    return {
+      speak: function (text, voice, onend) {
+        TTS.speak({
+            text: text,
+            locale: 'en-GB',
+          }, function () {
+            onend();
+          }
+        );
+      }
+    }
+  }
+  
 })
 
 .factory('Auth', ['auth', 'store', '$state', 'socket', function(auth, store, $state, socket){
