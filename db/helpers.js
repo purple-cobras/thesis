@@ -921,11 +921,3 @@ module.exports.getSaved = function (user_id) {
     });
   });
 };
-
-module.exports.updateDevice = function (user_id, device_token) {
-  return module.exports.findOrCreate(models.UserDevice, {device_token: device_token})
-  .then(function (device) {
-    device.save({user_id: user_id})
-    return device;
-  });
-};
