@@ -76,7 +76,7 @@ var routes = [
           helpers.getProfile(user.id)
             .then(function (games) {
               if (req.body.device_token) {
-                helpers.findOrCreate(models.UserDevice, {user_id: user.get('id'), device_token: req.body.device_token})
+                helpers.updateDevice(user.get('id'), req.body.device_token)
                 .then(function () {
                   res.json({user: user, games: games});
                 })
