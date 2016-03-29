@@ -403,7 +403,7 @@ angular.module('app.services', ['ionic'])
       if (response.revealed) {
         obj.revealResponses(++index);
       } else {
-        if (obj.game.voice && Voice.ok) {
+        if (obj.game.voice) {
           Voice.speak(response.text, $rootScope.voice, function () {
             $http({
               'url': Config.api + '/responses/reveal',
@@ -445,7 +445,7 @@ angular.module('app.services', ['ionic'])
 
     startReadingResponses: function () {
       obj.revealing = true;
-      if (obj.game.voice && Voice.ok) {
+      if (obj.game.voice) {
         Voice.speak(
           'Here are the responses for this round. The topic is ' + obj.game.current_round.topic, 
           $rootScope.voice, 
@@ -626,20 +626,29 @@ angular.module('app.services', ['ionic'])
   return socket;
 })
 
-.factory('Voice', function () {
-  
-  return {
-    speak: function (text, voice, onend) {
-      TTS.speak({
-          text: text,
-          locale: 'en-GB',
-        }, function () {
-          onend();
-        }
-      );
-    },
-    ok: Object.keys(ionic.Platform.device()).length
+.factory('Voice', function ($ionicPlatform) {
+  if ($ionicPlatform.is('ios') || !window.cordova) {
+    return {
+      speak: function (text, voice, onend) {
+        responsiveVoice.speak(text, voice, {
+          onend: onend
+        })
+      }
+    }
+  } else {
+    return {
+      speak: function (text, voice, onend) {
+        TTS.speak({
+            text: text,
+            locale: 'en-GB',
+          }, function () {
+            onend();
+          }
+        );
+      }
+    }
   }
+  
 })
 
 .factory('Auth', ['auth', 'store', '$state', 'socket', function(auth, store, $state, socket){
