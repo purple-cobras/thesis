@@ -863,7 +863,6 @@ module.exports.makeAIGuess = function (game, round) {
         }
         playerCount++;
         if (playerCount === players.length) {
-          console.log('remainingPlayers:', remainingPlayers.length)
           module.exports.AI()
           .then(function (ai) {
             models.Response.query({
@@ -992,13 +991,11 @@ var getNnGuess = function (players, responses) {
             response: response.attributes.id
           };
 
-          console.log('possible guess:', guess, ' text: ', response.attributes.text);
           if (guess.probability > bestGuess.probability) {
             bestGuess = guess;
           }
         });
       });
-      console.log('bestGuess:', bestGuess);
       res(bestGuess);
     })
     .catch(function (error) {
