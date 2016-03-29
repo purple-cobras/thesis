@@ -12,7 +12,8 @@ var sound = 'default';
 
 var options = {
   cert: path.resolve('push/cert.pem'),
-  key: path.resolve('push/key.pem')
+  key: path.resolve('push/key.pem'),
+  production: false
 };
 var apnConnection = new apn.Connection(options);
 
