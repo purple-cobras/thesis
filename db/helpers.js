@@ -120,16 +120,16 @@ module.exports.inviteFriends = function (game, friends, my_id) {
       .then(function (userGame) {
         socket.inviteFriend(friend.id);
         if (++inviteCount === friends.length) {
-            res(game);
-            if (game.get('ai')) {
-              module.exports.AI()
-              .then(function (ai) {
-                module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: 9, invite: 1})
-                .then(function (model) {
-                  socket.inviteResult(null, true, game);
-                });
+          res(game);
+          if (game.get('ai')) {
+            module.exports.AI()
+            .then(function (ai) {
+              module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: 9, invite: 1})
+              .then(function (model) {
+                socket.inviteResult(null, true, game);
               });
-            } 
+            });
+          } 
         }
       })
       .catch(function (error) {
