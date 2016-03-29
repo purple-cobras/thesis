@@ -88,12 +88,9 @@ module.exports.createGame = function (data, my_fb_id) {
           .then(function (user) {
             user.save({current_game_id: game.get('id')})
             .then(function (game) {
-              models.User.forge({id: user.get('id')}).fetch()
-              .then(function (sameUser) {
-                res(game);
-              })
-            })
-          })
+              res(game);
+            });
+          });
         });
       })
       .catch(function (error) {
@@ -120,16 +117,16 @@ module.exports.inviteFriends = function (game, friends, my_id) {
       .then(function (userGame) {
         socket.inviteFriend(friend.id);
         if (++inviteCount === friends.length) {
-          res(game);
-          if (game.get('ai')) {
-            module.exports.AI()
-            .then(function (ai) {
-              module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: 9, invite: 1})
-              .then(function (model) {
-                socket.inviteResult(null, true, game);
+            res(game);
+            if (game.get('ai')) {
+              module.exports.AI()
+              .then(function (ai) {
+                module.exports.findOrCreate(models.UserGame, {game_id: game.id, user_id: ai.get('id'), invite: 1})
+                .then(function (model) {
+                  socket.inviteResult(null, true, game);
+                });
               });
-            });
-          } 
+            } 
         }
       })
       .catch(function (error) {
@@ -922,5 +919,13 @@ module.exports.getSaved = function (user_id) {
     .catch(function (error) {
       rej(error);
     });
+  });
+};
+
+module.exports.updateDevice = function (user_id, device_token) {
+  return module.exports.findOrCreate(models.UserDevice, {device_token: device_token})
+  .then(function (device) {
+    device.save({user_id: user_id})
+    return device;
   });
 };
