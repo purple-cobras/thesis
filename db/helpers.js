@@ -125,7 +125,7 @@ module.exports.inviteFriends = function (game, friends, my_id) {
               .then(function (model) {
                 setTimeout(function () {
                   socket.inviteResult(null, true, game);
-                }, 10000);
+                }, 5000);
               });
             });
           } 
