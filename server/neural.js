@@ -19,7 +19,7 @@ var PlayerNn = function (player) {
 };
 
 PlayerNn.prototype.train = function (trainingSet) {
-	this.trainer.train(trainingSet);
+	this.trainer.train(trainingSet, {iterations: 50000});
 	console.log('Returning trained NN for player #', this.player);
 	return this.network;
 };
