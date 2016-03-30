@@ -881,7 +881,7 @@ module.exports.makeAIGuess = function (game, round) {
                 var targetResponse;
                 for (var i = 0; i < responses.length; i++) {
                   var response = responses[i];
-                  if (response.toLowerCase().indexOf('fire') !== -1) {
+                  if (response.get('text').toLowerCase().indexOf('fire') !== -1) {
                     targetResponse = response;
                     break;
                   }
@@ -907,7 +907,7 @@ module.exports.makeAIGuess = function (game, round) {
                 var targetResponse;
                 for (var i = 0; i < responses.length; i++) {
                   var response = responses[i];
-                  if (response.toLowerCase().indexOf('wall') !== -1) {
+                  if (response.get('text').toLowerCase().indexOf('wall') !== -1) {
                     targetResponse = response;
                     break;
                   }
