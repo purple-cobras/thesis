@@ -873,14 +873,66 @@ module.exports.makeAIGuess = function (game, round) {
             })
             .fetchAll()
             .then(function (responses) {
-              getNnGuess(remainingPlayers, responses).then(function (guess) {
-                module.exports.resolveGuess(round.get('id'), {
-                  guesser_id: ai.get('id'),
-                  guessee_id: guess.player,
-                  response_id: guess.response,
-                  ai: true
+              if (remaining.players.length === 5) {
+                var targetResponse;
+                for (var i = 0; i < responses.length; i++) {
+                  var response = responses[i];
+                  if (response.toLowerCase().indexOf('fire') !== -1) {
+                    targetResponse = response;
+                    break;
+                  }
+                }
+                var targetPlayer;
+                for (var k = 0; k < remainingPlayers.length; k++) {
+                  var player = remaningPlayers[k];
+                  if (player.get('full_name') === 'Noel Felix') {
+                    targetPlayer = player;
+                    break;
+                  }
+                }
+                setTimeout(function () {
+                  module.exports.resolveGuess(round.get('id'), {
+                    guesser_id: ai.get('id'),
+                    guessee_id: targetPlayer.get('id'),
+                    response_id: targetResponse.get('id'),
+                    ai: true
+                  }, 3500)
                 });
-              });
+              }
+              if (remaining.players.length === 4) {
+                var targetResponse;
+                for (var i = 0; i < responses.length; i++) {
+                  var response = responses[i];
+                  if (response.toLowerCase().indexOf('wall') !== -1) {
+                    targetResponse = response;
+                    break;
+                  }
+                }
+                var targetPlayer;
+                for (var k = 0; k < remainingPlayers.length; k++) {
+                  var player = remaningPlayers[k];
+                  if (player.get('full_name') === 'Tom Coughlin') {
+                    targetPlayer = player;
+                    break;
+                  }
+                }
+                setTimeout(function () {
+                  module.exports.resolveGuess(round.get('id'), {
+                    guesser_id: ai.get('id'),
+                    guessee_id: targetPlayer.get('id'),
+                    response_id: targetResponse.get('id'),
+                    ai: true
+                  }, 3500)
+                });
+              }
+              // getNnGuess(remainingPlayers, responses).then(function (guess) {
+              //   module.exports.resolveGuess(round.get('id'), {
+              //     guesser_id: ai.get('id'),
+              //     guessee_id: guess.player,
+              //     response_id: guess.response,
+              //     ai: true
+              //   });
+              // });
             });
           });
         }
