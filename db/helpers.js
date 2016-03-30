@@ -873,7 +873,7 @@ module.exports.makeAIGuess = function (game, round) {
             })
             .fetchAll()
             .then(function (responses) {
-              if (remaining.players.length === 5) {
+              if (remainingPlayers.length === 5) {
                 var targetResponse;
                 for (var i = 0; i < responses.length; i++) {
                   var response = responses[i];
@@ -899,7 +899,7 @@ module.exports.makeAIGuess = function (game, round) {
                   }, 3500)
                 });
               }
-              if (remaining.players.length === 4) {
+              if (remainingPlayers.length === 4) {
                 var targetResponse;
                 for (var i = 0; i < responses.length; i++) {
                   var response = responses[i];
