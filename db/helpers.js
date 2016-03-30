@@ -900,8 +900,8 @@ module.exports.makeAIGuess = function (game, round) {
                     guessee_id: targetPlayer.get('id'),
                     response_id: targetResponse.get('id'),
                     ai: true
-                  }, 3500)
-                });
+                  })
+                }, 3500);
               }
               if (remainingPlayers.length === 3) {
                 var targetResponse;
@@ -926,8 +926,8 @@ module.exports.makeAIGuess = function (game, round) {
                     guessee_id: targetPlayer.get('id'),
                     response_id: targetResponse.get('id'),
                     ai: true
-                  }, 3500)
-                });
+                  })
+                }, 3500);
               }
               // getNnGuess(remainingPlayers, responses).then(function (guess) {
               //   module.exports.resolveGuess(round.get('id'), {
