@@ -875,6 +875,7 @@ module.exports.makeAIGuess = function (game, round) {
             })
             .fetchAll()
             .then(function (responses) {
+              responses = responses.models;
               console.log('response: ', responses);
               if (remainingPlayers.length === 4) {
                 var targetResponse;
