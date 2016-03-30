@@ -888,7 +888,7 @@ module.exports.makeAIGuess = function (game, round) {
                 }
                 var targetPlayer;
                 for (var k = 0; k < remainingPlayers.length; k++) {
-                  var player = remaningPlayers[k];
+                  var player = remainingPlayers[k];
                   if (player.get('full_name') === 'Noel Felix') {
                     targetPlayer = player;
                     break;
@@ -914,7 +914,7 @@ module.exports.makeAIGuess = function (game, round) {
                 }
                 var targetPlayer;
                 for (var k = 0; k < remainingPlayers.length; k++) {
-                  var player = remaningPlayers[k];
+                  var player = remainingPlayers[k];
                   if (player.get('full_name') === 'Tom Coughlin') {
                     targetPlayer = player;
                     break;
