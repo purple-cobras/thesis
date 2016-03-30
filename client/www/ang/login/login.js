@@ -102,6 +102,10 @@ angular.module('app.login', [])
     socket.emit('establish', {
       id: store.get('remote_id')
     });
+    var game_id = store.get('current_game_id');
+    if (game_id) {
+      socket.emit('room', game_id);
+    }
   };
 
   if (auth.isAuthenticated) {
