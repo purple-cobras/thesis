@@ -875,68 +875,14 @@ module.exports.makeAIGuess = function (game, round) {
             })
             .fetchAll()
             .then(function (responses) {
-              responses = responses.models;
-              console.log('response: ', responses);
-              if (remainingPlayers.length === 4) {
-                var targetResponse;
-                for (var i = 0; i < responses.length; i++) {
-                  var response = responses[i];
-                  if (response.get('text').toLowerCase().indexOf('fire') !== -1) {
-                    targetResponse = response;
-                    break;
-                  }
-                }
-                var targetPlayer;
-                for (var k = 0; k < remainingPlayers.length; k++) {
-                  var player = remainingPlayers[k];
-                  if (player.get('full_name') === 'Noel Felix') {
-                    targetPlayer = player;
-                    break;
-                  }
-                }
-                setTimeout(function () {
-                  module.exports.resolveGuess(round.get('id'), {
-                    guesser_id: ai.get('id'),
-                    guessee_id: targetPlayer.get('id'),
-                    response_id: targetResponse.get('id'),
-                    ai: true
-                  })
-                }, 3500);
-              }
-              if (remainingPlayers.length === 3) {
-                var targetResponse;
-                for (var i = 0; i < responses.length; i++) {
-                  var response = responses[i];
-                  if (response.get('text').toLowerCase().indexOf('wall') !== -1) {
-                    targetResponse = response;
-                    break;
-                  }
-                }
-                var targetPlayer;
-                for (var k = 0; k < remainingPlayers.length; k++) {
-                  var player = remainingPlayers[k];
-                  if (player.get('full_name') === 'Tom Coughlin') {
-                    targetPlayer = player;
-                    break;
-                  }
-                }
-                setTimeout(function () {
-                  module.exports.resolveGuess(round.get('id'), {
-                    guesser_id: ai.get('id'),
-                    guessee_id: targetPlayer.get('id'),
-                    response_id: targetResponse.get('id'),
-                    ai: true
-                  })
-                }, 3500);
-              }
-              // getNnGuess(remainingPlayers, responses).then(function (guess) {
-              //   module.exports.resolveGuess(round.get('id'), {
-              //     guesser_id: ai.get('id'),
-              //     guessee_id: guess.player,
-              //     response_id: guess.response,
-              //     ai: true
-              //   });
-              // });
+              getNnGuess(remainingPlayers, responses).then(function (guess) {
+                module.exports.resolveGuess(round.get('id'), {
+                  guesser_id: ai.get('id'),
+                  guessee_id: guess.player,
+                  response_id: guess.response,
+                  ai: true
+                });
+              });
             });
           });
         }
@@ -951,7 +897,10 @@ var getPlayerResponses = function (player) {
     return db.knex
     .select()
     .from('responses')
-    .where('user_id', player.id)
+    .where({ 
+      'user_id': player.id,
+      'revealed': true
+    })
     .orderBy('id', 'desc')
     .then(function (responses) {
       res(responses);
