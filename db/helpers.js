@@ -63,9 +63,9 @@ module.exports.getFriends = function (ids_obj, my_fb_id) {
           })
           .catch(function (error) {
             console.log(error);
-          })
+          });
         }
-      })
+      });
     });
   });
 };
@@ -95,7 +95,7 @@ module.exports.createGame = function (data, my_fb_id) {
       })
       .catch(function (error) {
         rej(error);
-      })
+      });
     });
   });
 
@@ -128,7 +128,7 @@ module.exports.inviteFriends = function (game, friends, my_id) {
                 }, 5000);
               });
             });
-          } 
+          }
         }
       })
       .catch(function (error) {
@@ -176,7 +176,7 @@ module.exports.getInvites = function (user_fb) {
             res(results);
           })
           .catch(function (error) {
-            console.log(error)
+            console.log(error);
             rej(error);
           });
         });
@@ -222,9 +222,9 @@ module.exports.resolveInvite = function (user_fb, invitation, accepted) {
                 .then(function (creator) {
                   creator.set('current_game_id', null).save();
                   socket.nobodyLikesYou(creator.attributes.id);
-                })
+                });
               }
-            })
+            });
           });
         }
         module.exports.getPlayers(invitation.id)
@@ -331,7 +331,7 @@ module.exports.getPlayers = function (game_id) {
       rej(error);
     });
   });
-}
+};
 
 module.exports.startGame = function (game_id) {
   return new Promise(function (res, rej) {
@@ -368,7 +368,7 @@ module.exports.startGame = function (game_id) {
     .catch(function (error) {
       console.log(error);
       rej(error);
-    })
+    });
   });
 };
 
@@ -395,7 +395,7 @@ module.exports.startRound = function (game_id, reader_id) {
     })
     .catch(function (error) {
       rej(error);
-    })
+    });
   });
 };
 
@@ -407,11 +407,11 @@ module.exports.setTopic = function (round_id, topic, save) {
       .then(function () {
         socket.newTopic(round, topic);
         res();
-      })
+      });
     })
     .catch(function (error) {
       rej(error);
-    })
+    });
   });
 };
 
@@ -447,20 +447,20 @@ module.exports.saveResponse = function (round_id, response, user_id) {
             })
             .catch(function(error) {
               rej(error);
-            })
+            });
           })
           .catch(function(error) {
             rej(error);
-          })
+          });
         })
         .catch(function(error) {
           rej(error);
-        })
+        });
       }
     })
     .catch(function (error) {
       rej(error);
-    })
+    });
   });
 };
 
@@ -534,7 +534,7 @@ module.exports.setGuesser = function (game_id, players, round) {
               }
               res();
             });
-          })
+          });
         })
         .catch(function (error) {
           console.log('guess', error);
@@ -589,7 +589,7 @@ module.exports.setReader = function (game_id, current_round_id, players) {
       });
     });
   });
-}
+};
 
 module.exports.winGame = function (game, user_id) {
   return new Promise(function (res, rej) {
@@ -612,8 +612,8 @@ module.exports.winGame = function (game, user_id) {
     })
     .catch(function (error) {
       rej(error);
-    })
-  })
+    });
+  });
 };
 
 module.exports.resolveGuess = function (round_id, guess) {
@@ -656,7 +656,7 @@ module.exports.resolveGuess = function (round_id, guess) {
                             .then(function () {
                               socket.newGuess(round, {result: correct, details: guess, newRound: newRound, won: true});
                               res(correct);
-                            })
+                            });
                           } else {
                             socket.newGuess(round, {result: correct, details: guess, newRound: newRound});
                             if (newRound) {
@@ -682,7 +682,7 @@ module.exports.resolveGuess = function (round_id, guess) {
                           }
                         });
                       });
-                    })
+                    });
                   });
                 });
               });
@@ -703,7 +703,7 @@ module.exports.resolveGuess = function (round_id, guess) {
     .catch(function (error) {
       console.log(error);
       rej(error);
-    })
+    });
   });
 };
 
@@ -740,7 +740,7 @@ module.exports.revealResponse = function (game_id, response_id) {
     })
     .catch(function (error) {
       rej(error);
-    })
+    });
   });
 };
 
@@ -787,11 +787,11 @@ module.exports.getProfile = function (user_id) {
       })
       .catch(function (error) {
         reject(error);
-      })
+      });
     })
     .catch(function (error) {
       reject(error);
-    })
+    });
   });
 };
 
@@ -815,7 +815,7 @@ module.exports.alchemizeResponse = function (response) {
         rej(error);
       }
     });
-  })
+  });
 };
 
 var alchemyToCols = function (response, body) {
@@ -897,7 +897,7 @@ var getPlayerResponses = function (player) {
     return db.knex
     .select()
     .from('responses')
-    .where({ 
+    .where({
       'user_id': player.id
     })
     .orderBy('id', 'desc')
@@ -906,7 +906,7 @@ var getPlayerResponses = function (player) {
     })
     .catch(function (error) {
       console.log('getPlayerResponses error:', error);
-    })
+    });
   });
 };
 
@@ -938,7 +938,7 @@ var createTrainingData = function (players, sampleSize) {
       res(attributes);
     })
     .catch(function (error) {
-      console.log('createTrainingData error:', error)
+      console.log('createTrainingData error:', error);
     });
   });
 };
@@ -953,11 +953,11 @@ var formatAttributes = function (response) {
     'family_and_parenting', 'finance', 'food_and_drink', 'health_and_fitness',
     'hobbies_and_interests', 'home_and_garden', 'law_govt_and_politics', 'news',
     'pets', 'real_estate', 'religion_and_spirituality', 'science', 'shopping',
-    'society', 'sports', 'style_and_fashion', 'technology_and_computing', 'travel' 
+    'society', 'sports', 'style_and_fashion', 'technology_and_computing', 'travel'
     ];
   var adjustedSentiment = ((1 + Number(response.sentiment)) / 2).toFixed(2);
 
-  attributes.push(Number(adjustedSentiment)); 
+  attributes.push(Number(adjustedSentiment));
   alchemyAttributes.forEach(function (attr) {
     attributes.push(Number(response[attr]));
   });
@@ -988,7 +988,7 @@ var getNnGuess = function (players, responses) {
         player: null,
         response: null
       };
-      
+
       players.forEach(function (player) {
         responses.forEach(function (response) {
           var attributes = formatAttributes(response.attributes);
@@ -1008,8 +1008,8 @@ var getNnGuess = function (players, responses) {
     })
     .catch(function (error) {
       console.log('getNnGuess error:', error);
-    })
-    
+    });
+
   });
   return greatest;
 };
@@ -1029,7 +1029,7 @@ module.exports.getSaved = function (user_id) {
       qb.where('topic_saved', true)
       .where('reader_id', user_id)
       .limit(50)
-      .orderBy('id', 'desc')
+      .orderBy('id', 'desc');
     }).fetchAll()
     .then(function (mine) {
       models.Round.query(function (qb) {
@@ -1054,7 +1054,7 @@ module.exports.getSaved = function (user_id) {
 module.exports.updateDevice = function (user_id, device_token) {
   return module.exports.findOrCreate(models.UserDevice, {device_token: device_token})
   .then(function (device) {
-    device.save({user_id: user_id})
+    device.save({user_id: user_id});
     return device;
   });
 };

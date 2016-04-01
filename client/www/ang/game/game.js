@@ -39,11 +39,11 @@ angular.module('app.game', [])
 
   $scope.adjust_min_players = function () {
     $scope.min_players = $scope.Game.game.ai ? $scope.min_players + 1 : $scope.min_players;
-  }
+  };
 
   $scope.toggleTypingTopic = function (val) {
     $scope.typingTopic = val;
-  }
+  };
 
   $scope.back = function () {
     var history = $ionicHistory.viewHistory();
@@ -181,7 +181,7 @@ angular.module('app.game', [])
   $scope.toggleSave = function () {
     $scope.saveTopic = !$scope.saveTopic;
     return $scope.saveTopic ? "" : "not ";
-  }
+  };
 
   $scope.getUsersTopics = function () {
     var template =
@@ -209,12 +209,12 @@ angular.module('app.game', [])
     });
 
     $scope.modal.show();
-  }
+  };
 
   $scope.getRandomTopic = function () {
     if (!$scope.Game.saved_topics.is_empty) {
       $scope.Game.topic = $scope.Game.saved_topics.all[Math.floor(Math.random() * $scope.Game.saved_topics.all.length)].topic;
     }
-  }
+  };
 
 });

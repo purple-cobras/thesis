@@ -14,7 +14,7 @@ var base_url = 'http://gateway-a.watsonplatform.net/calls/text/TextGetCombinedDa
 var alchemy = function (text, options) {
   url = '';
   url += '?apikey=' + api_key;
-  url += '&extract='
+  url += '&extract=';
   features.forEach(function(feature, index) {
     var comma = index === features.length - 1 ? '' : ',';
     url += encodeURIComponent(feature) + comma;
@@ -32,7 +32,7 @@ var alchemy = function (text, options) {
         options.success(response, JSON.parse(body));
       }
     }
-  })
+  });
 };
 
 module.exports = alchemy;

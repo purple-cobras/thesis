@@ -124,7 +124,7 @@ angular.module('app',
     } else {
       return idToken;
     }
-  }
+  };
 
   $httpProvider.interceptors.push('jwtInterceptor');
 })

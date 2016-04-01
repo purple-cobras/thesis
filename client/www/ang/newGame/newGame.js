@@ -16,7 +16,9 @@ angular.module('app.newGame', [])
 
   $scope.invitedOnly = false;
 
-  $scope.search = {friend: ''}
+  $scope.search = {
+    friend: ''
+  };
 
   $scope.toggleInvite = function (friend, $event) {
     if($scope.inviting[friend.id]){
@@ -83,12 +85,12 @@ angular.module('app.newGame', [])
       }
     })
     .catch(function (error) {
-      console.dir(error)
+      console.dir(error);
         console.log('error', error);
     })
     .finally(function () {
       $scope.isDisabled = false;
-    })
+    });
   };
 
   $scope.searchBlur = function () {

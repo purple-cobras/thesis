@@ -47,7 +47,7 @@ var routes = [
       .catch(function (error) {
         console.log('get users error:', error);
         res.sendStatus(500);
-      })
+      });
     }
   },
   {
@@ -73,12 +73,12 @@ var routes = [
                 helpers.updateDevice(user.get('id'), req.body.device_token)
                 .then(function () {
                   res.json({user: user, games: games});
-                })
+                });
               } else {
-                res.json({user: user, games: games});                
+                res.json({user: user, games: games});
               }
-            })
-        })
+            });
+        });
       })
       .catch(function (error) {
         console.log('errored');
@@ -94,12 +94,12 @@ var routes = [
       data.friends[my_fb_id] = true;
       helpers.createGame(data, my_fb_id)
       .then(function (game) {
-        res.json({game: game})
+        res.json({game: game});
       })
       .catch(function(error) {
         res.status(500);
         res.json({error: error});
-      })
+      });
     }
   },
   {
@@ -110,9 +110,9 @@ var routes = [
         res.json({results: result});
       })
       .catch(function (error) {
-        res.status(500)
+        res.status(500);
         res.send({error: error});
-      })
+      });
     }
   },
   {
@@ -125,7 +125,7 @@ var routes = [
       .catch(function (error) {
         res.status(500);
         res.json({error: error});
-      })
+      });
     }
   },
   {
@@ -137,9 +137,9 @@ var routes = [
       })
       .catch(function (error) {
         res.status(500);
-        console.log('Error in "/rounds/:id/response" path')
+        console.log('Error in "/rounds/:id/response" path');
         res.json({error: error});
-      })
+      });
     }
   },
   {
@@ -152,7 +152,7 @@ var routes = [
       .catch(function (error) {
         res.status(500);
         res.json({error: error});
-      })
+      });
     }
   },
   {
@@ -165,7 +165,7 @@ var routes = [
       .catch(function (error) {
         res.status(500);
         res.json({error: error});
-      })
+      });
     },
     post: function (req, res) {
       helpers.resolveInvite(req.user.sub.split('|')[1], req.body.invitation, req.body.accept)
@@ -175,7 +175,7 @@ var routes = [
       .catch(function (error) {
         res.status(500);
         res.json({error: error});
-      })
+      });
     }
   },
   {
@@ -202,7 +202,7 @@ var routes = [
       .catch(function (error) {
         res.status(500);
         res.json({error: error});
-      })
+      });
     }
   }
 ];

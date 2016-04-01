@@ -1,15 +1,15 @@
 angular.module('app.services', ['ionic'])
 
-.factory('Game', 
-  ['$q', 
-  '$http', 
-  'store', 
-  'socket', 
-  '$timeout', 
-  'ionicToast', 
-  '$rootScope', 
-  '$state', 
-  '$cordovaNativeAudio', 
+.factory('Game',
+  ['$q',
+  '$http',
+  'store',
+  'socket',
+  '$timeout',
+  'ionicToast',
+  '$rootScope',
+  '$state',
+  '$cordovaNativeAudio',
   'Voice',
   function(
   $q,
@@ -119,7 +119,7 @@ angular.module('app.services', ['ionic'])
       })
       .catch(function (error) {
         console.log('check game error', error);
-      })
+      });
     },
 
     getGame: function () {
@@ -176,7 +176,7 @@ angular.module('app.services', ['ionic'])
       })
       .catch(function (error) {
         return error;
-      })
+      });
     },
 
     resetGame: function () {
@@ -447,10 +447,10 @@ angular.module('app.services', ['ionic'])
       obj.revealing = true;
       if (obj.game.voice) {
         Voice.speak(
-          'Here are the responses for this round. The topic is ' + obj.game.current_round.topic, 
-          $rootScope.voice, 
+          'Here are the responses for this round. The topic is ' + obj.game.current_round.topic,
+          $rootScope.voice,
           obj.revealResponses
-        );      
+        );
       } else {
         obj.revealResponses();
       }
@@ -564,11 +564,11 @@ angular.module('app.services', ['ionic'])
         guesser.score = guesser.score + 1;
       }
     }
-    var result = guess.result ? 'Correct!' : 'Wrong!'
+    var result = guess.result ? 'Correct!' : 'Wrong!';
     if (guess.won) {
       obj.game.winner = guesser;
       obj.game.completed = true;
-      result = 'Game Over!'
+      result = 'Game Over!';
     }
     var guess_message = guesser.full_name + ' guessed "' + guessedResponse.text + '" was written by ' + guessee.full_name + '. ' + result;
     ionicToast.show(guess_message, 'top', false, 2500);
@@ -632,9 +632,9 @@ angular.module('app.services', ['ionic'])
       speak: function (text, voice, onend) {
         responsiveVoice.speak(text, voice, {
           onend: onend
-        })
+        });
       }
-    }
+    };
   } else {
     var rate = 1.0;
     if ($ionicPlatform.is('ios')) {
@@ -651,9 +651,9 @@ angular.module('app.services', ['ionic'])
           }
         );
       }
-    }
+    };
   }
-  
+
 })
 
 .factory('Auth', ['auth', 'store', '$state', 'socket', function(auth, store, $state, socket){
