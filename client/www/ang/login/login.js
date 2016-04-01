@@ -74,7 +74,7 @@ angular.module('app.login', [])
         }
         store.set('pic_url', response.data.url);
       }
-    )
+    );
   };
 
   var setProfile = function () {
@@ -96,7 +96,7 @@ angular.module('app.login', [])
       gamesPlayed: '',
       createdAt: ''
     };
-  }
+  };
 
   var establish = function () {
     socket.emit('establish', {
@@ -116,7 +116,7 @@ angular.module('app.login', [])
     });
     $ionicHistory.nextViewOptions({
       disableAnimate: true
-    })
+    });
     $state.go('main');
   }
 

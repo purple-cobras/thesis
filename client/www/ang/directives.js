@@ -19,7 +19,7 @@ angular.module('app.directives', [])
       );
 
     }
-  }
+  };
 })
 
 .directive('selectOnClick', ['$window', function ($window) {
@@ -29,7 +29,7 @@ angular.module('app.directives', [])
       element.on('click', function () {
           if (!$window.getSelection().toString()) {
               // Required for mobile Safari
-              this.setSelectionRange(0, this.value.length)
+              this.setSelectionRange(0, this.value.length);
           }
       });
     }
@@ -59,11 +59,11 @@ angular.module('app.directives', [])
                 type: 'button button-block button-calm'
               }
             ]
-          })
+          });
         }
       });
     }
-  }
+  };
 })
 
 .directive('optionDisplay', function () {
@@ -84,7 +84,7 @@ angular.module('app.directives', [])
         }
       });
     }
-  }
+  };
 })
 
 .directive('topicOptions', function ($ionicPopup, ionicToast) {
@@ -124,8 +124,8 @@ angular.module('app.directives', [])
               type: 'button button-block button-calm'
             }
           ]
-        })
+        });
       });
     }
-  }
+  };
 });

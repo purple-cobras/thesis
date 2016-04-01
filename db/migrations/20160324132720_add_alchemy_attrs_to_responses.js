@@ -38,7 +38,7 @@ exports.up = function(knex, Promise) {
 
       cols.forEach(function(col) {
         response.decimal(col).defaultsTo(0);
-      })
+      });
       console.log('added alchemy columns to responses');
     })
   ]);
@@ -49,7 +49,7 @@ exports.down = function(knex, Promise) {
     knex.schema.table('responses', function (response) {
       cols.forEach(function (col) {
         response.dropColumn(col);
-      })
+      });
       console.log('removed alchemy columns from responses');
     })
   ]);

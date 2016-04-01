@@ -118,7 +118,7 @@ module.exports.init = function(server){
       models.Game.forge({id: game_id}).fetch({withRelated: ['rounds']})
       .then(function (game) {
         if (game.relations.rounds.length > 1) {
-          push.game(game_id, 'The next round is beginning!');          
+          push.game(game_id, 'The next round is beginning!');
         }
       });
     };
@@ -140,8 +140,8 @@ module.exports.init = function(server){
         models.Game.forge({id: round.attributes.game_id}).fetch()
         .then(function (game) {
           io.sockets.in('game:' + game.attributes.id).emit('response', response);
-        })
-      })
+        });
+      });
     };
 
     module.exports.newGuesser = function (game_id, player) {

@@ -1,4 +1,4 @@
-angular.module('app.routes', 
+angular.module('app.routes',
   [
     'auth0',
     'angular-storage',
@@ -13,8 +13,8 @@ angular.module('app.routes',
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-    
-  
+
+
   .state('login', {
     url: '/login',
     templateUrl: 'ang/login/login.html',
@@ -40,7 +40,7 @@ angular.module('app.routes',
     templateUrl: 'ang/game/game.html',
     controller: 'gameCtrl',
     block: true
-  })
+  });
 
 $urlRouterProvider.otherwise('/login');
 
