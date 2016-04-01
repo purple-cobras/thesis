@@ -898,8 +898,7 @@ var getPlayerResponses = function (player) {
     .select()
     .from('responses')
     .where({ 
-      'user_id': player.id,
-      'revealed': true
+      'user_id': player.id
     })
     .orderBy('id', 'desc')
     .then(function (responses) {
@@ -928,7 +927,10 @@ var createTrainingData = function (players, sampleSize) {
     Promise.all(allResponses)
     .then(function (allResponses) {
       allResponses.forEach(function (playerResponses) {
-        for (var i = 0; i < sampleSize && i < playerResponses.length; i++) {
+        // For each array of player responses, index 0 is the current round's response.
+        // Starting at index 1 prevents unguessed responses in current round from being
+        // used as training data.
+        for (var i = 1; i < sampleSize && i < playerResponses.length; i++) {
           var response = playerResponses[i];
           attributes[response.user_id].push(formatAttributes(response));
         }
