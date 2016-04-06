@@ -11,7 +11,7 @@
         <ion-content>
         <div class="box">
           <h1 class="instruction-title">{{instruction.title}}</h1>
-          <p class="instruction-body">{{instruction.body}}</p>
+          <p class="instruction-body" ng-bind-html="instruction.body"></p>
           <div class="row">
             <div class="col text-center">
               <i class="icon instruction-icon {{instruction.icon}}"></i>

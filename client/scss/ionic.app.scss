@@ -213,7 +213,7 @@ and (max-device-width : 480px) {
 
 .platform-android {
   .buttons + .title.title-left.header-item {
-    margin-left: 20px;
+    margin-left: 25px;
   }
 }
 
@@ -641,11 +641,18 @@ $rotate: 2.0deg;
   font-size: 1.2em;
   margin-top: 50px;
   padding: 10px;
+  line-height: 1.3em;
+}
+
+.instruction-title {
+  color: $energized!important;
+  font-weight: bold;
 }
 
 .instruction-icon {
   font-size: 10em;
   width: 100vh!important;
+  color: $energized!important;
 }
 
 
