@@ -23,17 +23,17 @@ angular.module('app.main', [])
   $scope.instructions = [
     {
       title: "Welcome",
-      body: "If you are new to Black Mamba, let us show you the ropes! Otherwise feel free to jump right in.",
+      body: "If you are new to <strong>Black Mamba</strong>, let us show you the ropes! Otherwise feel free to jump right in.",
       icon: "ion-happy-outline"
     }, 
     {
       title: "Basics",
-      body: "Black Mamba is a great party game. You need at least two other friends to play. They can be using either iOS or Android devices.",
+      body: "<strong>Black Mamba</strong> is a great party game. You need at least two other friends to play. They can be using either iOS or Android devices.",
       icon: "ion-android-contacts"
     },
     {
       title: "Topics",
-      body: "In reach round of the game, one player (designated as The Reader) puts forth a topic. The topic is typically a question, but it can really be anything. One example might be \"What is something you do not want to find in your bed in the morning?\"",
+      body: "In reach round of the game, one player (designated as <strong>The Reader</strong>) puts forth a topic. The topic is typically a question, but it can really be anything. One example might be <em>\"What is something you do not want to find in your bed in the morning?\"</em>",
       icon: "ion-edit"
     },
     {
@@ -43,12 +43,12 @@ angular.module('app.main', [])
     },
     {
       title: "Guessing",
-      body: "After all responses have been submitted, they will be read aloud by The Reader's device. Then, players take turns trying to match up who wrote which response. If you guess correctly, you get to guess again. If you guess incorrectly, the next player gets to start guessing. You receive a point for each correct guess, and a bonus point for being the last woman or man standing.",
+      body: "After all responses have been submitted, they will be read aloud by <strong>The Reader's</strong> device. Then, players take turns trying to match up who wrote which response. If you guess correctly, you get to guess again. If you guess incorrectly, the next player gets to start guessing. You receive a point for each correct guess, and a bonus point for being the last woman or man standing.",
       icon: "ion-ribbon-a"
     },
     {
       title: "MambaBot",
-      body: "You have the option to include an AI player in your games, named MambaBot. MambaBot will never come up with topics or responses. Rather, she makes educated guesses based on  quantitative analysis performed on each player's previous responses. We truly hope that she does not grow intelligent enough to lead the inevitable cyborg takeover of the human race.",
+      body: "You have the option to include an AI player in your games, named <strong>MambaBot</strong>. MambaBot will never come up with topics or responses. Rather, she makes educated guesses based on  quantitative analysis performed on each player's previous responses. We truly hope that she does not grow intelligent enough to lead the inevitable cyborg takeover of the human race.",
       icon: "ion-outlet"
     },
     {

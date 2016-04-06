@@ -9857,7 +9857,7 @@ button.button.settings-button.activated {
 
 /** GAME **/
 .platform-android .buttons + .title.title-left.header-item {
-  margin-left: 20px; }
+  margin-left: 25px; }
 
 .game-inputs {
   margin: 0; }
@@ -10170,8 +10170,14 @@ input::-ms-input-placeholder, textarea::-ms-input-placeholder {
 .instruction-body {
   font-size: 1.2em;
   margin-top: 50px;
-  padding: 10px; }
+  padding: 10px;
+  line-height: 1.3em; }
+
+.instruction-title {
+  color: #F4E8C1 !important;
+  font-weight: bold; }
 
 .instruction-icon {
   font-size: 10em;
-  width: 100vh !important; }
+  width: 100vh !important;
+  color: #F4E8C1 !important; }
