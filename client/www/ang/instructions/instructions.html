@@ -1,0 +1,25 @@
+<ion-modal-view class="instructions">
+  <ion-header-bar>
+    <h1 class="title">Instructions</h1>
+    <button class="button" ng-click="intro.hide()">
+      Close
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <ion-slide-box on-slide-changed="slideHasChanged($index)">
+      <ion-slide class="instruction" ng-repeat="instruction in instructions">
+        <ion-content>
+        <div class="box">
+          <h1 class="instruction-title">{{instruction.title}}</h1>
+          <p class="instruction-body">{{instruction.body}}</p>
+          <div class="row">
+            <div class="col text-center">
+              <i class="icon instruction-icon {{instruction.icon}}"></i>
+            </div>
+          </div>
+        </div>
+        </ion-content>
+      </ion-slide>
+    </ion-slide-box>
+  </ion-content>
+</ion-modal-view>

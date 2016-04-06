@@ -610,3 +610,44 @@ $rotate: 2.0deg;
   -webkit-animation-name: rubberBand;
   animation-name: rubberBand;
 }
+
+/** INSTRUCTIONS **/
+.instructions {
+  .slider,
+  .scroll,
+  .box {
+    height: 100%;
+  } 
+  h1.title {
+    color: black!important;
+  }
+  .slider {
+    color: $stable;
+    font-size: 1.2em;
+    background: $balanced;
+  }
+
+  .box {
+    padding-top: 40px;
+  }
+}
+
+.instruction-title,
+.instruction-body {
+  text-align: center;
+}
+
+.instruction-body {
+  font-size: 1.2em;
+  margin-top: 50px;
+  padding: 10px;
+}
+
+.instruction-icon {
+  font-size: 10em;
+  width: 100vh!important;
+}
+
+
+
+
