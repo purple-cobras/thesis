@@ -10145,3 +10145,33 @@ input::-ms-input-placeholder, textarea::-ms-input-placeholder {
 .rubberBand {
   -webkit-animation-name: rubberBand;
   animation-name: rubberBand; }
+
+/** INSTRUCTIONS **/
+.instructions .slider,
+.instructions .scroll,
+.instructions .box {
+  height: 100%; }
+
+.instructions h1.title {
+  color: black !important; }
+
+.instructions .slider {
+  color: #9EBC9F;
+  font-size: 1.2em;
+  background: #656256; }
+
+.instructions .box {
+  padding-top: 40px; }
+
+.instruction-title,
+.instruction-body {
+  text-align: center; }
+
+.instruction-body {
+  font-size: 1.2em;
+  margin-top: 50px;
+  padding: 10px; }
+
+.instruction-icon {
+  font-size: 10em;
+  width: 100vh !important; }

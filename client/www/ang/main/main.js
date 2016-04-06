@@ -14,9 +14,50 @@ angular.module('app.main', [])
     Auth,
     socket,
     $ionicPopup,
+    $ionicModal,
+    $ionicSlideBoxDelegate,
     ionicToast) {
 
   angular.extend($scope, Game);
+
+  $scope.instructions = [
+    {
+      title: "Welcome",
+      body: "If you are new to Black Mamba, let us show you the ropes! Otherwise feel free to jump right in.",
+      icon: "ion-happy-outline"
+    }, 
+    {
+      title: "Basics",
+      body: "Black Mamba is a great party game. You need at least two other friends to play. They can be using an iOS or Android device.",
+      icon: "ion-android-contacts"
+    },
+    {
+      title: "Topics",
+      body: "In reach round of the game, one player, designated as The Reader, puts for a topic. The topic is typically a question, but it can really be anything. One example might be \"What is something you do not want to find in your bed in the morning?\"",
+      icon: "ion-edit"
+    },
+    {
+      title: "Responses",
+      body: "Once the topic has been set, each player submits a response to the topic. Your response can really be anything, but you'll want to try to come up with something that is both relevant to the topic and going to make your friends laugh.",
+      icon: "ion-ios-chatboxes-outline"
+    },
+    {
+      title: "Guessing",
+      body: "After all responses have been submitted, they will be read aloud by The Reader's device. Then, players take turns trying to match up who wrote which response. If you guess correctly, you get to guess again. If you guess incorrectly the next player gets to start guessing. You receive a point for each correct guess, and a bonus point for being the last woman or man standing.",
+      icon: "ion-ribbon-a"
+    },
+    {
+      title: "MambaBot",
+      body: "You have the option to include an AI player in your games, named MambaBot. MambaBot will never come up with topics or responses; rather, she makes educated guesses based on some quantitative analysis that she performs on each player's previous responses. We truly hope that she does not grow intelligent enough to lead the inevitable cyborg takeover of the human race.",
+      icon: "ion-outlet"
+    },
+    {
+      title: "That's it!",
+      body: "Get Mamba-ing!",
+      icon: "ion-university"
+    }
+
+  ];
 
   $scope.isDisabled = false;
   $scope.invitations = [];
@@ -155,6 +196,30 @@ angular.module('app.main', [])
     $scope.getInvitations();
     Game.updateGame();
   });
+
+  $scope.$on('$ionicView.afterEnter', function () {
+    $ionicModal.fromTemplateUrl('ang/instructions/instructions.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    })
+    .then(function (modal) {
+      $scope.intro = modal;
+      if (!store.get('launched')) {
+        $scope.intro.show();
+      }
+    })
+    .catch(function (error) {
+      console.error(error);
+    })
+    .finally(function () {
+      store.set('launched', true);
+    });
+  });
+
+  $scope.openIntro = function () {
+    $scope.intro.show();
+    $ionicSlideBoxDelegate.slide(0);
+  };
 
   socket.on('invited', function () {
     $scope.getInvitations();
