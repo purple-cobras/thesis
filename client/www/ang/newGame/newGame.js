@@ -1,6 +1,14 @@
 angular.module('app.newGame', [])
 
-.controller('newGameCtrl', function ($scope, $http, $state, store, Game, $ionicScrollDelegate) {
+.controller('newGameCtrl', function (
+  $scope, 
+  $http, 
+  $state, 
+  store, 
+  Game, 
+  $ionicScrollDelegate,
+  $ionicPopup
+  ) {
 
   $scope.min_players = Config.min_players || 2;
   $scope.search = '';
@@ -12,6 +20,22 @@ angular.module('app.newGame', [])
     skipIfGuessed: true,
     voice: true
   };
+
+  $scope.rulebook = [
+    {
+      title: 'Skip if guessed',
+      body: 'If a player has been guessed out in a round, are they able to guess later in the round?'
+    },
+    {
+      title: 'MambaBot',
+      body: 'Whether to include MambaBot, our AI guesser, as a player in this game.'
+    },
+    {
+      title: 'Read Responses',
+      body: 'Whether to read all responses aloud. We recommend that you select no if players are not all in the same room.'
+    }
+  ];
+
   $scope.error = '';
 
   $scope.invitedOnly = false;
@@ -97,6 +121,27 @@ angular.module('app.newGame', [])
     $timeout(function () {
       $scope.searching = false;
     }, 500);
+  };
+
+  $scope.displayRules = function () {
+    var rulesText = '';
+    $scope.rulebook.forEach(function(rule, index) {
+      rulesText += '<strong>' + rule.title + ": </strong>" + rule.body;
+      if (index !== $scope.rulebook.length - 1) {
+        rulesText += '<br>';
+      }
+    });
+    $ionicPopup.show({
+      title: "Rulebook",
+      template: rulesText,
+      scope: $scope,
+      buttons: [
+        {
+          text: "Got it",
+          type: 'button button-block button-energized'
+        }
+      ]
+    });
   };
 
   $('.friends-count').text('(Invite at least ' + Game.getNumber($scope.min_players - 1 - $scope.Utils.keys($scope.inviting).length) + ')');
