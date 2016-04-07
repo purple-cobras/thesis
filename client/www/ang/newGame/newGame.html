@@ -1,39 +1,39 @@
 <ion-view title="New Game">
-    <ion-content padding="true" class="has-header">
-      <div class="list-card">
-        <div class="item item-divider">
-            Friends
-            <span class="friends-count">
+  <ion-content padding="true" class="has-header">
+    <div class="list-card">
+      <div class="item item-divider">
+        Friends
+        <span class="friends-count">
 
-            </span>
-        </div>
-        <div class="item item-input-inset">
-          <label class="item-input-wrapper friend-search">
-            <input constant-focus ng-model="search.friend" ng-focus="searching = true" ng-blur="searching = false" type="text" placeholder="search for a friend">
-          </label>
-          <button ng-click="toggleInvitedFilter()" class="button button-small button-energized invited-filter">
-            {{!invitedOnly ? 'Show Invited Only' : 'Show All Friends' }}
-          </button>
-        </div>
-        <div class="friends-list item item-body">
-          <ion-content>
-              <ion-list>
-                <ion-item fb-thumbnail ng-repeat="friend in friends | filter:search.friend | filter:invited | orderBy:'name'" ng-click="toggleInvite(friend, $event)" ng-class="{inviting: inviting[friend.id]}" class="item-thumbnail-right">{{friend.name}}
-                </ion-item>
-              </ion-list>
-          </ion-content>
-        </div>
+        </span>
       </div>
-      <div class="rules">
-        <ion-toggle toggle-class="toggle-royal" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
-        <ion-toggle toggle-class="toggle-royal" ng-model="rules.ai">AI Guesser</ion-toggle>
-        <ion-toggle toggle-class="toggle-royal" ng-model="rules.voice">Automated voice reader</ion-toggle>
-        <label class="item item-input">
-            <span class="input-label score-limit">Play up to</span>
-            <input select-on-click type="tel" ng-model="rules.maxScore" ng-change="restrictScore()" min="10" max="50">
+      <div class="item item-input-inset">
+        <label class="item-input-wrapper friend-search">
+          <input constant-focus ng-model="search.friend" ng-focus="searching = true" ng-blur="searching = false" type="text" placeholder="search for a friend">
         </label>
+        <button ng-click="toggleInvitedFilter()" class="button button-small button-energized invited-filter">
+          {{!invitedOnly ? 'Show Invited Only' : 'Show All Friends' }}
+        </button>
       </div>
-      <div class="error" ng-bind="error"></div>
-      <button ng-disabled="error || isDisabled || Utils.keys(inviting).length < min_players - 1" ng-click="createGame()" class="button button-calm button-block ">Create!</button>
-    </ion-content>
+      <div class="friends-list item item-body">
+        <ion-content>
+          <ion-list>
+            <ion-item fb-thumbnail ng-repeat="friend in friends | filter:search.friend | filter:invited | orderBy:'name'" ng-click="toggleInvite(friend, $event)" ng-class="{inviting: inviting[friend.id]}" class="item-thumbnail-right">{{friend.name}}
+            </ion-item>
+          </ion-list>
+      </ion-content>
+      </div>
+    </div>
+    <div class="rules">
+      <ion-toggle toggle-class="toggle-royal" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
+      <ion-toggle toggle-class="toggle-royal" ng-model="rules.ai">AI Guesser</ion-toggle>
+      <ion-toggle toggle-class="toggle-royal" ng-model="rules.voice">Automated voice reader</ion-toggle>
+      <label class="item item-input">
+        <span class="input-label score-limit">Play up to</span>
+        <input select-on-click type="tel" ng-model="rules.maxScore" ng-change="restrictScore()" min="10" max="50">
+      </label>
+    </div>
+    <div class="error" ng-bind="error"></div>
+    <button ng-disabled="error || isDisabled || Utils.keys(inviting).length < min_players - 1" ng-click="createGame()" class="button button-calm button-block ">Create!</button>
+  </ion-content>
 </ion-view>
