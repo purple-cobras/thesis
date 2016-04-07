@@ -1,4 +1,9 @@
 <ion-view title="New Game">
+  <ion-nav-buttons side="right">
+    <button ng-click="displayRules()" class="settings-button button buttons header-item">
+      <i class="icon ion-ios-help-outline"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <div class="list-card">
       <div class="item item-divider">
@@ -25,9 +30,11 @@
       </div>
     </div>
     <div class="rules">
-      <ion-toggle toggle-class="toggle-royal" ng-model="rules.skipIfGuessed">Skip if guessed</ion-toggle>
-      <ion-toggle toggle-class="toggle-royal" ng-model="rules.ai">AI Guesser</ion-toggle>
-      <ion-toggle toggle-class="toggle-royal" ng-model="rules.voice">Automated voice reader</ion-toggle>
+      <ion-toggle toggle-class="toggle-royal" ng-model="rules.skipIfGuessed">
+        Skip if guessed 
+      </ion-toggle>
+      <ion-toggle toggle-class="toggle-royal" ng-model="rules.ai">MambaBot</ion-toggle>
+      <ion-toggle toggle-class="toggle-royal" ng-model="rules.voice">Read Responses</ion-toggle>
       <label class="item item-input">
         <span class="input-label score-limit">Play up to</span>
         <input select-on-click type="tel" ng-model="rules.maxScore" ng-change="restrictScore()" min="10" max="50">
