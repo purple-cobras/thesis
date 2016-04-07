@@ -9894,13 +9894,8 @@ button.button.settings-button.activated {
   background-color: #656256;
   color: white; }
 
-.share {
-  padding: 5px; }
-  .share .icon {
-    font-size: 2em; }
-  .share.activated {
-    background: transparent;
-    color: #b9cfba; }
+.share .icon {
+  margin-left: 10px; }
 
 input::placeholder, textarea::placeholder {
   color: white;

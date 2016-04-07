@@ -108,6 +108,7 @@ angular.module('app',
 // Basic config
 .run(function ($rootScope, auth, $location) {
   $rootScope.appName = 'Black Mamba';
+  $rootScope.publicUrl = 'http://www.blackmamba.space';
   $rootScope.Utils = {
      keys : Object.keys
   };

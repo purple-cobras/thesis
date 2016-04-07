@@ -31,7 +31,6 @@
           <h4>Reader: <span ng-bind="game.current_round.reader_name"></span></h4>
         </div>
         <topic-options ng-if="Game.isReader && !Game.game.current_round.topic.length"></topic-options>
-        <share-topic></share-topic>
         <div ng-if="Game.game.winner" class="col">
           <h4 class="winner">Winner: <span ng-bind="Game.game.winner.full_name"></span></h4>
         </div>

@@ -270,13 +270,8 @@ $slide-dur: 0.5s;
 }
 
 .share {
-  padding: 5px;
   .icon {
-    font-size: 2em;
-  }
-  &.activated {
-    background: rgba(0, 0, 0, 0);
-    color: $stabler;
+    margin-left: 10px;
   }
 }
 

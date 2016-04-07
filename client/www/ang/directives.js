@@ -130,30 +130,29 @@ angular.module('app.directives', [])
   };
 })
 
-.directive('shareTopic', function ($ionicPopup, ionicToast, $cordovaFacebook) {
+.directive('shareApp', function ($ionicPopup, ionicToast, $cordovaFacebook, $rootScope) {
   return {
     restrict: 'E',
     template: 
-      '<div ng-if="Game.game.current_round.topic.length && !Game.game.winner"' +
-        '<button class="button share">' +
+      '<div>' +
+        '<button class="button button-block button-calm share">' +
+          'Share on Facebook!' +
           '<i class="icon ion-social-facebook"></i>' +
         '</button>' +
       '</div>',
     link: function (scope, elem, attrs) {
       elem.on('click', function () {
         $ionicPopup.show({
-          title: "Share topic to FB?",
+          title: "Post about this app on Facebook!",
           scope: scope,
           buttons: [
             {
               text: 'Yes',
               type: 'button button-block button-calm',
               onTap: function (e) {
-                var topic = scope.Game.game.current_round.topic.trim();
-                console.log(topic);
                 $cordovaFacebook.showDialog({
                   method: "feed",
-                  message: topic
+                  link: $rootScope.publicUrl
                 })
                 .then(function (success) {
                   console.log(success);
