@@ -21,7 +21,7 @@
             <span class="profile stats">{{profile.gamesPlayed}} {{profile.gamesPlayed === "1" ? "game" : "games"}} played with {{profile.gamesWon}} {{profile.gamesWon === "1" ? "win" : "wins"}}</span>
           </div>
         </div>
-        <share-app ng-if="auth.isAuthenticated"></share-app>
+        <share-app ng-if="iOS()"></share-app>
         <a ng-click="logout()" class="button button-stable button-block button-large">Log out</a>
       </div>
     </form>
