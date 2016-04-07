@@ -32,6 +32,12 @@ var authRoutes = [
 
 var routes = [
   {
+    path: '/',
+    get: function (req, res) {
+      res.sendFile(path.resolve('client/splash/splash.html'));
+    }
+  },
+  {
     path: '/users',
     post: function (req, res) {
       // Store new user data in db.
@@ -203,6 +209,12 @@ var routes = [
         res.status(500);
         res.json({error: error});
       });
+    }
+  },
+  {
+    path: '*',
+    get: function (req, res) {
+      res.redirect('/');
     }
   }
 ];

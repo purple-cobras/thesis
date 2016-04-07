@@ -1,0 +1,79 @@
+*,
+*:after,
+*:before {
+  font-family: 'Lato', sans-serif;
+}
+
+body {
+  background: #94b495;
+}
+
+.title {
+  text-align: center;
+}
+
+.sub {
+  text-align: center;
+}
+
+.nav-wrapper {
+  background-color: #912322;
+}
+
+nav {
+  height: 100px!important;
+}
+
+.party {
+  background: url("../img/party.jpg");
+  background-repeat: repeat-x;
+  background-position: center;
+  height: 860px;
+}
+
+.logo {
+  max-height: 100%;
+  border-radius: 50%;
+  padding: 8px;
+  margin-left: 10px;
+}
+
+.brand-logo {
+  margin-right: 10px;
+  color: black;
+  font-size: 3em!important;
+  margin-top: 15px;
+}
+
+.main {
+  margin-top: 100px;
+}
+
+.available {
+  text-align: center;
+  padding-top: 20px;
+  color: #912322;
+}
+
+.downloads {
+  padding-top: 250px;
+}
+
+.download {
+  height: 161.076px;
+  margin: 30px;
+
+}
+
+.ios {
+  background-image: url("../img/appstore.svg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.android img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
