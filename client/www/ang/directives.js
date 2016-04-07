@@ -128,4 +128,47 @@ angular.module('app.directives', [])
       });
     }
   };
+})
+
+.directive('shareApp', function ($ionicPopup, ionicToast, $cordovaFacebook, $rootScope) {
+  return {
+    restrict: 'E',
+    template: 
+      '<div>' +
+        '<button class="button button-block button-calm share">' +
+          'Share on Facebook!' +
+          '<i class="icon ion-social-facebook"></i>' +
+        '</button>' +
+      '</div>',
+    link: function (scope, elem, attrs) {
+      elem.on('click', function () {
+        $ionicPopup.show({
+          title: "Post about this app on Facebook!",
+          scope: scope,
+          buttons: [
+            {
+              text: 'Yes',
+              type: 'button button-block button-calm',
+              onTap: function (e) {
+                $cordovaFacebook.showDialog({
+                  method: "feed",
+                  link: $rootScope.publicUrl
+                })
+                .then(function (success) {
+                  console.log(success);
+                }, function (error) {
+                  console.log(error);
+                });
+
+              }
+            },
+            {
+              text: 'No',
+              type: 'button button-block button-calm'
+            }
+          ]
+        })
+      })
+    }
+  }
 });

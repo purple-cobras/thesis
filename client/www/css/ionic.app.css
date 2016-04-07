@@ -9894,6 +9894,9 @@ button.button.settings-button.activated {
   background-color: #656256;
   color: white; }
 
+.share .icon {
+  margin-left: 10px; }
+
 input::placeholder, textarea::placeholder {
   color: white;
   opacity: 50%; }
@@ -10162,6 +10165,9 @@ input::-ms-input-placeholder, textarea::-ms-input-placeholder {
 
 .instructions .box {
   padding-top: 40px; }
+
+.instructions em {
+  font-style: italic; }
 
 .instruction-title,
 .instruction-body {

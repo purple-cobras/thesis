@@ -64,6 +64,10 @@ angular.module('app.login', [])
     Auth.logout();
   };
 
+  $scope.iOS = function () {
+    return ionic.Platform.isIOS();
+  };
+
   var getProfilePic = function () {
     var facebookId = store.get('profile').user_id.split('|')[1];
     var query = '/' + facebookId + '/picture?access_token=' + store.get('fb_access_token') + '&type=normal';

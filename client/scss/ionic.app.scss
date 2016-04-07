@@ -269,6 +269,12 @@ $slide-dur: 0.5s;
   }
 }
 
+.share {
+  .icon {
+    margin-left: 10px;
+  }
+}
+
 input::placeholder, textarea::placeholder {
     color: $lighter;
     opacity: 50%;
@@ -629,6 +635,9 @@ $rotate: 2.0deg;
 
   .box {
     padding-top: 40px;
+  }
+  em {
+    font-style: italic;
   }
 }
 

@@ -26,7 +26,15 @@ angular.module('app',
 ]
 )
 
-.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $state, $cordovaNativeAudio) {
+.run(function (
+  $ionicPlatform, 
+  $rootScope, 
+  auth, 
+  store, 
+  jwtHelper, 
+  $state, 
+  $cordovaNativeAudio
+  ) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs
@@ -100,6 +108,7 @@ angular.module('app',
 // Basic config
 .run(function ($rootScope, auth, $location) {
   $rootScope.appName = 'Black Mamba';
+  $rootScope.publicUrl = 'http://www.blackmamba.space';
   $rootScope.Utils = {
      keys : Object.keys
   };
