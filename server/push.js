@@ -12,9 +12,16 @@ var sound = 'default';
 
 var options = {
   cert: path.resolve('push/cert.pem'),
-  key: path.resolve('push/key.pem'),
-  production: false
+  key: path.resolve('push/key.pem')
 };
+
+if (process.env.NODE_ENV === 'production') {
+  options = {
+    cert: path.resolve('push/cert-prd.pem'),
+    key: path.resolve('push/key-prd.pem')   
+  }
+}
+
 var apnConnection = new apn.Connection(options);
 
 var alert = 'Game Update';
