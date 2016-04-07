@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var db = require(path.resolve('db/db'));
 var cors = require('cors');
+var favicon = require('serve-favicon');
 var app = express();
 var server = require('http').Server(app);
 var push = require(path.resolve('server/push'));
@@ -15,6 +16,8 @@ var io = require('./sockets.js');
 app.use(cors());
 app.use(bodyParser());
 app.use(morgan('dev'));
+app.use(favicon(path.resolve('client/resources/icon.png')));
+app.use(express.static(path.resolve('client/splash')));
 
 var port = process.env.PORT || 8080;
 
