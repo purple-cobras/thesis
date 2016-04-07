@@ -9894,6 +9894,14 @@ button.button.settings-button.activated {
   background-color: #656256;
   color: white; }
 
+.share {
+  padding: 5px; }
+  .share .icon {
+    font-size: 2em; }
+  .share.activated {
+    background: transparent;
+    color: #b9cfba; }
+
 input::placeholder, textarea::placeholder {
   color: white;
   opacity: 50%; }
@@ -10162,6 +10170,9 @@ input::-ms-input-placeholder, textarea::-ms-input-placeholder {
 
 .instructions .box {
   padding-top: 40px; }
+
+.instructions em {
+  font-style: italic; }
 
 .instruction-title,
 .instruction-body {

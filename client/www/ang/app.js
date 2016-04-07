@@ -26,7 +26,15 @@ angular.module('app',
 ]
 )
 
-.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $state, $cordovaNativeAudio) {
+.run(function (
+  $ionicPlatform, 
+  $rootScope, 
+  auth, 
+  store, 
+  jwtHelper, 
+  $state, 
+  $cordovaNativeAudio
+  ) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs
