@@ -18,11 +18,32 @@ var options = {
 if (process.env.NODE_ENV === 'production') {
   options = {
     cert: path.resolve('push/cert-prd.pem'),
-    key: path.resolve('push/key-prd.pem')   
+    key: path.resolve('push/key-prd.pem'),
+    production: true
   }
 }
 
 var apnConnection = new apn.Connection(options);
+
+apnConnection.on('connected', function () {
+  console.log('connected');
+});
+
+apnConnection.on("timeout", function () {
+    console.log("Connection Timeout");
+});
+
+
+apnConnection.on("transmitted", function(notification, device) {
+    console.log("Notification transmitted to:" + device.token.toString("hex"));
+});
+
+
+apnConnection.on('socketError', console.error);
+
+apnConnection.on('transmissionError', function (errCode, notif, device) {
+  console.error('Notification caused error: ' + errCode + ' for device ', device.token.toString('hex'), notif);
+});
 
 var alert = 'Game Update';
 
