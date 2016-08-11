@@ -60,14 +60,14 @@ var routes = [
         user.set('full_name', req.body.name)
         .set('pic_url', req.body.pic_url).save()
         .then(function updateDeviceAndRespond(user) {
-
           helpers.getProfile(user.id)
             .then(function (games) {
               if (req.body.device_token) {
                 helpers.updateDevice(user.get('id'), req.body.device_token)
                 .then(respond);
+              } else {
+                respond();
               }
-              respond();
 
               function respond() {
                 getFBAccessToken(userId)
@@ -77,7 +77,6 @@ var routes = [
                 .catch(function(error) {
                   console.log('getFBAccessToken err', error);
                 });
-
               }
             });
         });
