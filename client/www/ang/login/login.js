@@ -54,8 +54,6 @@ angular.module('app.login', [])
     store.set('profile', profile);
     store.set('token', token);
     store.set('refreshToken', refreshToken);
-    store.set('fb_access_token', profile.identities[0].access_token);
-    // console.log('***fb_access_token***', store.get('fb_access_token'));
     $http({
       method: 'post',
       url: Config.api + '/signin',
@@ -68,17 +66,20 @@ angular.module('app.login', [])
     })
     .then(function (response) {
       if (response.data.user) {
-        // store.set('fb_access_token', response.data.fb_access_token)
-        store.set('games_won', response.data.games.won);
-        store.set('games_played', response.data.games.played);
-        store.set('created_at', response.data.user.created_at);
-        store.set('remote_id', response.data.user.id);
-        store.set('current_game_id', response.data.user.current_game_id);
+        var user = response.data.user;
+        var games = response.data.games;
+        var fb_access_token = response.data.fb_access_token;
+        store.set('fb_access_token', fb_access_token);
+        store.set('games_won', games.won);
+        store.set('games_played', games.played);
+        store.set('created_at', user.created_at);
+        store.set('remote_id', user.id);
+        store.set('current_game_id', user.current_game_id);
         setProfile();
-        Game.game.id = response.data.user.current_game_id;
+        Game.game.id = user.current_game_id;
         Game.getGame();
         socket.emit('login', {
-          id: response.data.user.id
+          id: user.id
         });
         $state.go('main');
       } else {
@@ -88,10 +89,6 @@ angular.module('app.login', [])
     .catch(function (error) {
       $scope.logout();
     });
-
-    function setAndPost() {
-
-    }
   };
 
   function handleFailedSignin(error) {
