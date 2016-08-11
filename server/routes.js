@@ -6,7 +6,7 @@ var helpers = require(path.resolve('db/helpers'));
 var models = require(path.resolve('db/models'));
 var jwt = require('jsonwebtoken');
 var env = require('node-env-file');
-
+var getFBAccessToken = require(path.resolve('server/facebook'));
 
 // Reads in .env variables if available
 if (process.env.NODE_ENV !== 'production') {
@@ -38,12 +38,6 @@ var routes = [
     }
   },
   {
-    path: '/users',
-    post: function (req, res) {
-      // Store new user data in db.
-    },
-  },
-  {
     path: '/users/:id',
     get: function (req, res) {
       helpers.findOrCreate(models.User, {'id': req.params.id})
@@ -57,31 +51,32 @@ var routes = [
     }
   },
   {
-    path: '/profile',
-    get: function (req, res) {
-      // Query db for data we'd display on a profile
-        // user's total score from all games, total number of games played
-        // list of friends, friend stats
-
-    }
-  },
-  {
     path: '/signin',
     post: function (req, res) {
-      helpers.findOrCreate(models.User, {'facebook_id': req.user.sub.split('|')[1]})
-      .then( function (user) {
+      var userId = req.user.sub;
+      var facebookId = userId.split('|')[1];
+      helpers.findOrCreate(models.User, {'facebook_id': facebookId})
+      .then(function saveNameAndPic(user) {
         user.set('full_name', req.body.name)
         .set('pic_url', req.body.pic_url).save()
-        .then(function (user) {
+        .then(function updateDeviceAndRespond(user) {
           helpers.getProfile(user.id)
             .then(function (games) {
               if (req.body.device_token) {
                 helpers.updateDevice(user.get('id'), req.body.device_token)
-                .then(function () {
-                  res.json({user: user, games: games});
-                });
+                .then(respond);
               } else {
-                res.json({user: user, games: games});
+                respond();
+              }
+
+              function respond() {
+                getFBAccessToken(userId)
+                .then(function(fbAccessToken) {
+                  res.json({ user: user, games: games, fb_access_token: fbAccessToken });
+                })
+                .catch(function(error) {
+                  console.log('getFBAccessToken err', error);
+                });
               }
             });
         });
