@@ -6,8 +6,9 @@ if (process.env.NODE_ENV !== 'production') {
   env(path.resolve('.env'));
 }
 
-var client_id = process.env.AUTH0_MGMT_API_ID;
-var client_secret = process.env.AUTH0_MGMT_API_SECRET;
+var auth0Namespace = process.env.AUTH0_NAMESPACE;
+var clientId = process.env.AUTH0_MGMT_API_ID;
+var clientSecret = process.env.AUTH0_MGMT_API_SECRET;
 
 function getFBAccessToken(userId) {
 
@@ -21,9 +22,9 @@ function getFBAccessToken(userId) {
     return new Promise(function(resolve, reject) {
       var options = {
         method: 'POST',
-        url: 'https://purplecobras.auth0.com/oauth/token',
+        url: 'https://' + auth0Namespace + '/oauth/token',
         headers: { 'content-type': 'application/json' },
-        body: '{"client_id":"' + client_id + '","client_secret":"' + client_secret + '","audience":"https://purplecobras.auth0.com/api/v2/","grant_type":"client_credentials"}'
+        body: '{"client_id":"' + clientId + '","client_secret":"' + clientSecret + '","audience":"https://' + auth0Namespace + '/api/v2/","grant_type":"client_credentials"}'
       };
       request(options, function (error, response, body) {
         if (error) reject(error);
@@ -36,7 +37,7 @@ function getFBAccessToken(userId) {
     return new Promise(function(resolve, reject) {
       var options = {
         method: 'GET',
-        url: 'https://purplecobras.auth0.com/api/v2/users/' + userId,
+        url: 'https://' + auth0Namespace + '/api/v2/users/' + userId,
         headers: {
           'content-type': 'application/json',
           'authorization': 'Bearer ' + auth0MgmtToken
